@@ -1,0 +1,8 @@
+[project]
+name = "terrifying-sample"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["terrifying"]
+
+[tool.uv.sources]
+terrifying = { path = "..", editable = true }

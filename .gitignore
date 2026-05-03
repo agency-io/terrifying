@@ -38,3 +38,4 @@ uv.lock
 # Claude Code (keep .claude/commands/ — those are project skills)
 .claude/settings.json
 .claude/settings.local.json
+sample-project/.venv/

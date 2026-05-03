@@ -1,16 +1,19 @@
-.PHONY: check check-json check-opa check-c7n
+.PHONY: install check check-json check-rules
+
+install:
+	uv sync
 
 # Run all checks (rules + custom rules + OPA + c7n) with text output
-check:
-	uv run --directory .. terrifying check ./terraform
+check: install
+	uv run terrifying check ./terraform
 
 # Same checks with JSON output
-check-json:
-	uv run --directory .. terrifying check ./terraform --format json
+check-json: install
+	uv run terrifying check ./terraform --format json
 
 # Run only the built-in and custom Python rules (no policy engines)
-check-rules:
-	uv run --directory .. python -c "\
+check-rules: install
+	uv run python -c "\
 from pathlib import Path; \
 from terrifying.core import Parser, Runner; \
 from terrifying.core.config import ConfigLoader; \
