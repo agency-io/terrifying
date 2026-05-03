@@ -17,6 +17,9 @@ terrifying = "terrifying.cli:main"
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
+    "black>=24",
+    "ruff>=0.4",
+    "pylint>=3",
 ]
 
 [tool.setuptools.packages.find]
@@ -28,6 +31,9 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 source = ["terrifying"]
+
+[tool.black]
+target-version = ["py311"]
 
 [tool.coverage.report]
 exclude_lines = [

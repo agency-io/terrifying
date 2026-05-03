@@ -1,0 +1,3 @@
+"""terrifying — architecture testing framework for Terraform."""
+
+__version__ = "0.1.0"
