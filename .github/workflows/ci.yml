@@ -17,16 +17,10 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: uv sync
+        run: make install
 
-      - name: black
-        run: uv run black --check .
+      - name: Lint
+        run: make lint
 
-      - name: ruff
-        run: uv run ruff check .
-
-      - name: pylint
-        run: uv run pylint terrifying/
-
-      - name: pytest
-        run: uv run pytest --cov=terrifying --cov-branch --cov-fail-under=95
+      - name: Test
+        run: make test
