@@ -34,6 +34,9 @@ Repository = "https://github.com/agency-io/terrifying"
 [project.scripts]
 terrifying = "terrifying.cli:main"
 
+[project.entry-points."pytest11"]
+terrifying = "terrifying.pytest_plugin"
+
 [dependency-groups]
 dev = [
     "pytest>=8",
@@ -49,9 +52,11 @@ include = ["terrifying*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "-p no:terrifying"
 
 [tool.coverage.run]
 source = ["terrifying"]
+branch = true
 
 [tool.black]
 target-version = ["py311"]

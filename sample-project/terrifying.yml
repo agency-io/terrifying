@@ -16,6 +16,9 @@ rules:
       - Environment
       - Team
 
+terraform:
+  path: ./terraform
+
 custom:
   path: ./custom_rules
 
