@@ -21,6 +21,7 @@ env/
 coverage.xml
 htmlcov/
 *.cover
+*,cover
 
 # uv
 uv.lock
