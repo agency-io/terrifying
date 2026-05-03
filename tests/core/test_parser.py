@@ -1,4 +1,3 @@
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -125,7 +124,11 @@ def test_module_non_dict_attrs_treated_as_empty(parser, tmp_path):
 
 def test_resource_list_attr_is_stripped_recursively(parser, tmp_path):
     (tmp_path / "main.tf").write_text("")
-    data = {"resource": [{"aws_security_group": {"sg": {"ingress": ['"0.0.0.0/0"', '"10.0.0.0/8"']}}}]}
+    data = {
+        "resource": [
+            {"aws_security_group": {"sg": {"ingress": ['"0.0.0.0/0"', '"10.0.0.0/8"']}}}
+        ]
+    }
     with patch("terrifying.core.parser.hcl2.load", return_value=data):
         ctx = parser.parse_directory(tmp_path)
     assert ctx.resources[0].attributes["ingress"] == ["0.0.0.0/0", "10.0.0.0/8"]
@@ -159,7 +162,9 @@ def test_invalid_hcl_file_omitted_from_files(parser, tmp_path):
 
 def test_invalid_hcl_does_not_stop_other_files(parser, tmp_path):
     (tmp_path / "invalid.tf").write_text("this is not valid terraform !!!\n")
-    (tmp_path / "valid.tf").write_text('resource "aws_s3_bucket" "ok" { bucket = "x" }\n')
+    (tmp_path / "valid.tf").write_text(
+        'resource "aws_s3_bucket" "ok" { bucket = "x" }\n'
+    )
     ctx = parser.parse_directory(tmp_path)
     assert len(ctx.parse_violations) == 1
     assert len(ctx.files) == 1
@@ -191,7 +196,9 @@ def test_directory_with_no_tf_files(parser, tmp_path):
 
 
 def test_non_tf_files_are_ignored(parser, tmp_path):
-    (tmp_path / "main.tf").write_text('resource "aws_s3_bucket" "ok" { bucket = "x" }\n')
+    (tmp_path / "main.tf").write_text(
+        'resource "aws_s3_bucket" "ok" { bucket = "x" }\n'
+    )
     (tmp_path / "vars.tfvars").write_text('region = "us-east-1"\n')
     ctx = parser.parse_directory(tmp_path)
     assert len(ctx.files) == 1

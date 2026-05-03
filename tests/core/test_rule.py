@@ -4,7 +4,6 @@ import pytest
 
 from terrifying.core.rule import Rule, Violation
 
-
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 
@@ -94,7 +93,9 @@ def test_violation_with_line_number():
 
 def test_violation_stores_all_fields():
     p = Path("infra/main.tf")
-    v = Violation(rule="my_rule", file=p, message="bad thing", line=7, severity="warning")
+    v = Violation(
+        rule="my_rule", file=p, message="bad thing", line=7, severity="warning"
+    )
     assert v.rule == "my_rule"
     assert v.file == p
     assert v.message == "bad thing"

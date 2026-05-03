@@ -16,7 +16,9 @@ from terrifying.core.context import (
 
 
 def _make_resource(name: str = "bucket", path: Path = Path("main.tf")) -> Resource:
-    return Resource(type="aws_s3_bucket", name=name, attributes={"bucket": "x"}, file=path)
+    return Resource(
+        type="aws_s3_bucket", name=name, attributes={"bucket": "x"}, file=path
+    )
 
 
 def _make_file(path: Path, resources: list[Resource] | None = None) -> TerraformFile:
@@ -151,9 +153,13 @@ def test_output_to_dict():
 
 def test_file_to_dict():
     r = _make_resource()
-    v = Variable(name="x", description=None, default=None, type=None, file=Path("main.tf"))
+    v = Variable(
+        name="x", description=None, default=None, type=None, file=Path("main.tf")
+    )
     o = Output(name="y", description=None, value="z", file=Path("main.tf"))
-    f = TerraformFile(path=Path("main.tf"), resources=[r], variables=[v], outputs=[o], line_count=20)
+    f = TerraformFile(
+        path=Path("main.tf"), resources=[r], variables=[v], outputs=[o], line_count=20
+    )
     d = _file_to_dict(f)
     assert d["path"] == "main.tf"
     assert d["line_count"] == 20
@@ -171,7 +177,9 @@ def test_local_defaults():
 
 
 def test_module_call_defaults():
-    m = ModuleCall(name="vpc", source="./modules/vpc", arguments={}, file=Path("main.tf"))
+    m = ModuleCall(
+        name="vpc", source="./modules/vpc", arguments={}, file=Path("main.tf")
+    )
     assert m.line is None
 
 
