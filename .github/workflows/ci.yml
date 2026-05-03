@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: black
+        run: uv run black --check .
+
+      - name: ruff
+        run: uv run ruff check .
+
+      - name: pylint
+        run: uv run pylint terrifying/
+
+      - name: pytest
+        run: uv run pytest --cov=terrifying --cov-branch --cov-fail-under=95

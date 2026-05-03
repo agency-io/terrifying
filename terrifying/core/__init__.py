@@ -1,3 +1,5 @@
+"""Public API for terrifying.core — re-exports all key types."""
+
 from .rule import Rule, Violation
 from .context import (
     TerraformContext,

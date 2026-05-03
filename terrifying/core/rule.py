@@ -1,3 +1,5 @@
+"""Rule base class and Violation dataclass — the core protocol for terrifying rules."""
+
 from __future__ import annotations
 
 import re
@@ -29,8 +31,10 @@ class Rule:
 
     @property
     def rule_id(self) -> str:
+        """Return the rule identifier derived from the class name (snake_case)."""
         name = type(self).__name__
         return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
 
     def check(self, context: TerraformContext) -> list[Violation]:
+        """Check the context and return any violations found."""
         raise NotImplementedError

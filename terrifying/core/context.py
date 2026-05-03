@@ -1,3 +1,5 @@
+"""Terraform context model — typed Python representations of parsed .tf files."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

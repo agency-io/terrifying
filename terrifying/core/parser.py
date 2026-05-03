@@ -1,3 +1,5 @@
+"""HCL parser — converts a directory of .tf files into a TerraformContext."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -24,7 +26,12 @@ def _strip(value: Any) -> Any:
     ``"prod"`` as the Python string ``'"prod"'``.  This helper removes those
     outer quotes so callers always receive clean Python strings.
     """
-    if isinstance(value, str) and len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+    if (
+        isinstance(value, str)
+        and len(value) >= 2
+        and value[0] == '"'
+        and value[-1] == '"'
+    ):
         return value[1:-1]
     return value
 
@@ -40,7 +47,7 @@ def _strip_attrs(value: Any) -> Any:
     return value
 
 
-class Parser:
+class Parser:  # pylint: disable=too-few-public-methods
     """Parses a directory of .tf files into a TerraformContext."""
 
     def parse_directory(self, path: Path) -> TerraformContext:
@@ -63,13 +70,11 @@ class Parser:
 
     # ── Private helpers ────────────────────────────────────────────────────────
 
-    def _parse_file(
-        self, path: Path
-    ) -> tuple[TerraformFile | None, list[Violation]]:
+    def _parse_file(self, path: Path) -> tuple[TerraformFile | None, list[Violation]]:
         try:
-            with open(path) as fh:
+            with open(path, encoding="utf-8") as fh:
                 data = hcl2.load(fh)
-            line_count = len(path.read_text().splitlines())
+            line_count = len(path.read_text(encoding="utf-8").splitlines())
             tf_file = TerraformFile(
                 path=path,
                 resources=self._extract_resources(data, path),
@@ -80,7 +85,7 @@ class Parser:
                 line_count=line_count,
             )
             return tf_file, []
-        except Exception as exc:
+        except Exception as exc:  # pylint: disable=broad-exception-caught
             violation = Violation(
                 rule="parse_error",
                 file=path,
@@ -98,7 +103,9 @@ class Parser:
                         Resource(
                             type=_strip(rtype),
                             name=_strip(rname),
-                            attributes=_strip_attrs(attrs) if isinstance(attrs, dict) else {},
+                            attributes=(
+                                _strip_attrs(attrs) if isinstance(attrs, dict) else {}
+                            ),
                             file=path,
                         )
                     )
@@ -154,7 +161,11 @@ class Parser:
                     ModuleCall(
                         name=_strip(mname),
                         source=_strip(attrs.get("source", "")),
-                        arguments={k: _strip_attrs(v) for k, v in attrs.items() if k != "source"},
+                        arguments={
+                            k: _strip_attrs(v)
+                            for k, v in attrs.items()
+                            if k != "source"
+                        },
                         file=path,
                     )
                 )
