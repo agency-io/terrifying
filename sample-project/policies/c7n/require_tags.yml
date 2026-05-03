@@ -1,0 +1,12 @@
+policies:
+  - name: require-environment-tag
+    resource: terraform.aws_s3_bucket
+    description: S3 buckets must have an Environment tag.
+    filters:
+      - "tag:Environment": absent
+
+  - name: require-team-tag
+    resource: terraform.aws_s3_bucket
+    description: S3 buckets must have a Team tag.
+    filters:
+      - "tag:Team": absent

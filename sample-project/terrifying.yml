@@ -1,0 +1,24 @@
+rules:
+  max_resources_per_file:
+    max_resources: 5
+  max_lines_per_file:
+    max_lines: 50
+  resource_file_naming:
+    pattern: "^[a-z_]+\\.tf$"
+  no_hardcoded_values:
+    allowed_attributes:
+      - ami
+      - __is_block__
+  variables_have_descriptions: {}
+  outputs_have_descriptions: {}
+  required_tags:
+    tags:
+      - Environment
+      - Team
+
+custom:
+  path: ./custom_rules
+
+policies:
+  opa: ./policies/opa
+  c7n: ./policies/c7n
