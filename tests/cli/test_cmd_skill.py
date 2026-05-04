@@ -3,7 +3,6 @@
 import argparse
 import subprocess
 import sys
-from unittest.mock import patch
 
 from terrifying.cli import _cmd_skill
 from terrifying.skill import CLAUDE_CODE_SKILL, ISSUES_URL
