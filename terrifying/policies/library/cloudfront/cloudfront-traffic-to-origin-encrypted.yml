@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-traffic-to-origin-encrypted
+    description: >
+      Detects CloudFront distributions with a custom origin whose origin_protocol_policy
+      is "http-only", allowing unencrypted traffic between CloudFront and the origin.
+      Equivalent: cloudfront-traffic-to-origin-encrypted. FSBP CloudFront.9.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: "origin[].custom_origin_config[].origin_protocol_policy"
+        op: contains
+        value: http-only

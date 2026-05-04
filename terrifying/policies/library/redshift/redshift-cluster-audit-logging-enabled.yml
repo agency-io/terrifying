@@ -1,0 +1,18 @@
+policies:
+  - name: redshift-cluster-audit-logging-enabled
+    description: >
+      Detects Amazon Redshift clusters without audit logging enabled. Equivalent to AWS
+      Config redshift-cluster-audit-logging-enabled. Maps to FSBP Redshift.4 (Medium),
+      CIS benchmark, PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_redshift_cluster
+    filters:
+      - type: value
+        key: "logging[0].enable"
+        value: true
+        op: ne

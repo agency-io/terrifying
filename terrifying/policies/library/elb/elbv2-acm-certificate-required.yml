@@ -1,0 +1,21 @@
+policies:
+  - name: elbv2-acm-certificate-required
+    description: >
+      Detects ALB/NLB HTTPS or TLS listeners using certificates not managed by
+      ACM. Non-ACM certificates lack automatic renewal, risking expiry-related
+      outages. Maps to NIST SP 800-53 SC-8 (Medium).
+    tags:
+      - security-hub
+      - nist-800-53
+    resource: terraform.aws_lb_listener
+    filters:
+      - type: value
+        key: protocol
+        value:
+          - HTTPS
+          - TLS
+        op: in
+      - type: value
+        key: certificate_arn
+        op: regex
+        value: "^arn:aws:iam:"

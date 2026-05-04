@@ -1,0 +1,16 @@
+policies:
+  - name: cloud-trail-log-file-validation-enabled
+    description: >
+      Detects CloudTrail trails with log file validation disabled. Equivalent to AWS Config
+      cloud-trail-log-file-validation-enabled. Maps to CT Mandatory, FSBP CloudTrail.4,
+      CIS 3.2, PCI DSS.
+    tags:
+      - control-tower
+      - control-tower-mandatory
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_cloudtrail
+    filters:
+      - enable_log_file_validation: false

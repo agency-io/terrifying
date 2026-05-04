@@ -1,0 +1,24 @@
+policies:
+  - name: lambda-function-settings-check
+    description: >
+      Detects Lambda functions using deprecated or end-of-life runtimes.
+      Equivalent to AWS Config lambda-function-settings-check.
+      Maps to FSBP Lambda.2 (High), security-hub, conformance-pack.
+    tags:
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_lambda_function
+    filters:
+      - type: value
+        key: runtime
+        op: in
+        value:
+          - python2.7
+          - python3.6
+          - nodejs10.x
+          - nodejs12.x
+          - nodejs14.x
+          - ruby2.5
+          - dotnetcore2.1
+          - dotnetcore3.1

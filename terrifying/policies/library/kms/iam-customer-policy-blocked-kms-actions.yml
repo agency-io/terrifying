@@ -1,0 +1,16 @@
+policies:
+  - name: iam-customer-policy-blocked-kms-actions
+    description: >
+      Detects customer-managed IAM policies granting full admin access (Action:*),
+      which includes all KMS decryption actions on all resources.
+      Equivalent to AWS Config iam-customer-policy-blocked-kms-actions.
+      Maps to FSBP KMS.1 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_iam_policy
+    filters:
+      - type: value
+        key: policy
+        value: '"Action": "*"'
+        op: contains

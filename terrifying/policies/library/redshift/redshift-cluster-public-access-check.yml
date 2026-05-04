@@ -1,0 +1,14 @@
+policies:
+  - name: redshift-cluster-public-access-check
+    description: >
+      Detects Amazon Redshift clusters with PubliclyAccessible=true. Equivalent to AWS
+      Config redshift-cluster-public-access-check. Maps to FSBP Redshift.1 (Critical),
+      CIS benchmark, PCI DSS.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_redshift_cluster
+    filters:
+      - publicly_accessible: true

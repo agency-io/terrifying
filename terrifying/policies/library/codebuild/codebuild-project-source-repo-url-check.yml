@@ -1,0 +1,15 @@
+policies:
+  - name: codebuild-project-source-repo-url-check
+    description: >
+      Detects CodeBuild projects whose source location URL contains credentials (@ in URL).
+      Equivalent to AWS Config codebuild-project-source-repo-url-check.
+      Maps to FSBP CodeBuild.1 (Critical).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_codebuild_project
+    filters:
+      - type: value
+        key: source.location
+        op: regex
+        value: ".*@.*"

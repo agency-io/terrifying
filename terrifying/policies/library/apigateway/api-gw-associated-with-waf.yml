@@ -1,0 +1,15 @@
+policies:
+  - name: api-gw-associated-with-waf
+    description: >
+      Detects REST API stages not associated with a WAF Web ACL. Non-compliant
+      when webAclArn is absent or null. Equivalent to AWS Config
+      api-gw-associated-with-waf. Maps to FSBP APIGateway.4 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_api_gateway_stage
+    filters:
+      - type: value
+        key: web_acl_arn
+        value: absent
+        op: eq

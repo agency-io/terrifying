@@ -1,0 +1,18 @@
+policies:
+  - name: iam-policy-no-statements-with-admin-access
+    description: >
+      Detects customer-managed IAM policies that grant full admin access
+      via Action:* and Resource:* in an Allow statement.
+      Equivalent to AWS Config iam-policy-no-statements-with-admin-access.
+      Maps to: Security Hub FSBP IAM.1 (High), CIS AWS Foundations 1.22.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_iam_policy
+    filters:
+      - type: value
+        key: "policy"
+        value: '"Action": "*"'
+        op: contains

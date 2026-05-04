@@ -1,0 +1,14 @@
+policies:
+  - name: sqs-queue-public-access-prohibited
+    description: >
+      Detects SQS queues whose access policies grant public access (Principal: *).
+      Equivalent to AWS Config sqs-queue-no-public-access. Maps to FSBP SQS.3 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_sqs_queue_policy
+    filters:
+      - type: value
+        key: "policy"
+        value: '"Principal":"*"'
+        op: contains

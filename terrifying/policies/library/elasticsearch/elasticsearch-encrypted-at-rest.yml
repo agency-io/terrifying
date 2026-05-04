@@ -1,0 +1,8 @@
+policies:
+  - name: elasticsearch-encrypted-at-rest
+    description: >
+      Detects Elasticsearch/OpenSearch domains with encrypt_at_rest disabled.
+      Equivalent to AWS Config elasticsearch-encrypted-at-rest. Maps to FSBP ES.1 (Medium).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - encrypt_at_rest: false

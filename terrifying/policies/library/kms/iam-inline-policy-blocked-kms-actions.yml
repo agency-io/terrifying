@@ -1,0 +1,11 @@
+policies:
+  - name: iam-inline-policy-blocked-kms-actions
+    description: >
+      Detects IAM users with inline policies attached directly.
+      Inline policies can grant overly broad KMS decryption access.
+      Equivalent to AWS Config iam-inline-policy-blocked-kms-actions.
+      Maps to FSBP KMS.2 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_iam_user_policy

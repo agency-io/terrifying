@@ -1,0 +1,8 @@
+policies:
+  - name: ec2-launch-template-public-ip-disabled
+    description: EC2 launch templates must not enable automatic public IP assignment
+    resource: terraform.aws_launch_template
+    filters:
+      - type: value
+        key: "network_interfaces.associate_public_ip_address"
+        value: true

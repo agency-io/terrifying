@@ -1,0 +1,9 @@
+policies:
+  - name: ec2-launch-template-imdsv2-check
+    description: EC2 launch templates must require IMDSv2 (http_tokens = required)
+    resource: terraform.aws_launch_template
+    filters:
+      - not:
+        - type: value
+          key: "metadata_options.http_tokens"
+          value: required

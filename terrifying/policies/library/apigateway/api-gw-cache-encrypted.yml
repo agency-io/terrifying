@@ -1,0 +1,12 @@
+policies:
+  - name: api-gw-cache-encrypted
+    description: >
+      Detects API Gateway REST stages with caching enabled but unencrypted cache data.
+      Non-compliant when cache_cluster_enabled is true and cache_data_encrypted is false.
+      Equivalent Config rule: api-gw-cache-encrypted. Maps to: FSBP APIGateway.5.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_api_gateway_stage
+    filters:
+      - cache_cluster_enabled: true

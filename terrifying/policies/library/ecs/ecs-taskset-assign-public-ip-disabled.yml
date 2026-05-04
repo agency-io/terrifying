@@ -1,0 +1,14 @@
+policies:
+  - name: ecs-taskset-assign-public-ip-disabled
+    description: >
+      Detects ECS services using an EXTERNAL deployment controller with
+      assign_public_ip=ENABLED. Task sets on EXTERNAL controller services
+      expose tasks directly to the internet. Maps to FSBP ECS.16 (High).
+    resource: terraform.aws_ecs_service
+    filters:
+      - type: value
+        key: "deployment_controller[0].type"
+        value: EXTERNAL
+      - type: value
+        key: "network_configuration[0].assign_public_ip"
+        value: true

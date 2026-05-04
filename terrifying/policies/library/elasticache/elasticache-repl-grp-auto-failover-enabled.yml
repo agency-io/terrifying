@@ -1,0 +1,9 @@
+policies:
+  - name: elasticache-repl-grp-auto-failover-enabled
+    description: >
+      Detects ElastiCache replication groups where automatic failover is not enabled.
+      Equivalent to AWS Config elasticache-repl-grp-auto-failover-enabled. Maps to FSBP
+      ElastiCache.3 (High), NIST 800-53, conformance packs.
+    resource: terraform.aws_elasticache_replication_group
+    filters:
+      - automatic_failover_enabled: false

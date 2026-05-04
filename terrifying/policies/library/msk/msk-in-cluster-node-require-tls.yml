@@ -1,0 +1,18 @@
+policies:
+  - name: msk-in-cluster-node-require-tls
+    description: >
+      Detects MSK clusters without TLS-only client-broker encryption or
+      in-cluster encryption disabled. Equivalent to FSBP MSK.1 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_msk_cluster
+    filters:
+      - or:
+        - type: value
+          key: "encryption_info[0].encryption_in_transit[0].client_broker"
+          value: "TLS"
+          op: ne
+        - type: value
+          key: "encryption_info[0].encryption_in_transit[0].in_cluster"
+          value: false

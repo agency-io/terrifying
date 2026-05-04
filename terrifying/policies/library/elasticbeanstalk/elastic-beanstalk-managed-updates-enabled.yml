@@ -1,0 +1,12 @@
+policies:
+  - name: elastic-beanstalk-managed-updates-enabled
+    description: >
+      Detects Elastic Beanstalk environments with managed updates disabled.
+      Equivalent to AWS Config elastic-beanstalk-managed-updates-enabled.
+      Maps to FSBP ElasticBeanstalk.2 (High).
+    resource: terraform.aws_elastic_beanstalk_environment
+    filters:
+      - type: value
+        key: "setting[?namespace=='aws:elasticbeanstalk:managedactions' && name=='ManagedActionsEnabled'].value | [0]"
+        value: "true"
+        op: ne

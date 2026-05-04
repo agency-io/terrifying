@@ -1,0 +1,15 @@
+policies:
+  - name: cw-loggroup-retention-period-check
+    description: >
+      Detects CloudWatch Logs log groups with no retention policy set (logs
+      retained indefinitely). Equivalent to AWS Config
+      cw-loggroup-retention-period-check. Maps to FSBP CloudWatch.16 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudwatch_log_group
+    filters:
+      - type: value
+        key: retention_in_days
+        value: absent
+        op: eq

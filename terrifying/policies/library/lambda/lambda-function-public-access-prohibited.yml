@@ -1,0 +1,14 @@
+policies:
+  - name: lambda-function-public-access-prohibited
+    description: >
+      Detects Lambda functions with resource-based policies that allow public access
+      (Principal: "*"). Equivalent to AWS Config lambda-function-public-access-prohibited.
+      Maps to FSBP Lambda.1 (Critical), CIS 3.x, PCI DSS.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_lambda_permission
+    filters:
+      - principal: "*"

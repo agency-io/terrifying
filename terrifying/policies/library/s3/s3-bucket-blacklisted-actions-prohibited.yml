@@ -1,0 +1,16 @@
+policies:
+  - name: s3-bucket-blacklisted-actions-prohibited
+    description: >
+      Detects S3 bucket policies granting high-risk actions (GetObject,
+      DeleteObject, GetBucketAcl, GetBucketPolicy) to all principals (Principal "*").
+      Equivalent AWS Config s3-bucket-blacklisted-actions-prohibited.
+      Maps to FSBP S3.6 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_s3_bucket_policy
+    filters:
+      - type: value
+        key: "policy"
+        value: "s3:GetObject"
+        op: contains

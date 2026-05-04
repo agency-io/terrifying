@@ -1,0 +1,6 @@
+policies:
+  - name: encrypted-volumes
+    description: EBS volumes must be encrypted at rest
+    resource: terraform.aws_ebs_volume
+    filters:
+      - encrypted: false

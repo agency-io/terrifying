@@ -1,0 +1,13 @@
+policies:
+  - name: s3-event-notifications-enabled
+    description: >
+      Detects S3 buckets without any event notification configuration. Event
+      notifications enable alerting on object operations. Equivalent to AWS
+      Config s3-event-notifications-enabled. Maps to FSBP S3.11, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+      - conformance-pack
+    resource: terraform.aws_s3_bucket_notification
+    filters: []

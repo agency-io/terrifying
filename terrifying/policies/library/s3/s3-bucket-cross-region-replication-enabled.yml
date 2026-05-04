@@ -1,0 +1,18 @@
+policies:
+  - name: s3-bucket-cross-region-replication-enabled
+    description: >
+      Detects S3 buckets without cross-region replication configured.
+      Equivalent to AWS Config s3-bucket-replication-enabled.
+      Maps to FSBP S3.11 (Medium), CIS 2.1.4, PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_s3_bucket
+    filters:
+      - type: value
+        key: "replication_configuration"
+        value: absent
+        op: eq

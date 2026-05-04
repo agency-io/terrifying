@@ -1,0 +1,14 @@
+policies:
+  - name: rds-db-security-group-not-allowed
+    description: >
+      Detects RDS instances using legacy EC2-Classic DB security groups instead
+      of VPC security groups. Maps to CIS AWS Foundations Benchmark (Medium).
+    tags:
+      - cis-benchmark
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - type: value
+        key: "length(db_security_group_names)"
+        value: 0
+        op: gt

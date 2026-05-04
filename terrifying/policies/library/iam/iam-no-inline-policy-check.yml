@@ -1,0 +1,12 @@
+policies:
+  - name: iam-no-inline-policy-check
+    description: >
+      Detects IAM users with inline (embedded) policies attached directly.
+      Inline policies should be replaced with managed policies attached via groups.
+      Equivalent to AWS Config iam-no-inline-policy-check.
+      Maps to: Security Hub FSBP IAM.2 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+    resource: terraform.aws_iam_user_policy

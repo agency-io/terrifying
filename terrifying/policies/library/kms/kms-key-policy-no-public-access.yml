@@ -1,0 +1,16 @@
+policies:
+  - name: kms-key-policy-no-public-access
+    description: >
+      Detects KMS keys whose key policy grants access to the wildcard principal (*),
+      making cryptographic operations publicly accessible.
+      Equivalent AWS Config rule: kms-key-policy-no-public-access.
+      Maps to FSBP KMS.5 (Critical).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_kms_key
+    filters:
+      - type: value
+        key: policy
+        value: '"Principal": "*"'
+        op: contains

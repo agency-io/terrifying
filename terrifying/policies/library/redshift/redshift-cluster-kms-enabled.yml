@@ -1,0 +1,14 @@
+policies:
+  - name: redshift-cluster-kms-enabled
+    description: >
+      Detects Amazon Redshift clusters where Encrypted=false (not encrypted at rest).
+      Equivalent to AWS Config redshift-cluster-kms-enabled. Maps to FSBP Redshift.10
+      (Medium), PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_redshift_cluster
+    filters:
+      - encrypted: false

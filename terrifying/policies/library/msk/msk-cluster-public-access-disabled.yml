@@ -1,0 +1,14 @@
+policies:
+  - name: msk-cluster-public-access-disabled
+    description: >
+      Detects MSK clusters with public broker access enabled. Brokers should not
+      be reachable from the internet. Equivalent to FSBP MSK.4 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_msk_cluster
+    filters:
+      - type: value
+        key: "broker_node_group_info[0].connectivity_info[0].public_access[0].type"
+        value: "DISABLED"
+        op: ne

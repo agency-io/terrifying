@@ -1,0 +1,9 @@
+policies:
+  - name: elasticache-repl-grp-encrypted-in-transit
+    description: >
+      Detects ElastiCache replication groups where transit_encryption_enabled=false.
+      Equivalent to AWS Config elasticache-repl-grp-encrypted-in-transit. Maps to FSBP
+      ElastiCache.3 (High), PCI DSS, NIST 800-53.
+    resource: terraform.aws_elasticache_replication_group
+    filters:
+      - transit_encryption_enabled: false

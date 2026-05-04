@@ -1,0 +1,20 @@
+policies:
+  - name: cloudfront-no-deprecated-ssl-protocols
+    description: >
+      Detects CloudFront distributions with custom origins using deprecated SSL/TLS protocols
+      (SSLv3, TLSv1, TLSv1.1). Equivalent to FSBP CloudFront.10. Maps to Medium severity.
+      Note: The runtime filter uses JMESPath array intersection over origin SSL protocols;
+      here we flag distributions that explicitly list a deprecated protocol in their
+      custom origin ssl_protocols.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: "origin[].custom_origin_config[].origin_ssl_protocols[]"
+        op: intersect
+        value:
+          - SSLv3
+          - TLSv1
+          - TLSv1.1

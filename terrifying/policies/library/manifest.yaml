@@ -1,0 +1,6503 @@
+policies:
+- id: api-gw-associated-with-waf
+  engine: rego
+  service: apigateway
+  file: apigateway/api-gw-associated-with-waf.rego
+  description: Detects REST API Gateway stages not associated with a WAF Web ACL.
+    Equivalent to AWS Config api-gw-associated-with-waf. Maps to FSBP APIGateway.4
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: api-gw-cache-encrypted
+  engine: rego
+  service: apigateway
+  file: apigateway/api-gw-cache-encrypted.rego
+  description: Detects API Gateway REST stages with caching enabled but cache data
+    not encrypted. Equivalent to AWS Config api-gw-cache-encrypted. Maps to FSBP APIGateway.5
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: api-gw-execution-logging-enabled
+  engine: rego
+  service: apigateway
+  file: apigateway/api-gw-execution-logging-enabled.rego
+  description: Detects API Gateway REST stages with execution logging disabled or
+    not configured. Equivalent to AWS Config api-gw-execution-logging-enabled. Maps
+    to FSBP APIGateway.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: api-gw-ssl-enabled
+  engine: rego
+  service: apigateway
+  file: apigateway/api-gw-ssl-enabled.rego
+  description: Detects API Gateway REST stages without an SSL client certificate for
+    backend authentication. Equivalent to AWS Config api-gw-ssl-enabled. Maps to FSBP
+    APIGateway.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: api-gw-xray-enabled
+  engine: rego
+  service: apigateway
+  file: apigateway/api-gw-xray-enabled.rego
+  description: Detects API Gateway REST stages without AWS X-Ray active tracing enabled.
+    Equivalent to AWS Config api-gw-xray-enabled. Maps to FSBP APIGateway.3 (Low).
+  severity: low
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: apigateway-domain-name-tls-check
+  engine: rego
+  service: apigateway
+  file: apigateway/apigateway-domain-name-tls-check.rego
+  description: Detects API Gateway custom domain names not using TLS 1.2 security
+    policy. Equivalent to AWS Config apigateway-domain-name-tls-check. Maps to FSBP
+    APIGateway.11 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_domain_name
+  tags:
+  - apigateway
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: api-gw-associated-with-waf
+  engine: c7n
+  service: apigateway
+  file: apigateway/api-gw-associated-with-waf.yml
+  description: Detects REST API stages not associated with a WAF Web ACL. Non-compliant
+    when webAclArn is absent or null. Equivalent to AWS Config api-gw-associated-with-waf.
+    Maps to FSBP APIGateway.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: api-gw-cache-encrypted
+  engine: c7n
+  service: apigateway
+  file: apigateway/api-gw-cache-encrypted.yml
+  description: 'Detects API Gateway REST stages with caching enabled but unencrypted
+    cache data. Non-compliant when cache_cluster_enabled is true and cache_data_encrypted
+    is false. Equivalent Config rule: api-gw-cache-encrypted. Maps to: FSBP APIGateway.5.'
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: api-gw-execution-logging-enabled
+  engine: c7n
+  service: apigateway
+  file: apigateway/api-gw-execution-logging-enabled.yml
+  description: 'Detects API Gateway REST stages with execution logging disabled. A
+    stage is non-compliant when access_log_settings is absent (no logging destination
+    configured). Equivalent AWS Config rule: api-gw-execution-logging-enabled. Maps
+    to: FSBP APIGateway.1 (Medium).'
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: api-gw-ssl-enabled
+  engine: c7n
+  service: apigateway
+  file: apigateway/api-gw-ssl-enabled.yml
+  description: 'Detects API Gateway REST stages without an SSL client certificate
+    for backend authentication. Non-compliant when clientCertificateId is absent or
+    null. Equivalent Config rule: api-gw-ssl-enabled. Maps to: FSBP APIGateway.2 (Medium).'
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: api-gw-xray-enabled
+  engine: c7n
+  service: apigateway
+  file: apigateway/api-gw-xray-enabled.yml
+  description: 'Detects API Gateway REST stages without AWS X-Ray active tracing enabled.
+    A stage is non-compliant when tracingEnabled is false or absent. Equivalent AWS
+    Config rule: api-gw-xray-enabled. Maps to: FSBP APIGateway.3 (Low).'
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_stage
+  tags:
+  - apigateway
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: apigateway-domain-name-tls-check
+  engine: c7n
+  service: apigateway
+  file: apigateway/apigateway-domain-name-tls-check.yml
+  description: Detects API Gateway custom domain names not using the recommended TLS
+    security policy (TLS_1_2). Non-compliant when securityPolicy is TLS_1_0. Equivalent
+    to AWS Config apigateway-domain-name-tls-check. Maps to FSBP APIGateway.11 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_api_gateway_domain_name
+  tags:
+  - apigateway
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: autoscaling-group-elb-healthcheck-required
+  engine: rego
+  service: autoscaling
+  file: autoscaling/autoscaling-group-elb-healthcheck-required.rego
+  description: Detects Auto Scaling groups associated with a load balancer but not
+    using ELB health checks. Equivalent to AWS Config autoscaling-group-elb-healthcheck-required.
+    Maps to FSBP AutoScaling.1 (Low).
+  severity: low
+  terraform_resources:
+  - aws_autoscaling_group
+  tags:
+  - autoscaling
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: autoscaling-launch-config-public-ip-disabled
+  engine: rego
+  service: autoscaling
+  file: autoscaling/autoscaling-launch-config-public-ip-disabled.rego
+  description: Detects Auto Scaling launch configurations with AssociatePublicIpAddress
+    enabled, exposing instances directly to the internet. Equivalent to AWS Config
+    autoscaling-launch-config-public-ip-disabled. Maps to FSBP AutoScaling.5 (High).
+  severity: high
+  terraform_resources:
+  - aws_launch_configuration
+  tags:
+  - autoscaling
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: autoscaling-launchconfig-requires-imdsv2
+  engine: rego
+  service: autoscaling
+  file: autoscaling/autoscaling-launchconfig-requires-imdsv2.rego
+  description: Detects Auto Scaling launch configurations that do not require IMDSv2,
+    allowing IMDSv1 usage and SSRF-based credential theft. Equivalent to AWS Config
+    autoscaling-launchconfig-requires-imdsv2. Maps to FSBP AutoScaling.3 (High).
+  severity: high
+  terraform_resources:
+  - aws_launch_configuration
+  tags:
+  - autoscaling
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: autoscaling-multiple-az
+  engine: rego
+  service: autoscaling
+  file: autoscaling/autoscaling-multiple-az.rego
+  description: Detects Auto Scaling groups configured with fewer than two Availability
+    Zones, creating a single point of failure. Equivalent to AWS Config autoscaling-multiple-az.
+    Maps to FSBP AutoScaling.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_autoscaling_group
+  tags:
+  - autoscaling
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: autoscaling-group-elb-healthcheck-required
+  engine: c7n
+  service: autoscaling
+  file: autoscaling/autoscaling-group-elb-healthcheck-required.yml
+  description: Detects Auto Scaling groups with load balancers attached but health_check_type
+    not set to ELB. EC2-only checks miss app-layer failures. Equivalent to AWS Config
+    autoscaling-group-elb-healthcheck-required. Maps to FSBP AutoScaling.1 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_autoscaling_group
+  tags:
+  - autoscaling
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: autoscaling-launch-config-public-ip-disabled
+  engine: c7n
+  service: autoscaling
+  file: autoscaling/autoscaling-launch-config-public-ip-disabled.yml
+  description: Detects Auto Scaling launch configurations with AssociatePublicIpAddress=true,
+    exposing instances directly to the internet. Equivalent to AWS Config autoscaling-launch-config-public-ip-disabled.
+    Maps to FSBP AutoScaling.5 (High).
+  severity: medium
+  terraform_resources:
+  - aws_launch_configuration
+  tags:
+  - autoscaling
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: autoscaling-launchconfig-requires-imdsv2
+  engine: c7n
+  service: autoscaling
+  file: autoscaling/autoscaling-launchconfig-requires-imdsv2.yml
+  description: Detects Auto Scaling launch configurations where metadata_options.http_tokens
+    is not set to "required", allowing IMDSv1 usage. Equivalent to AWS Config autoscaling-launchconfig-requires-imdsv2.
+    Maps to FSBP AutoScaling.3 (High).
+  severity: medium
+  terraform_resources:
+  - aws_launch_configuration
+  tags:
+  - autoscaling
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: autoscaling-multiple-az
+  engine: c7n
+  service: autoscaling
+  file: autoscaling/autoscaling-multiple-az.yml
+  description: Detects Auto Scaling groups configured with fewer than two Availability
+    Zones, creating a single point of failure. Equivalent to AWS Config autoscaling-multiple-az.
+    Maps to FSBP AutoScaling.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_autoscaling_group
+  tags:
+  - autoscaling
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-accesslogs-enabled
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-accesslogs-enabled.rego
+  description: Detects CloudFront distributions without access logging enabled. Equivalent
+    to AWS Config cloudfront-accesslogs-enabled. Maps to FSBP CloudFront.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-associated-with-waf
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-associated-with-waf.rego
+  description: Detects CloudFront distributions without a WAF Web ACL associated.
+    Equivalent to AWS Config cloudfront-associated-with-waf. Maps to FSBP CloudFront.6
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-custom-ssl-certificate
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-custom-ssl-certificate.rego
+  description: Detects CloudFront distributions using the default CloudFront SSL certificate
+    instead of a custom one. Equivalent to AWS Config cloudfront-custom-ssl-certificate.
+    Maps to FSBP CloudFront.7 (Low).
+  severity: low
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-default-root-object-configured
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-default-root-object-configured.rego
+  description: Detects CloudFront distributions without a default root object configured.
+    Equivalent to AWS Config cloudfront-default-root-object-configured. Maps to FSBP
+    CloudFront.1 (High).
+  severity: high
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-no-deprecated-ssl-protocols
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-no-deprecated-ssl-protocols.rego
+  description: Detects CloudFront distributions with custom origins using deprecated
+    SSL/TLS protocols (SSLv3, TLSv1, TLSv1.1). Equivalent to FSBP CloudFront.10. Maps
+    to Medium severity.
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-origin-failover-enabled
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-origin-failover-enabled.rego
+  description: Detects CloudFront distributions with no origin groups configured for
+    automatic failover. Equivalent to AWS Config cloudfront-origin-failover-enabled.
+    Maps to FSBP CloudFront.4 (Low).
+  severity: low
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-s3-origin-access-control-enabled
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-s3-origin-access-control-enabled.rego
+  description: Detects CloudFront distributions with S3 origins that lack an Origin
+    Access Control ID, allowing public S3 access. Equivalent to FSBP CloudFront.13.
+    Maps to Medium severity.
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-ssl-policy-check
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-ssl-policy-check.rego
+  description: Detects CloudFront distributions using outdated TLS security policies
+    for viewer connections. Equivalent to FSBP CloudFront.15. Maps to Medium severity.
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-traffic-to-origin-encrypted
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-traffic-to-origin-encrypted.rego
+  description: Detects CloudFront distributions with custom origins using http-only
+    protocol, allowing unencrypted traffic between CloudFront and the origin. Equivalent
+    to FSBP CloudFront.9 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-viewer-policy-https
+  engine: rego
+  service: cloudfront
+  file: cloudfront/cloudfront-viewer-policy-https.rego
+  description: Detects CloudFront distributions whose default cache behavior allows
+    unencrypted HTTP from viewers. Equivalent to AWS Config cloudfront-viewer-policy-https.
+    Maps to FSBP CloudFront.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - cloudfront
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudfront-accesslogs-enabled
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-accesslogs-enabled.yml
+  description: 'Detects CloudFront distributions that do not have access logging enabled.
+    Access logs are required for security auditing and incident investigation. Equivalent:
+    cloudfront-accesslogs-enabled. FSBP CloudFront.5.'
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-associated-with-waf
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-associated-with-waf.yml
+  description: Detects CloudFront distributions without a WAF Web ACL associated.
+    Non-compliant when web_acl_id is absent or empty. Equivalent to AWS Config cloudfront-associated-with-waf.
+    Maps to FSBP CloudFront.6 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-custom-ssl-certificate
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-custom-ssl-certificate.yml
+  description: Detects CloudFront distributions using the default CloudFront SSL certificate
+    instead of a custom one. Non-compliant when viewer_certificate uses cloudfront_default_certificate.
+    Equivalent to cloudfront-custom-ssl-certificate. FSBP CloudFront.7 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-default-root-object-configured
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-default-root-object-configured.yml
+  description: 'Detects CloudFront distributions with an empty default_root_object.
+    Without a root object, root URL requests may expose origin directory contents
+    or return errors. Equivalent: cloudfront-default-root-object-configured. FSBP
+    CloudFront.1.'
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-no-deprecated-ssl-protocols
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-no-deprecated-ssl-protocols.yml
+  description: 'Detects CloudFront distributions with custom origins using deprecated
+    SSL/TLS protocols (SSLv3, TLSv1, TLSv1.1). Equivalent to FSBP CloudFront.10. Maps
+    to Medium severity. Note: The runtime filter uses JMESPath array intersection
+    over origin SSL protocols; here we flag distributions that explicitly list a deprecated
+    protocol in their custom origin ssl_protocols.'
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-origin-failover-enabled
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-origin-failover-enabled.yml
+  description: 'Detects CloudFront distributions that have no origin groups configured.
+    Origin groups enable automatic failover to a secondary origin. Equivalent: cloudfront-origin-failover-enabled.
+    FSBP CloudFront.4.'
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-s3-origin-access-control-enabled
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-s3-origin-access-control-enabled.yml
+  description: Detects CloudFront distributions with S3 origins that lack an origin_access_control_id,
+    allowing public S3 access. Equivalent to FSBP CloudFront.13. Medium severity.
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-ssl-policy-check
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-ssl-policy-check.yml
+  description: Detects CloudFront distributions using an outdated TLS security policy
+    for viewer connections (SSLv3, TLSv1, TLSv1_2016, TLSv1.1_2016). Equivalent to
+    FSBP CloudFront.15. Medium severity.
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-traffic-to-origin-encrypted
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-traffic-to-origin-encrypted.yml
+  description: 'Detects CloudFront distributions with a custom origin whose origin_protocol_policy
+    is "http-only", allowing unencrypted traffic between CloudFront and the origin.
+    Equivalent: cloudfront-traffic-to-origin-encrypted. FSBP CloudFront.9.'
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloudfront-viewer-policy-https
+  engine: c7n
+  service: cloudfront
+  file: cloudfront/cloudfront-viewer-policy-https.yml
+  description: 'Detects CloudFront distributions whose default_cache_behavior viewer_protocol_policy
+    is "allow-all", permitting unencrypted HTTP from viewers. Equivalent AWS Config
+    rule: cloudfront-viewer-policy-https. FSBP CloudFront.3.'
+  severity: medium
+  terraform_resources:
+  - aws_cloudfront_distribution
+  tags:
+  - c7n
+  - cloudfront
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cloud-trail-cloud-watch-logs-enabled
+  engine: rego
+  service: cloudtrail
+  file: cloudtrail/cloud-trail-cloud-watch-logs-enabled.rego
+  description: Detects CloudTrail trails not integrated with CloudWatch Logs.
+  severity: medium
+  terraform_resources:
+  - aws_cloudtrail
+  tags:
+  - cis-benchmark
+  - cloudtrail
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: cloud-trail-encryption-enabled
+  engine: rego
+  service: cloudtrail
+  file: cloudtrail/cloud-trail-encryption-enabled.rego
+  description: Detects CloudTrail trails without KMS encryption at rest.
+  severity: medium
+  terraform_resources:
+  - aws_cloudtrail
+  tags:
+  - cis-benchmark
+  - cloudtrail
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: cloud-trail-log-file-validation-enabled
+  engine: rego
+  service: cloudtrail
+  file: cloudtrail/cloud-trail-log-file-validation-enabled.rego
+  description: Detects CloudTrail trails with log file validation disabled. Without
+    validation, tampered or deleted log files cannot be detected. Equivalent to AWS
+    Config cloud-trail-log-file-validation-enabled. Maps to CT Mandatory, FSBP CloudTrail.4,
+    CIS 3.2, PCI DSS.
+  severity: high
+  terraform_resources:
+  - aws_cloudtrail
+  tags:
+  - cis-benchmark
+  - cloudtrail
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: cloud-trail-cloud-watch-logs-enabled
+  engine: c7n
+  service: cloudtrail
+  file: cloudtrail/cloud-trail-cloud-watch-logs-enabled.yml
+  description: Detects CloudTrail trails not integrated with CloudWatch Logs. Equivalent
+    to AWS Config cloud-trail-cloud-watch-logs-enabled. Maps to CT Mandatory, FSBP
+    CloudTrail.5, CIS 3.4, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_cloudtrail
+  tags:
+  - c7n
+  - cis-benchmark
+  - cloudtrail
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: cloud-trail-encryption-enabled
+  engine: c7n
+  service: cloudtrail
+  file: cloudtrail/cloud-trail-encryption-enabled.yml
+  description: Detects CloudTrail trails without KMS encryption at rest. Equivalent
+    to AWS Config cloud-trail-encryption-enabled. Maps to CT Mandatory, FSBP CloudTrail.2,
+    CIS 3.7, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_cloudtrail
+  tags:
+  - c7n
+  - cis-benchmark
+  - cloudtrail
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: cloud-trail-log-file-validation-enabled
+  engine: c7n
+  service: cloudtrail
+  file: cloudtrail/cloud-trail-log-file-validation-enabled.yml
+  description: Detects CloudTrail trails with log file validation disabled. Equivalent
+    to AWS Config cloud-trail-log-file-validation-enabled. Maps to CT Mandatory, FSBP
+    CloudTrail.4, CIS 3.2, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_cloudtrail
+  tags:
+  - c7n
+  - cis-benchmark
+  - cloudtrail
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: cloudwatch-alarm-action-check
+  engine: rego
+  service: cloudwatch
+  file: cloudwatch/cloudwatch-alarm-action-check.rego
+  description: Detects CloudWatch alarms with no actions configured on AlarmActions,
+    OKActions, or InsufficientDataActions. Equivalent to AWS Config cloudwatch-alarm-action-check.
+    Maps to FSBP CloudWatch.15 (High).
+  severity: high
+  terraform_resources:
+  - aws_cloudwatch_metric_alarm
+  tags:
+  - cloudwatch
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: cw-loggroup-retention-period-check
+  engine: rego
+  service: cloudwatch
+  file: cloudwatch/cw-loggroup-retention-period-check.rego
+  description: Detects CloudWatch Logs log groups with no retention policy set, retaining
+    logs indefinitely. Equivalent to AWS Config cw-loggroup-retention-period-check.
+    Maps to FSBP CloudWatch.16 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudwatch_log_group
+  tags:
+  - cloudwatch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cloudwatch-alarm-action-check
+  engine: c7n
+  service: cloudwatch
+  file: cloudwatch/cloudwatch-alarm-action-check.yml
+  description: Detects CloudWatch alarms with no actions configured on alarm_actions,
+    ok_actions, or insufficient_data_actions. Equivalent to AWS Config cloudwatch-alarm-action-check.
+    Maps to FSBP CloudWatch.15 (High).
+  severity: medium
+  terraform_resources:
+  - aws_cloudwatch_metric_alarm
+  tags:
+  - c7n
+  - cloudwatch
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cw-loggroup-retention-period-check
+  engine: c7n
+  service: cloudwatch
+  file: cloudwatch/cw-loggroup-retention-period-check.yml
+  description: Detects CloudWatch Logs log groups with no retention policy set (logs
+    retained indefinitely). Equivalent to AWS Config cw-loggroup-retention-period-check.
+    Maps to FSBP CloudWatch.16 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cloudwatch_log_group
+  tags:
+  - c7n
+  - cloudwatch
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: codebuild-project-envvar-awscred-check
+  engine: rego
+  service: codebuild
+  file: codebuild/codebuild-project-envvar-awscred-check.rego
+  description: Detects CodeBuild projects storing AWS credentials as plaintext environment
+    variables. Equivalent to AWS Config codebuild-project-envvar-awscred-check. Maps
+    to FSBP CodeBuild.2 (Critical).
+  severity: critical
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - codebuild
+  - critical
+  - fsbp
+  - rego
+  - security-hub
+  params: []
+- id: codebuild-project-logging-enabled
+  engine: rego
+  service: codebuild
+  file: codebuild/codebuild-project-logging-enabled.rego
+  description: Detects CodeBuild projects with neither CloudWatch Logs nor S3 logging
+    enabled. Equivalent to AWS Config codebuild-project-logging-enabled. Maps to FSBP
+    CodeBuild.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - codebuild
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: codebuild-project-s3-logs-encrypted
+  engine: rego
+  service: codebuild
+  file: codebuild/codebuild-project-s3-logs-encrypted.rego
+  description: Detects CodeBuild projects where S3 logging is enabled but encryption
+    is disabled. Equivalent to AWS Config codebuild-project-s3-logs-encrypted. Maps
+    to FSBP CodeBuild.3 (Low).
+  severity: low
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - codebuild
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: codebuild-project-source-repo-url-check
+  engine: rego
+  service: codebuild
+  file: codebuild/codebuild-project-source-repo-url-check.rego
+  description: Detects CodeBuild projects whose source repository URL contains embedded
+    credentials (@ in URL). Equivalent to AWS Config codebuild-project-source-repo-url-check.
+    Maps to FSBP CodeBuild.1 (Critical).
+  severity: critical
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - codebuild
+  - critical
+  - fsbp
+  - rego
+  - security-hub
+  params: []
+- id: codebuild-project-envvar-awscred-check
+  engine: c7n
+  service: codebuild
+  file: codebuild/codebuild-project-envvar-awscred-check.yml
+  description: 'Detects CodeBuild projects that store AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY
+    as PLAINTEXT environment variables. Equivalent to AWS Config codebuild-project-envvar-awscred-check.
+    Maps to FSBP CodeBuild.2 (Critical). Note: The runtime filter uses JMESPath to
+    intersect PLAINTEXT env var names; here we flag projects that declare any environment
+    block without a type override.'
+  severity: medium
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - c7n
+  - codebuild
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: codebuild-project-logging-enabled
+  engine: c7n
+  service: codebuild
+  file: codebuild/codebuild-project-logging-enabled.yml
+  description: Detects CodeBuild projects with neither CloudWatch Logs nor S3 logging
+    enabled, leaving no audit trail for build activity. Equivalent to AWS Config codebuild-project-logging-enabled.
+    Maps to FSBP CodeBuild.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - c7n
+  - codebuild
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: codebuild-project-s3-logs-encrypted
+  engine: c7n
+  service: codebuild
+  file: codebuild/codebuild-project-s3-logs-encrypted.yml
+  description: Detects CodeBuild projects where S3 logging is enabled but encryption_disabled=true,
+    leaving build logs unencrypted at rest. Equivalent to AWS Config codebuild-project-s3-logs-encrypted.
+    Maps to FSBP CodeBuild.3 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - c7n
+  - codebuild
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: codebuild-project-source-repo-url-check
+  engine: c7n
+  service: codebuild
+  file: codebuild/codebuild-project-source-repo-url-check.yml
+  description: Detects CodeBuild projects whose source location URL contains credentials
+    (@ in URL). Equivalent to AWS Config codebuild-project-source-repo-url-check.
+    Maps to FSBP CodeBuild.1 (Critical).
+  severity: medium
+  terraform_resources:
+  - aws_codebuild_project
+  tags:
+  - c7n
+  - codebuild
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: cognito-user-pool-deletion-protection
+  engine: rego
+  service: cognito
+  file: cognito/cognito-user-pool-deletion-protection.rego
+  description: Detects Cognito user pools without deletion protection enabled. Equivalent
+    to AWS Config cognito-user-pool-deletion-protection. Maps to FSBP Cognito.6 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cognito_user_pool
+  tags:
+  - cognito
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cognito-user-pool-mfa-enabled
+  engine: rego
+  service: cognito
+  file: cognito/cognito-user-pool-mfa-enabled.rego
+  description: Detects Cognito user pools with MFA disabled. Equivalent to AWS Config
+    cognito-user-pool-mfa-enabled. Maps to FSBP Cognito.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cognito_user_pool
+  tags:
+  - cognito
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cognito-user-pool-password-policy
+  engine: rego
+  service: cognito
+  file: cognito/cognito-user-pool-password-policy.rego
+  description: Detects Cognito user pools with weak password policies (minimum length
+    < 14 or missing character type requirements). Maps to FSBP Cognito.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_cognito_user_pool
+  tags:
+  - cognito
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: cognito-user-pool-deletion-protection
+  engine: c7n
+  service: cognito
+  file: cognito/cognito-user-pool-deletion-protection.yml
+  description: Cognito user pools must have deletion protection enabled
+  severity: medium
+  terraform_resources:
+  - aws_cognito_user_pool
+  tags:
+  - c7n
+  - cognito
+  - medium
+  params: []
+- id: cognito-user-pool-mfa-enabled
+  engine: c7n
+  service: cognito
+  file: cognito/cognito-user-pool-mfa-enabled.yml
+  description: Cognito user pools must have MFA enabled
+  severity: medium
+  terraform_resources:
+  - aws_cognito_user_pool
+  tags:
+  - c7n
+  - cognito
+  - medium
+  params: []
+- id: cognito-user-pool-password-policy
+  engine: c7n
+  service: cognito
+  file: cognito/cognito-user-pool-password-policy.yml
+  description: Cognito user pools must have a strong password policy with minimum
+    length 14 and all character requirements
+  severity: medium
+  terraform_resources:
+  - aws_cognito_user_pool
+  tags:
+  - c7n
+  - cognito
+  - medium
+  params: []
+- id: dms-replication-not-public
+  engine: rego
+  service: dms
+  file: dms/dms-replication-not-public.rego
+  description: Detects DMS replication instances configured with publicly accessible
+    enabled, exposing database migration traffic to the internet. Equivalent to AWS
+    Config dms-replication-not-public. Maps to FSBP DMS.1 (Critical).
+  severity: critical
+  terraform_resources:
+  - aws_dms_replication_instance
+  tags:
+  - critical
+  - dms
+  - fsbp
+  - rego
+  - security-hub
+  params: []
+- id: dms-replication-not-public
+  engine: c7n
+  service: dms
+  file: dms/dms-replication-not-public.yml
+  description: DMS replication instances must not be publicly accessible
+  severity: medium
+  terraform_resources:
+  - aws_dms_replication_instance
+  tags:
+  - c7n
+  - dms
+  - medium
+  params: []
+- id: documentdb-cluster-audit-logging
+  engine: rego
+  service: documentdb
+  file: documentdb/documentdb-cluster-audit-logging.rego
+  description: Detects DocumentDB clusters not publishing audit logs to CloudWatch
+    Logs. Equivalent to AWS Config documentdb-cluster-audit-logging-enabled. Maps
+    to FSBP DocumentDB.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - documentdb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: documentdb-cluster-backup-retention
+  engine: rego
+  service: documentdb
+  file: documentdb/documentdb-cluster-backup-retention.rego
+  description: Detects DocumentDB clusters where backup retention period is less than
+    7 days. Equivalent to AWS Config documentdb-cluster-backup-retention-check. Maps
+    to FSBP DocumentDB.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - documentdb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: documentdb-cluster-deletion-protection
+  engine: rego
+  service: documentdb
+  file: documentdb/documentdb-cluster-deletion-protection.rego
+  description: Detects DocumentDB clusters without deletion protection enabled. Equivalent
+    to AWS Config documentdb-cluster-deletion-protection-enabled. Maps to FSBP DocumentDB.5
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - documentdb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: documentdb-cluster-encrypted
+  engine: rego
+  service: documentdb
+  file: documentdb/documentdb-cluster-encrypted.rego
+  description: Detects DocumentDB clusters without storage encryption enabled. Equivalent
+    to AWS Config documentdb-cluster-encrypted. Maps to FSBP DocumentDB.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - documentdb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: documentdb-cluster-audit-logging
+  engine: c7n
+  service: documentdb
+  file: documentdb/documentdb-cluster-audit-logging.yml
+  description: DocumentDB clusters must publish audit logs to CloudWatch Logs
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - c7n
+  - documentdb
+  - medium
+  params: []
+- id: documentdb-cluster-backup-retention
+  engine: c7n
+  service: documentdb
+  file: documentdb/documentdb-cluster-backup-retention.yml
+  description: DocumentDB clusters must have a backup retention period of at least
+    7 days
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - c7n
+  - documentdb
+  - medium
+  params: []
+- id: documentdb-cluster-deletion-protection
+  engine: c7n
+  service: documentdb
+  file: documentdb/documentdb-cluster-deletion-protection.yml
+  description: DocumentDB clusters must have deletion protection enabled
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - c7n
+  - documentdb
+  - medium
+  params: []
+- id: documentdb-cluster-encrypted
+  engine: c7n
+  service: documentdb
+  file: documentdb/documentdb-cluster-encrypted.yml
+  description: DocumentDB clusters must have storage encryption enabled
+  severity: medium
+  terraform_resources:
+  - aws_docdb_cluster
+  tags:
+  - c7n
+  - documentdb
+  - medium
+  params: []
+- id: dynamodb-autoscaling-enabled
+  engine: rego
+  service: dynamodb
+  file: dynamodb/dynamodb-autoscaling-enabled.rego
+  description: Detects DynamoDB tables using PROVISIONED billing mode without auto-scaling
+    configured. Equivalent to AWS Config dynamodb-autoscaling-enabled. Maps to FSBP
+    DynamoDB.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_dynamodb_table
+  tags:
+  - conformance-pack
+  - dynamodb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: dynamodb-pitr-enabled
+  engine: rego
+  service: dynamodb
+  file: dynamodb/dynamodb-pitr-enabled.rego
+  description: Detects DynamoDB tables without point-in-time recovery enabled. Equivalent
+    to AWS Config dynamodb-pitr-enabled. Maps to FSBP DynamoDB.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_dynamodb_table
+  tags:
+  - dynamodb
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: dynamodb-table-deletion-protection-enabled
+  engine: rego
+  service: dynamodb
+  file: dynamodb/dynamodb-table-deletion-protection-enabled.rego
+  description: Detects DynamoDB tables without deletion protection enabled. Maps to
+    FSBP DynamoDB.6 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_dynamodb_table
+  tags:
+  - dynamodb
+  - fsbp
+  - medium
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: dynamodb-autoscaling-enabled
+  engine: c7n
+  service: dynamodb
+  file: dynamodb/dynamodb-autoscaling-enabled.yml
+  description: DynamoDB tables using PROVISIONED billing mode must have auto-scaling
+    enabled
+  severity: medium
+  terraform_resources:
+  - aws_dynamodb_table
+  tags:
+  - c7n
+  - dynamodb
+  - medium
+  params: []
+- id: dynamodb-pitr-enabled
+  engine: c7n
+  service: dynamodb
+  file: dynamodb/dynamodb-pitr-enabled.yml
+  description: DynamoDB tables must have point-in-time recovery enabled
+  severity: medium
+  terraform_resources:
+  - aws_dynamodb_table
+  tags:
+  - c7n
+  - dynamodb
+  - medium
+  params: []
+- id: dynamodb-table-deletion-protection-enabled
+  engine: c7n
+  service: dynamodb
+  file: dynamodb/dynamodb-table-deletion-protection-enabled.yml
+  description: DynamoDB tables must have deletion protection enabled
+  severity: medium
+  terraform_resources:
+  - aws_dynamodb_table
+  tags:
+  - c7n
+  - dynamodb
+  - medium
+  params: []
+- id: ebs-optimized-instance
+  engine: rego
+  service: ec2
+  file: ec2/ebs-optimized-instance.rego
+  description: Detects running EC2 instances where EBS optimization is not enabled,
+    limiting I/O throughput. Equivalent to AWS Config ebs-optimized-instance. Maps
+    to FSBP EC2.7 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_instance
+  tags:
+  - conformance-pack
+  - ec2
+  - fsbp
+  - medium
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: ec2-ebs-encryption-by-default
+  engine: rego
+  service: ec2
+  file: ec2/ec2-ebs-encryption-by-default.rego
+  description: Detects AWS accounts where EBS default encryption is not enabled, allowing
+    unencrypted volumes. Equivalent to AWS Config ec2-ebs-encryption-by-default. Maps
+    to FSBP EC2.7 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ebs_encryption_by_default
+  tags:
+  - conformance-pack
+  - ec2
+  - fsbp
+  - medium
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: ec2-imdsv2-check
+  engine: rego
+  service: ec2
+  file: ec2/ec2-imdsv2-check.rego
+  description: Detects EC2 instances that do not require IMDSv2, leaving them vulnerable
+    to SSRF-based credential theft. Equivalent to AWS Config ec2-imdsv2-check. Maps
+    to FSBP EC2.8 (High), CIS 5.6, PCI DSS.
+  severity: high
+  terraform_resources:
+  - aws_instance
+  tags:
+  - cis-benchmark
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: ec2-instance-no-public-ip
+  engine: rego
+  service: ec2
+  file: ec2/ec2-instance-no-public-ip.rego
+  description: Detects EC2 instances with a public IPv4 address assigned, exposing
+    them directly to the internet.
+  severity: high
+  terraform_resources:
+  - aws_instance
+  tags:
+  - cis-benchmark
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: ec2-launch-template-imdsv2-check
+  engine: rego
+  service: ec2
+  file: ec2/ec2-launch-template-imdsv2-check.rego
+  description: Detects EC2 launch templates not requiring IMDSv2, allowing IMDSv1
+    and enabling SSRF-based credential theft. Equivalent to AWS Config ec2-launch-template-imdsv2-check.
+    Maps to FSBP EC2.170 (High).
+  severity: high
+  terraform_resources:
+  - aws_launch_template
+  tags:
+  - ec2
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ec2-launch-template-public-ip-disabled
+  engine: rego
+  service: ec2
+  file: ec2/ec2-launch-template-public-ip-disabled.rego
+  description: Detects EC2 launch templates with AssociatePublicIpAddress enabled
+    on any network interface. Equivalent to AWS Config ec2-launch-template-public-ip-disabled.
+    Maps to FSBP EC2.25 (High).
+  severity: high
+  terraform_resources:
+  - aws_launch_template
+  tags:
+  - ec2
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ec2-transit-gateway-auto-vpc-attach-disabled
+  engine: rego
+  service: ec2
+  file: ec2/ec2-transit-gateway-auto-vpc-attach-disabled.rego
+  description: Detects Transit Gateways with AutoAcceptSharedAttachments enabled,
+    allowing any account to attach VPCs without approval. Equivalent to AWS Config
+    ec2-transit-gateway-auto-vpc-attach-disabled. Maps to FSBP EC2.23 (High).
+  severity: high
+  terraform_resources:
+  - aws_ec2_transit_gateway
+  tags:
+  - conformance-pack
+  - ec2
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: encrypted-volumes
+  engine: rego
+  service: ec2
+  file: ec2/encrypted-volumes.rego
+  description: Detects attached EBS volumes that are not encrypted at rest. Equivalent
+    to AWS Config encrypted-volumes. Maps to CT Mandatory, FSBP EC2.3, CIS 2.2.1,
+    PCI DSS.
+  severity: high
+  terraform_resources:
+  - aws_ebs_volume
+  tags:
+  - cis-benchmark
+  - control-tower
+  - control-tower-mandatory
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: internet-gateway-authorized-vpc-only
+  engine: rego
+  service: ec2
+  file: ec2/internet-gateway-authorized-vpc-only.rego
+  description: Flags internet gateways attached to any VPC for review to ensure only
+    authorized VPCs have internet gateway attachments. Maps to conformance-pack (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_internet_gateway
+  tags:
+  - conformance-pack
+  - ec2
+  - medium
+  - rego
+  params: []
+- id: nacl-no-unrestricted-ssh-rdp
+  engine: rego
+  service: ec2
+  file: ec2/nacl-no-unrestricted-ssh-rdp.rego
+  description: Detects Network ACLs with ALLOW rules permitting ingress from 0.0.0.0/0
+    on SSH (22) or RDP (3389). Equivalent to AWS Config nacl-no-unrestricted-ssh-rdp.
+    Maps to FSBP EC2.21 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_network_acl_rule
+  tags:
+  - cis-benchmark
+  - ec2
+  - fsbp
+  - medium
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: no-unrestricted-route-to-igw
+  engine: rego
+  service: ec2
+  file: ec2/no-unrestricted-route-to-igw.rego
+  description: Detects route tables with a 0.0.0.0/0 route pointing to an internet
+    gateway, exposing all traffic to the internet. Maps to FSBP EC2.51 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_route
+  tags:
+  - ec2
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: restricted-common-ports
+  engine: rego
+  service: ec2
+  file: ec2/restricted-common-ports.rego
+  description: Detects security groups allowing unrestricted inbound access on high-risk
+    ports (3389/RDP, 3306/MySQL, 5432/PostgreSQL) from 0.0.0.0/0.
+  severity: high
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - cis-benchmark
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: restricted-ssh
+  engine: rego
+  service: ec2
+  file: ec2/restricted-ssh.rego
+  description: Detects security groups allowing unrestricted SSH (port 22) inbound
+    from 0.0.0.0/0 or ::/0.
+  severity: high
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - cis-benchmark
+  - control-tower
+  - control-tower-strongly-recommended
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: subnet-auto-assign-public-ip-disabled
+  engine: rego
+  service: ec2
+  file: ec2/subnet-auto-assign-public-ip-disabled.rego
+  description: Detects EC2 subnets with MapPublicIpOnLaunch enabled, which automatically
+    assigns public IPs to instances.
+  severity: medium
+  terraform_resources:
+  - aws_subnet
+  tags:
+  - conformance-pack
+  - ec2
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: vpc-default-security-group-closed
+  engine: rego
+  service: ec2
+  file: ec2/vpc-default-security-group-closed.rego
+  description: Detects VPC default security groups that allow inbound or outbound
+    traffic.
+  severity: high
+  terraform_resources:
+  - aws_default_security_group
+  tags:
+  - cis-benchmark
+  - control-tower
+  - control-tower-mandatory
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: vpc-flow-logs-enabled
+  engine: rego
+  service: ec2
+  file: ec2/vpc-flow-logs-enabled.rego
+  description: Detects VPCs that do not have flow logs enabled, preventing network
+    traffic visibility for security investigations.
+  severity: medium
+  terraform_resources:
+  - aws_vpc
+  tags:
+  - cis-benchmark
+  - ec2
+  - fsbp
+  - medium
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: vpc-sg-open-only-to-authorized-ports
+  engine: rego
+  service: ec2
+  file: ec2/vpc-sg-open-only-to-authorized-ports.rego
+  description: Detects security groups with ingress rules permitting unrestricted
+    access (0.0.0.0/0 or ::/0) on ports other than 80 and 443. Equivalent to FSBP
+    EC2.18 (High).
+  severity: high
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - ec2
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: ebs-optimized-instance
+  engine: c7n
+  service: ec2
+  file: ec2/ebs-optimized-instance.yml
+  description: EC2 instances must have EBS optimization enabled
+  severity: medium
+  terraform_resources:
+  - aws_instance
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: ec2-imdsv2-check
+  engine: c7n
+  service: ec2
+  file: ec2/ec2-imdsv2-check.yml
+  description: EC2 instances must require IMDSv2 (HttpTokens = required)
+  severity: medium
+  terraform_resources:
+  - aws_instance
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: ec2-instance-no-public-ip
+  engine: c7n
+  service: ec2
+  file: ec2/ec2-instance-no-public-ip.yml
+  description: EC2 instances must not have a public IP address assigned
+  severity: medium
+  terraform_resources:
+  - aws_instance
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: ec2-launch-template-imdsv2-check
+  engine: c7n
+  service: ec2
+  file: ec2/ec2-launch-template-imdsv2-check.yml
+  description: EC2 launch templates must require IMDSv2 (http_tokens = required)
+  severity: medium
+  terraform_resources:
+  - aws_launch_template
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: ec2-launch-template-public-ip-disabled
+  engine: c7n
+  service: ec2
+  file: ec2/ec2-launch-template-public-ip-disabled.yml
+  description: EC2 launch templates must not enable automatic public IP assignment
+  severity: medium
+  terraform_resources:
+  - aws_launch_template
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: ec2-transit-gateway-auto-vpc-attach-disabled
+  engine: c7n
+  service: ec2
+  file: ec2/ec2-transit-gateway-auto-vpc-attach-disabled.yml
+  description: Transit Gateways must not have auto-accept shared attachments enabled
+  severity: medium
+  terraform_resources:
+  - aws_ec2_transit_gateway
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: encrypted-volumes
+  engine: c7n
+  service: ec2
+  file: ec2/encrypted-volumes.yml
+  description: EBS volumes must be encrypted at rest
+  severity: medium
+  terraform_resources:
+  - aws_ebs_volume
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: nacl-no-unrestricted-ssh-rdp
+  engine: c7n
+  service: ec2
+  file: ec2/nacl-no-unrestricted-ssh-rdp.yml
+  description: Network ACLs must not allow unrestricted SSH or RDP ingress from 0.0.0.0/0
+  severity: medium
+  terraform_resources:
+  - aws_network_acl
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: no-unrestricted-route-to-igw
+  engine: c7n
+  service: ec2
+  file: ec2/no-unrestricted-route-to-igw.yml
+  description: Route tables must not have a 0.0.0.0/0 route pointing to an internet
+    gateway
+  severity: medium
+  terraform_resources:
+  - aws_route_table
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: restricted-common-ports
+  engine: c7n
+  service: ec2
+  file: ec2/restricted-common-ports.yml
+  description: Security groups must not allow unrestricted inbound access on high-risk
+    ports (3389, 3306, 5432) from 0.0.0.0/0
+  severity: medium
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: restricted-ssh
+  engine: c7n
+  service: ec2
+  file: ec2/restricted-ssh.yml
+  description: Security groups must not allow unrestricted SSH (port 22) inbound from
+    0.0.0.0/0
+  severity: medium
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: subnet-auto-assign-public-ip-disabled
+  engine: c7n
+  service: ec2
+  file: ec2/subnet-auto-assign-public-ip-disabled.yml
+  description: Subnets must not automatically assign public IP addresses on launch
+  severity: medium
+  terraform_resources:
+  - aws_subnet
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: vpc-default-security-group-closed
+  engine: c7n
+  service: ec2
+  file: ec2/vpc-default-security-group-closed.yml
+  description: The default VPC security group must not allow any inbound or outbound
+    traffic
+  severity: medium
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: vpc-flow-logs-enabled
+  engine: c7n
+  service: ec2
+  file: ec2/vpc-flow-logs-enabled.yml
+  description: VPCs must have flow logs enabled
+  severity: medium
+  terraform_resources:
+  - aws_vpc
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: vpc-sg-open-only-to-authorized-ports
+  engine: c7n
+  service: ec2
+  file: ec2/vpc-sg-open-only-to-authorized-ports.yml
+  description: Security groups must only allow unrestricted ingress on ports 80 and
+    443
+  severity: medium
+  terraform_resources:
+  - aws_security_group
+  tags:
+  - c7n
+  - ec2
+  - medium
+  params: []
+- id: ecr-private-image-scanning-enabled
+  engine: rego
+  service: ecr
+  file: ecr/ecr-private-image-scanning-enabled.rego
+  description: Detects ECR private repositories without scan-on-push enabled, missing
+    vulnerability detection on new images. Equivalent to AWS Config ecr-private-image-scanning-enabled.
+    Maps to FSBP ECR.1 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - ecr
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecr-private-lifecycle-policy-configured
+  engine: rego
+  service: ecr
+  file: ecr/ecr-private-lifecycle-policy-configured.rego
+  description: Detects ECR private repositories without a lifecycle policy, risking
+    unbounded image accumulation. Equivalent to AWS Config ecr-private-lifecycle-policy-configured.
+    Maps to FSBP ECR.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecr_lifecycle_policy
+  tags:
+  - ecr
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecr-private-repo-kms-encrypted
+  engine: rego
+  service: ecr
+  file: ecr/ecr-private-repo-kms-encrypted.rego
+  description: Detects ECR private repositories not encrypted with a customer managed
+    KMS key. Equivalent to AWS Config ecr-private-repo-kms-encrypted. Maps to FSBP
+    ECR.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - ecr
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecr-private-tag-immutability-enabled
+  engine: rego
+  service: ecr
+  file: ecr/ecr-private-tag-immutability-enabled.rego
+  description: Detects ECR private repositories with mutable image tags, allowing
+    image overwrites. Equivalent to AWS Config ecr-private-tag-immutability-enabled.
+    Maps to FSBP ECR.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - ecr
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecr-private-image-scanning-enabled
+  engine: c7n
+  service: ecr
+  file: ecr/ecr-private-image-scanning-enabled.yml
+  description: ECR private repositories must have scan-on-push enabled
+  severity: medium
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - c7n
+  - ecr
+  - medium
+  params: []
+- id: ecr-private-lifecycle-policy-configured
+  engine: c7n
+  service: ecr
+  file: ecr/ecr-private-lifecycle-policy-configured.yml
+  description: ECR private repositories must have a lifecycle policy configured
+  severity: medium
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - c7n
+  - ecr
+  - medium
+  params: []
+- id: ecr-private-repo-kms-encrypted
+  engine: c7n
+  service: ecr
+  file: ecr/ecr-private-repo-kms-encrypted.yml
+  description: ECR private repositories must be encrypted with a customer managed
+    KMS key
+  severity: medium
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - c7n
+  - ecr
+  - medium
+  params: []
+- id: ecr-private-tag-immutability-enabled
+  engine: c7n
+  service: ecr
+  file: ecr/ecr-private-tag-immutability-enabled.yml
+  description: ECR private repositories must have image tag immutability enabled
+  severity: medium
+  terraform_resources:
+  - aws_ecr_repository
+  tags:
+  - c7n
+  - ecr
+  - medium
+  params: []
+- id: ecs-container-insights-enabled
+  engine: rego
+  service: ecs
+  file: ecs/ecs-container-insights-enabled.rego
+  description: Detects ECS clusters where Container Insights is not enabled. Equivalent
+    to AWS Config ecs-container-insights-enabled. Maps to FSBP ECS.12 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_cluster
+  tags:
+  - ecs
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecs-containers-nonprivileged
+  engine: rego
+  service: ecs
+  file: ecs/ecs-containers-nonprivileged.rego
+  description: Detects ECS task definitions where any container has privileged mode
+    enabled, granting root-level host access. Equivalent to AWS Config ecs-containers-nonprivileged.
+    Maps to FSBP ECS.4 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-containers-readonly-access
+  engine: rego
+  service: ecs
+  file: ecs/ecs-containers-readonly-access.rego
+  description: Detects ECS task definitions where any container lacks a read-only
+    root filesystem. Equivalent to AWS Config ecs-containers-readonly-access. Maps
+    to FSBP ECS.5 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-fargate-latest-platform-version
+  engine: rego
+  service: ecs
+  file: ecs/ecs-fargate-latest-platform-version.rego
+  description: Detects ECS Fargate services not running on the latest platform version.
+    Equivalent to AWS Config ecs-fargate-latest-platform-version. Maps to FSBP ECS.10
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_service
+  tags:
+  - ecs
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecs-no-environment-secrets
+  engine: rego
+  service: ecs
+  file: ecs/ecs-no-environment-secrets.rego
+  description: Detects ECS task definitions passing secrets as plaintext environment
+    variables. Equivalent to AWS Config ecs-no-environment-secrets. Maps to FSBP ECS.8
+    (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-service-assign-public-ip-disabled
+  engine: rego
+  service: ecs
+  file: ecs/ecs-service-assign-public-ip-disabled.rego
+  description: Detects ECS services with assignPublicIp enabled in awsvpc network
+    configuration, exposing tasks directly to the internet. Equivalent to AWS Config
+    ecs-service-assign-public-ip-disabled. Maps to FSBP ECS.2 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_service
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-task-definition-host-network-mode
+  engine: rego
+  service: ecs
+  file: ecs/ecs-task-definition-host-network-mode.rego
+  description: Detects ECS task definitions using host network mode, which bypasses
+    container network isolation. Equivalent to AWS Config ecs-task-definition-host-network-mode.
+    Maps to FSBP ECS.17 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecs-task-definition-linux-user-non-root
+  engine: rego
+  service: ecs
+  file: ecs/ecs-task-definition-linux-user-non-root.rego
+  description: Detects ECS task definitions where any container runs as root (user=root
+    or unset). Equivalent to AWS Config ecs-task-definition-linux-user-non-root. Maps
+    to FSBP ECS.20 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: ecs-task-definition-log-configuration
+  engine: rego
+  service: ecs
+  file: ecs/ecs-task-definition-log-configuration.rego
+  description: Detects ECS task definitions where any container lacks a log configuration
+    block. Equivalent to AWS Config ecs-task-definition-log-configuration. Maps to
+    FSBP ECS.9 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-task-definition-pid-mode-check
+  engine: rego
+  service: ecs
+  file: ecs/ecs-task-definition-pid-mode-check.rego
+  description: Detects ECS task definitions with pidMode=host, sharing the host process
+    namespace and breaking container isolation. Equivalent to AWS Config ecs-task-definition-pid-mode-check.
+    Maps to FSBP ECS.3 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-taskset-assign-public-ip-disabled
+  engine: rego
+  service: ecs
+  file: ecs/ecs-taskset-assign-public-ip-disabled.rego
+  description: Detects ECS services using an EXTERNAL deployment controller with assign_public_ip
+    enabled, exposing task sets to the internet. Maps to FSBP ECS.16 (High).
+  severity: high
+  terraform_resources:
+  - aws_ecs_service
+  tags:
+  - ecs
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: ecs-container-insights-enabled
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-container-insights-enabled.yml
+  description: Detects ECS clusters where Container Insights is not enabled, leaving
+    operators without visibility into cluster metrics and logs. Equivalent to AWS
+    Config ecs-container-insights-enabled. Maps to FSBP ECS.12 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_cluster
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-containers-nonprivileged
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-containers-nonprivileged.yml
+  description: Detects ECS task definitions where any container has privileged=true.
+    Privileged containers have root-level host access and can escape container isolation.
+    Equivalent to AWS Config ecs-containers-nonprivileged. Maps to FSBP ECS.4 (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-containers-readonly-access
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-containers-readonly-access.yml
+  description: Detects ECS task definitions where any container lacks readonlyRootFilesystem=true.
+    A writable root filesystem lets attackers modify system files and persist changes.
+    Equivalent to AWS Config ecs-containers-readonly-access. Maps to FSBP ECS.5 (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-fargate-latest-platform-version
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-fargate-latest-platform-version.yml
+  description: Detects ECS Fargate services not running on the latest Fargate platform
+    version. Equivalent to AWS Config ecs-fargate-latest-platform-version. Maps to
+    FSBP ECS.10 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_service
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-no-environment-secrets
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-no-environment-secrets.yml
+  description: Detects ECS task definitions that pass secrets as plaintext environment
+    variables. Equivalent to AWS Config ecs-no-environment-secrets. Maps to FSBP ECS.8
+    (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-service-assign-public-ip-disabled
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-service-assign-public-ip-disabled.yml
+  description: Detects ECS services with assign_public_ip=ENABLED in their network
+    configuration. Public IPs on ECS tasks expose them directly to the internet. Equivalent
+    to AWS Config ecs-service-assign-public-ip-disabled. Maps to FSBP ECS.2 (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_service
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-task-definition-host-network-mode
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-task-definition-host-network-mode.yml
+  description: Detects ECS task definitions using host network mode, which shares
+    the host network namespace and bypasses container network isolation. Equivalent
+    to AWS Config ecs-task-definition-host-network-mode. FSBP ECS.17 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-task-definition-linux-user-non-root
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-task-definition-linux-user-non-root.yml
+  description: Detects ECS task definitions where any container runs as root (user=root
+    or absent). Root containers have elevated host privileges that attackers can exploit.
+    Equivalent to AWS Config ecs-task-definition-linux-user-non-root. Maps to FSBP
+    ECS.20 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-task-definition-log-configuration
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-task-definition-log-configuration.yml
+  description: Detects ECS task definitions where any container lacks a log_configuration
+    block. Without logging, container output is lost and incident investigations lack
+    evidence. Equivalent to AWS Config ecs-task-definition-log-configuration. FSBP
+    ECS.9 (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-task-definition-pid-mode-check
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-task-definition-pid-mode-check.yml
+  description: Detects ECS task definitions with pid_mode=host, which shares the host
+    process namespace and breaks container isolation. Equivalent to AWS Config ecs-task-definition-pid-mode-check.
+    Maps to FSBP ECS.3 (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_task_definition
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: ecs-taskset-assign-public-ip-disabled
+  engine: c7n
+  service: ecs
+  file: ecs/ecs-taskset-assign-public-ip-disabled.yml
+  description: Detects ECS services using an EXTERNAL deployment controller with assign_public_ip=ENABLED.
+    Task sets on EXTERNAL controller services expose tasks directly to the internet.
+    Maps to FSBP ECS.16 (High).
+  severity: medium
+  terraform_resources:
+  - aws_ecs_service
+  tags:
+  - c7n
+  - ecs
+  - medium
+  params: []
+- id: efs-encrypted-check
+  engine: rego
+  service: efs
+  file: efs/efs-encrypted-check.rego
+  description: Detects Amazon EFS file systems that are not encrypted at rest. Equivalent
+    to AWS Security Hub FSBP EFS.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_efs_file_system
+  tags:
+  - efs
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: efs-encrypted-check
+  engine: c7n
+  service: efs
+  file: efs/efs-encrypted-check.yml
+  description: 'Detects Amazon EFS file systems that are not encrypted at rest. Encryption
+    must be enabled at creation time and cannot be changed afterward. Equivalent AWS
+    Config rule: (custom). Maps to: AWS Security Hub FSBP EFS.1 (Medium).'
+  severity: medium
+  terraform_resources:
+  - aws_efs_file_system
+  tags:
+  - c7n
+  - efs
+  - medium
+  params: []
+- id: eks-cluster-log-enabled
+  engine: rego
+  service: eks
+  file: eks/eks-cluster-log-enabled.rego
+  description: Detects EKS clusters where audit logging is disabled. Equivalent to
+    AWS Config eks-cluster-log-enabled. Maps to FSBP EKS.8 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - eks
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: eks-cluster-secrets-encrypted
+  engine: rego
+  service: eks
+  file: eks/eks-cluster-secrets-encrypted.rego
+  description: Detects EKS clusters without KMS encryption configured for Kubernetes
+    secrets. Equivalent to AWS Config eks-secrets-encrypted. Maps to FSBP EKS.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - eks
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: eks-cluster-supported-version
+  engine: rego
+  service: eks
+  file: eks/eks-cluster-supported-version.rego
+  description: Detects EKS clusters running Kubernetes versions older than 1.28 which
+    no longer receive security patches. Equivalent to AWS Config eks-cluster-supported-version.
+    Maps to FSBP EKS.2 (High).
+  severity: high
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - eks
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: eks-endpoint-no-public-access
+  engine: rego
+  service: eks
+  file: eks/eks-endpoint-no-public-access.rego
+  description: Detects EKS clusters with the Kubernetes API server endpoint publicly
+    accessible. Equivalent to AWS Config eks-endpoint-no-public-access. Maps to FSBP
+    EKS.1 (High).
+  severity: high
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - eks
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: eks-cluster-log-enabled
+  engine: c7n
+  service: eks
+  file: eks/eks-cluster-log-enabled.yml
+  description: 'Detects EKS clusters where audit logging is disabled. Without audit
+    logs, API server activity cannot be monitored or investigated. Equivalent AWS
+    Config rule: eks-cluster-log-enabled. Maps to FSBP EKS.8 (Medium).'
+  severity: medium
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - c7n
+  - eks
+  - medium
+  params: []
+- id: eks-cluster-secrets-encrypted
+  engine: c7n
+  service: eks
+  file: eks/eks-cluster-secrets-encrypted.yml
+  description: 'Detects EKS clusters without KMS encryption configured for Kubernetes
+    secrets. Without envelope encryption, secrets are stored as base64 plaintext in
+    etcd. Equivalent AWS Config rule: eks-secrets-encrypted. Maps to FSBP EKS.3 (Medium).'
+  severity: medium
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - c7n
+  - eks
+  - medium
+  params: []
+- id: eks-cluster-supported-version
+  engine: c7n
+  service: eks
+  file: eks/eks-cluster-supported-version.yml
+  description: 'Detects EKS clusters running Kubernetes versions older than 1.28.
+    Unsupported versions no longer receive security patches. Equivalent AWS Config
+    rule: eks-cluster-supported-version. Maps to FSBP EKS.2 (High).'
+  severity: medium
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - c7n
+  - eks
+  - medium
+  params: []
+- id: eks-endpoint-no-public-access
+  engine: c7n
+  service: eks
+  file: eks/eks-endpoint-no-public-access.yml
+  description: 'Detects ECS clusters with endpoint_public_access=true, exposing the
+    Kubernetes API server to the internet. Equivalent AWS Config rule: eks-endpoint-no-public-access.
+    Maps to FSBP EKS.1 (High).'
+  severity: medium
+  terraform_resources:
+  - aws_eks_cluster
+  tags:
+  - c7n
+  - eks
+  - medium
+  params: []
+- id: elasticache-redis-auth-enabled
+  engine: rego
+  service: elasticache
+  file: elasticache/elasticache-redis-auth-enabled.rego
+  description: Detects ElastiCache Redis replication groups where AUTH token is not
+    enabled. Equivalent to AWS Config elasticache-redis-auth-enabled. Maps to FSBP
+    ElastiCache.6 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - elasticache
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elasticache-redis-cluster-automatic-backup-check
+  engine: rego
+  service: elasticache
+  file: elasticache/elasticache-redis-cluster-automatic-backup-check.rego
+  description: Detects ElastiCache Redis replication groups where automatic backups
+    are disabled (snapshot_retention_limit=0). Equivalent to AWS Config elasticache-redis-cluster-automatic-backup-check.
+    Maps to FSBP ElastiCache.1 (High).
+  severity: high
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - elasticache
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: elasticache-repl-grp-auto-failover-enabled
+  engine: rego
+  service: elasticache
+  file: elasticache/elasticache-repl-grp-auto-failover-enabled.rego
+  description: Detects ElastiCache replication groups where automatic failover is
+    not enabled. Equivalent to AWS Config elasticache-repl-grp-auto-failover-enabled.
+    Maps to FSBP ElastiCache.3 (High).
+  severity: high
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - conformance-pack
+  - elasticache
+  - fsbp
+  - high
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: elasticache-repl-grp-encrypted-at-rest
+  engine: rego
+  service: elasticache
+  file: elasticache/elasticache-repl-grp-encrypted-at-rest.rego
+  description: Detects ElastiCache replication groups where at-rest encryption is
+    not enabled. Equivalent to AWS Config elasticache-repl-grp-encrypted-at-rest.
+    Maps to FSBP ElastiCache.5 (High).
+  severity: high
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - elasticache
+  - fsbp
+  - high
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: elasticache-repl-grp-encrypted-in-transit
+  engine: rego
+  service: elasticache
+  file: elasticache/elasticache-repl-grp-encrypted-in-transit.rego
+  description: Detects ElastiCache replication groups where in-transit encryption
+    is not enabled. Equivalent to AWS Config elasticache-repl-grp-encrypted-in-transit.
+    Maps to FSBP ElastiCache.3 (High).
+  severity: high
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - elasticache
+  - fsbp
+  - high
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: elasticache-subnet-group-check
+  engine: rego
+  service: elasticache
+  file: elasticache/elasticache-subnet-group-check.rego
+  description: Detects ElastiCache clusters using the default subnet group, which
+    may place clusters in publicly accessible subnets. Equivalent to AWS Config elasticache-subnet-group-check.
+    Maps to FSBP ElastiCache.7 (High).
+  severity: high
+  terraform_resources:
+  - aws_elasticache_subnet_group
+  tags:
+  - elasticache
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: elasticache-redis-auth-enabled
+  engine: c7n
+  service: elasticache
+  file: elasticache/elasticache-redis-auth-enabled.yml
+  description: Detects ElastiCache Redis replication groups where auth_token is not
+    set. Equivalent to AWS Config elasticache-redis-auth-enabled. Maps to FSBP ElastiCache.6
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - c7n
+  - elasticache
+  - medium
+  params: []
+- id: elasticache-redis-cluster-automatic-backup-check
+  engine: c7n
+  service: elasticache
+  file: elasticache/elasticache-redis-cluster-automatic-backup-check.yml
+  description: Detects ElastiCache Redis replication groups where snapshot_retention_limit=0
+    (automatic backups disabled). Equivalent to AWS Config elasticache-redis-cluster-automatic-backup-check.
+    Maps to FSBP ElastiCache.1 (High).
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - c7n
+  - elasticache
+  - medium
+  params: []
+- id: elasticache-repl-grp-auto-failover-enabled
+  engine: c7n
+  service: elasticache
+  file: elasticache/elasticache-repl-grp-auto-failover-enabled.yml
+  description: Detects ElastiCache replication groups where automatic failover is
+    not enabled. Equivalent to AWS Config elasticache-repl-grp-auto-failover-enabled.
+    Maps to FSBP ElastiCache.3 (High), NIST 800-53, conformance packs.
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - c7n
+  - elasticache
+  - medium
+  params: []
+- id: elasticache-repl-grp-encrypted-at-rest
+  engine: c7n
+  service: elasticache
+  file: elasticache/elasticache-repl-grp-encrypted-at-rest.yml
+  description: Detects ElastiCache replication groups where at_rest_encryption_enabled=false.
+    Equivalent to AWS Config elasticache-repl-grp-encrypted-at-rest. Maps to FSBP
+    ElastiCache.5 (High), PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - c7n
+  - elasticache
+  - medium
+  params: []
+- id: elasticache-repl-grp-encrypted-in-transit
+  engine: c7n
+  service: elasticache
+  file: elasticache/elasticache-repl-grp-encrypted-in-transit.yml
+  description: Detects ElastiCache replication groups where transit_encryption_enabled=false.
+    Equivalent to AWS Config elasticache-repl-grp-encrypted-in-transit. Maps to FSBP
+    ElastiCache.3 (High), PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_replication_group
+  tags:
+  - c7n
+  - elasticache
+  - medium
+  params: []
+- id: elasticache-subnet-group-check
+  engine: c7n
+  service: elasticache
+  file: elasticache/elasticache-subnet-group-check.yml
+  description: Detects ElastiCache clusters using the default subnet group. Default
+    subnet groups may place clusters in publicly accessible subnets. Equivalent to
+    AWS Config elasticache-subnet-group-check. Maps to FSBP ElastiCache.7 (High).
+  severity: medium
+  terraform_resources:
+  - aws_elasticache_cluster
+  tags:
+  - c7n
+  - elasticache
+  - medium
+  params: []
+- id: beanstalk-enhanced-health-reporting-enabled
+  engine: rego
+  service: elasticbeanstalk
+  file: elasticbeanstalk/beanstalk-enhanced-health-reporting-enabled.rego
+  description: Detects Elastic Beanstalk environments without enhanced health reporting
+    enabled. Equivalent to AWS Config beanstalk-enhanced-health-reporting-enabled.
+    Maps to FSBP ElasticBeanstalk.1 (Low).
+  severity: low
+  terraform_resources:
+  - aws_elastic_beanstalk_environment
+  tags:
+  - elasticbeanstalk
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: elastic-beanstalk-managed-updates-enabled
+  engine: rego
+  service: elasticbeanstalk
+  file: elasticbeanstalk/elastic-beanstalk-managed-updates-enabled.rego
+  description: Detects Elastic Beanstalk environments with managed updates disabled.
+    Equivalent to AWS Config elastic-beanstalk-managed-updates-enabled. Maps to FSBP
+    ElasticBeanstalk.2 (High).
+  severity: high
+  terraform_resources:
+  - aws_elastic_beanstalk_environment
+  tags:
+  - elasticbeanstalk
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: beanstalk-enhanced-health-reporting-enabled
+  engine: c7n
+  service: elasticbeanstalk
+  file: elasticbeanstalk/beanstalk-enhanced-health-reporting-enabled.yml
+  description: Detects Elastic Beanstalk environments where enhanced health reporting
+    is not enabled. Equivalent to AWS Config beanstalk-enhanced-health-reporting-enabled.
+    Maps to FSBP ElasticBeanstalk.1 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_elastic_beanstalk_environment
+  tags:
+  - c7n
+  - elasticbeanstalk
+  - medium
+  params: []
+- id: elastic-beanstalk-managed-updates-enabled
+  engine: c7n
+  service: elasticbeanstalk
+  file: elasticbeanstalk/elastic-beanstalk-managed-updates-enabled.yml
+  description: Detects Elastic Beanstalk environments with managed updates disabled.
+    Equivalent to AWS Config elastic-beanstalk-managed-updates-enabled. Maps to FSBP
+    ElasticBeanstalk.2 (High).
+  severity: medium
+  terraform_resources:
+  - aws_elastic_beanstalk_environment
+  tags:
+  - c7n
+  - elasticbeanstalk
+  - medium
+  params: []
+- id: elasticsearch-encrypted-at-rest
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-encrypted-at-rest.rego
+  description: Detects Elasticsearch domains with encryption at rest disabled. Equivalent
+    to AWS Config elasticsearch-encrypted-at-rest. Maps to FSBP ES.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elasticsearch-in-vpc-only
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-in-vpc-only.rego
+  description: Detects Elasticsearch domains not deployed inside a VPC. Equivalent
+    to AWS Config elasticsearch-in-vpc-only. Maps to FSBP ES.2 (Critical).
+  severity: critical
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - critical
+  - elasticsearch
+  - fsbp
+  - rego
+  - security-hub
+  params: []
+- id: elasticsearch-logs-to-cloudwatch
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-logs-to-cloudwatch.rego
+  description: Detects Elasticsearch domains with no CloudWatch log publishing configured.
+    Equivalent to AWS Config elasticsearch-logs-to-cloudwatch. Maps to FSBP ES.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elasticsearch-node-to-node-encryption-check
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-node-to-node-encryption-check.rego
+  description: Detects Elasticsearch domains with node-to-node encryption disabled.
+    Equivalent to AWS Config elasticsearch-node-to-node-encryption-check. Maps to
+    FSBP ES.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-access-control-enabled
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-access-control-enabled.rego
+  description: Detects OpenSearch domains with fine-grained access control (advanced_security_options)
+    disabled. Equivalent to AWS Config opensearch-access-control-enabled. Maps to
+    FSBP Opensearch.7 (High).
+  severity: high
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-audit-logging-enabled
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-audit-logging-enabled.rego
+  description: Detects OpenSearch domains without audit logging enabled in log_publishing_options.
+    Equivalent to AWS Config opensearch-audit-logging-enabled. Maps to FSBP Opensearch.5
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-encrypted-at-rest
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-encrypted-at-rest.rego
+  description: Detects OpenSearch domains with encryption at rest disabled. Equivalent
+    to AWS Config opensearch-encrypted-at-rest. Maps to FSBP Opensearch.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-https-required
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-https-required.rego
+  description: Detects OpenSearch domains with HTTPS enforcement disabled on the domain
+    endpoint. Equivalent to AWS Config opensearch-https-required. Maps to FSBP Opensearch.8
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-in-vpc-only
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-in-vpc-only.rego
+  description: Detects OpenSearch domains not deployed inside a VPC. Equivalent to
+    AWS Config opensearch-in-vpc-only. Maps to FSBP Opensearch.2 (Critical).
+  severity: critical
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - critical
+  - elasticsearch
+  - fsbp
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-logs-to-cloudwatch
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-logs-to-cloudwatch.rego
+  description: Detects OpenSearch domains with no CloudWatch log publishing configured.
+    Equivalent to AWS Config opensearch-logs-to-cloudwatch. Maps to FSBP Opensearch.4
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: opensearch-node-to-node-encryption-check
+  engine: rego
+  service: elasticsearch
+  file: elasticsearch/opensearch-node-to-node-encryption-check.rego
+  description: Detects OpenSearch domains with node-to-node encryption disabled. Equivalent
+    to AWS Config opensearch-node-to-node-encryption-check. Maps to FSBP Opensearch.3
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_opensearch_domain
+  tags:
+  - elasticsearch
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elasticsearch-encrypted-at-rest
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-encrypted-at-rest.yml
+  description: Detects Elasticsearch/OpenSearch domains with encrypt_at_rest disabled.
+    Equivalent to AWS Config elasticsearch-encrypted-at-rest. Maps to FSBP ES.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: elasticsearch-in-vpc-only
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-in-vpc-only.yml
+  description: Detects Elasticsearch/OpenSearch domains not deployed inside a VPC
+    (vpc_options absent). Equivalent to AWS Config elasticsearch-in-vpc-only. Maps
+    to FSBP ES.2 (Critical).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: elasticsearch-logs-to-cloudwatch
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-logs-to-cloudwatch.yml
+  description: Detects Elasticsearch/OpenSearch domains with no CloudWatch log publishing
+    configured. Equivalent to AWS Config elasticsearch-logs-to-cloudwatch. Maps to
+    FSBP ES.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: elasticsearch-node-to-node-encryption-check
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/elasticsearch-node-to-node-encryption-check.yml
+  description: Detects Elasticsearch/OpenSearch domains with node_to_node_encryption
+    disabled. Equivalent to AWS Config elasticsearch-node-to-node-encryption-check.
+    Maps to FSBP ES.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-access-control-enabled
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-access-control-enabled.yml
+  description: Detects OpenSearch Service domains with advanced_security_options disabled
+    (fine-grained access control disabled). Equivalent to AWS Config opensearch-access-control-enabled.
+    Maps to FSBP Opensearch.7 (High).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-audit-logging-enabled
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-audit-logging-enabled.yml
+  description: Detects OpenSearch Service domains without audit logging enabled in
+    log_publishing_options. Equivalent to AWS Config opensearch-audit-logging-enabled.
+    Maps to FSBP Opensearch.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-encrypted-at-rest
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-encrypted-at-rest.yml
+  description: Detects OpenSearch Service domains with encrypt_at_rest disabled. Equivalent
+    to AWS Config opensearch-encrypted-at-rest. Maps to FSBP Opensearch.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-https-required
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-https-required.yml
+  description: Detects OpenSearch Service domains with domain_endpoint_options.enforce_https=false.
+    Equivalent to AWS Config opensearch-https-required. Maps to FSBP Opensearch.8
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-in-vpc-only
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-in-vpc-only.yml
+  description: Detects OpenSearch Service domains not deployed inside a VPC (vpc_options
+    absent). Equivalent to AWS Config opensearch-in-vpc-only. Maps to FSBP Opensearch.2
+    (Critical).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-logs-to-cloudwatch
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-logs-to-cloudwatch.yml
+  description: Detects OpenSearch Service domains with no CloudWatch log publishing
+    configured. Equivalent to AWS Config opensearch-logs-to-cloudwatch. Maps to FSBP
+    Opensearch.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: opensearch-node-to-node-encryption-check
+  engine: c7n
+  service: elasticsearch
+  file: elasticsearch/opensearch-node-to-node-encryption-check.yml
+  description: Detects OpenSearch Service domains with node_to_node_encryption disabled.
+    Equivalent to AWS Config opensearch-node-to-node-encryption-check. Maps to FSBP
+    Opensearch.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elasticsearch_domain
+  tags:
+  - c7n
+  - elasticsearch
+  - medium
+  params: []
+- id: alb-desync-mode-check
+  engine: rego
+  service: elb
+  file: elb/alb-desync-mode-check.rego
+  description: Detects Application Load Balancers where HTTP desync mitigation mode
+    is not set to defensive or strictest. Equivalent to AWS Config alb-desync-mode-check.
+    Maps to FSBP ELB.12 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: alb-http-drop-invalid-header-enabled
+  engine: rego
+  service: elb
+  file: elb/alb-http-drop-invalid-header-enabled.rego
+  description: Detects Application Load Balancers where dropping invalid HTTP headers
+    is not enabled. Equivalent to AWS Config alb-http-drop-invalid-header-enabled.
+    Maps to FSBP ELB.4 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: alb-http-to-https-redirection-check
+  engine: rego
+  service: elb
+  file: elb/alb-http-to-https-redirection-check.rego
+  description: Detects ALBs with HTTP listeners that do not redirect to HTTPS. Equivalent
+    to AWS Config alb-http-to-https-redirection-check. Maps to FSBP ELB.1 (Critical).
+  severity: critical
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - cis-benchmark
+  - critical
+  - elb
+  - fsbp
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: alb-waf-enabled
+  engine: rego
+  service: elb
+  file: elb/alb-waf-enabled.rego
+  description: Detects Application Load Balancers not associated with a WAFv2 web
+    ACL. Equivalent to AWS Config alb-waf-enabled. Maps to FSBP ELB.16 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - elb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elb-acm-certificate-required
+  engine: rego
+  service: elb
+  file: elb/elb-acm-certificate-required.rego
+  description: Detects Classic Load Balancers with HTTPS/SSL listeners using non-ACM
+    certificates. Equivalent to AWS Config elb-acm-certificate-required. Maps to FSBP
+    ELB.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elb
+  tags:
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elb-cross-zone-load-balancing-enabled
+  engine: rego
+  service: elb
+  file: elb/elb-cross-zone-load-balancing-enabled.rego
+  description: Detects Classic Load Balancers without cross-zone load balancing enabled.
+    Equivalent to AWS Config elb-cross-zone-load-balancing-enabled. Maps to FSBP ELB.9
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elb
+  tags:
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: elb-deletion-protection-enabled
+  engine: rego
+  service: elb
+  file: elb/elb-deletion-protection-enabled.rego
+  description: Detects Application and Network Load Balancers without deletion protection
+    enabled. Equivalent to AWS Config elb-deletion-protection-enabled. Maps to FSBP
+    ELB.6 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: elb-logging-enabled
+  engine: rego
+  service: elb
+  file: elb/elb-logging-enabled.rego
+  description: Detects Application Load Balancers without S3 access logging enabled.
+    Equivalent to AWS Config elb-logging-enabled. Maps to FSBP ELB.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - cis-benchmark
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: elb-tls-https-listeners-only
+  engine: rego
+  service: elb
+  file: elb/elb-tls-https-listeners-only.rego
+  description: Detects Classic Load Balancers with HTTP or TCP listeners that lack
+    TLS encryption. Equivalent to AWS Config elb-tls-https-listeners-only. Maps to
+    FSBP ELB.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_elb
+  tags:
+  - elb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elbv2-acm-certificate-required
+  engine: rego
+  service: elb
+  file: elb/elbv2-acm-certificate-required.rego
+  description: Detects ALB/NLB HTTPS or TLS listeners using certificates not managed
+    by ACM, risking expiry-related outages. Maps to NIST SP 800-53 SC-8 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - elb
+  - medium
+  - nist-800-53
+  - rego
+  - security-hub
+  params: []
+- id: elbv2-multiple-az
+  engine: rego
+  service: elb
+  file: elb/elbv2-multiple-az.rego
+  description: Detects Application and Network Load Balancers deployed in fewer than
+    two Availability Zones. Equivalent to AWS Config elbv2-multiple-az. Maps to FSBP
+    ELB.13 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: elbv2-predefined-security-policy-ssl-check
+  engine: rego
+  service: elb
+  file: elb/elbv2-predefined-security-policy-ssl-check.rego
+  description: Detects ALB/NLB HTTPS or TLS listeners using outdated SSL security
+    policies instead of recommended TLS 1.2+ policies. Equivalent to FSBP ELB.17 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - elb
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: alb-desync-mode-check
+  engine: c7n
+  service: elb
+  file: elb/alb-desync-mode-check.yml
+  description: Detects Application Load Balancers where the HTTP desync mitigation
+    mode is set to "monitor" instead of "defensive" or "strictest". Equivalent to
+    AWS Config alb-desync-mode-check. Maps to FSBP ELB.12, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - c7n
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: alb-http-drop-invalid-header-enabled
+  engine: c7n
+  service: elb
+  file: elb/alb-http-drop-invalid-header-enabled.yml
+  description: Detects Application Load Balancers where dropping invalid HTTP headers
+    is not enabled. This prevents HTTP desync attacks. Equivalent to AWS Config alb-http-drop-invalid-header-enabled.
+    Maps to FSBP ELB.4, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - c7n
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - security-hub
+  params: []
+- id: alb-http-to-https-redirection-check
+  engine: c7n
+  service: elb
+  file: elb/alb-http-to-https-redirection-check.yml
+  description: Detects ALBs with HTTP listeners that do not redirect to HTTPS. Equivalent
+    to AWS Config alb-http-to-https-redirection-check. Maps to FSBP ELB.1 (Critical),
+    CIS 5.4, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - c7n
+  - cis-benchmark
+  - elb
+  - fsbp
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: alb-waf-enabled
+  engine: c7n
+  service: elb
+  file: elb/alb-waf-enabled.yml
+  description: Detects Application Load Balancers not associated with a WAFv2 web
+    ACL. Unprotected ALBs are exposed to common web exploits. Equivalent to AWS Config
+    alb-waf-enabled. Maps to FSBP ELB.16 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - c7n
+  - elb
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: elb-acm-certificate-required
+  engine: c7n
+  service: elb
+  file: elb/elb-acm-certificate-required.yml
+  description: Detects Classic Load Balancers with HTTPS or SSL listeners using a
+    certificate not managed by AWS Certificate Manager. IAM-stored certificates lack
+    automatic renewal. Equivalent to AWS Config elb-acm-certificate-required. Maps
+    to FSBP ELB.2.
+  severity: medium
+  terraform_resources:
+  - aws_elb
+  tags:
+  - c7n
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: elb-cross-zone-load-balancing-enabled
+  engine: c7n
+  service: elb
+  file: elb/elb-cross-zone-load-balancing-enabled.yml
+  description: Detects Classic Load Balancers without cross-zone load balancing enabled.
+    Equivalent to AWS Config elb-cross-zone-load-balancing-enabled. Maps to FSBP ELB.9,
+    NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_elb
+  tags:
+  - c7n
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - security-hub
+  params: []
+- id: elb-deletion-protection-enabled
+  engine: c7n
+  service: elb
+  file: elb/elb-deletion-protection-enabled.yml
+  description: Detects Application and Network Load Balancers without deletion protection
+    enabled. Equivalent to AWS Config elb-deletion-protection-enabled. Maps to FSBP
+    ELB.6 (Medium), PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - c7n
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - security-hub
+  params: []
+- id: elb-logging-enabled
+  engine: c7n
+  service: elb
+  file: elb/elb-logging-enabled.yml
+  description: Detects Application Load Balancers without access logs enabled. Equivalent
+    to AWS Config elb-logging-enabled. Maps to FSBP ELB.5 (Medium), CIS 5.4, PCI DSS,
+    NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - c7n
+  - cis-benchmark
+  - elb
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - security-hub
+  params: []
+- id: elb-tls-https-listeners-only
+  engine: c7n
+  service: elb
+  file: elb/elb-tls-https-listeners-only.yml
+  description: Detects Classic Load Balancers with HTTP or TCP listeners that lack
+    TLS encryption. Equivalent to AWS Config elb-tls-https-listeners-only. Maps to
+    FSBP ELB.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - c7n
+  - elb
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: elbv2-acm-certificate-required
+  engine: c7n
+  service: elb
+  file: elb/elbv2-acm-certificate-required.yml
+  description: Detects ALB/NLB HTTPS or TLS listeners using certificates not managed
+    by ACM. Non-ACM certificates lack automatic renewal, risking expiry-related outages.
+    Maps to NIST SP 800-53 SC-8 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - c7n
+  - elb
+  - medium
+  - nist-800-53
+  - security-hub
+  params: []
+- id: elbv2-multiple-az
+  engine: c7n
+  service: elb
+  file: elb/elbv2-multiple-az.yml
+  description: Detects Application and Network Load Balancers deployed in fewer than
+    two Availability Zones. Single-AZ deployments create a single point of failure.
+    Equivalent to AWS Config elbv2-multiple-az. Maps to FSBP ELB.13.
+  severity: medium
+  terraform_resources:
+  - aws_lb
+  tags:
+  - c7n
+  - conformance-pack
+  - elb
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: elbv2-predefined-security-policy-ssl-check
+  engine: c7n
+  service: elb
+  file: elb/elbv2-predefined-security-policy-ssl-check.yml
+  description: Detects ALB/NLB HTTPS or TLS listeners using outdated SSL security
+    policies instead of recommended TLS 1.2+ policies. Equivalent to AWS Config elbv2-acm-certificate-required.
+    Maps to FSBP ELB.17 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lb_listener
+  tags:
+  - c7n
+  - elb
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: emr-master-no-public-ip
+  engine: rego
+  service: emr
+  file: emr/emr-master-no-public-ip.rego
+  description: Detects EMR clusters not launched in a VPC subnet, where the master
+    node may receive a public IP exposing management interfaces. Equivalent to FSBP
+    EMR.1.
+  severity: high
+  terraform_resources:
+  - aws_emr_cluster
+  tags:
+  - emr
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  params: []
+- id: emr-master-no-public-ip
+  engine: c7n
+  service: emr
+  file: emr/emr-master-no-public-ip.yml
+  description: 'Detects EMR clusters launched without a VPC subnet (Ec2SubnetId absent),
+    where the master node may receive a public IP exposing management interfaces.
+    Maps to FSBP EMR.1 (High). Trigger: RunJobFlow.'
+  severity: medium
+  terraform_resources:
+  - aws_emr_cluster
+  tags:
+  - c7n
+  - emr
+  - fsbp
+  - medium
+  - security-hub
+  params: []
+- id: iam-no-inline-policy-check
+  engine: rego
+  service: iam
+  file: iam/iam-no-inline-policy-check.rego
+  description: Detects IAM users with inline policies attached directly; inline policies
+    should be replaced with managed policies attached via groups.
+  severity: medium
+  terraform_resources:
+  - aws_iam_user_policy
+  tags:
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: iam-password-policy
+  engine: rego
+  service: iam
+  file: iam/iam-password-policy.rego
+  description: Detects accounts with a weak IAM password policy. Equivalent to AWS
+    Config iam-password-policy.
+  severity: medium
+  terraform_resources:
+  - aws_iam_account_password_policy
+  tags:
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: iam-policy-no-statements-with-admin-access
+  engine: rego
+  service: iam
+  file: iam/iam-policy-no-statements-with-admin-access.rego
+  description: Detects customer-managed IAM policies that grant full admin access
+    via Action:* and Resource:* in an Allow statement.
+  severity: high
+  terraform_resources:
+  - aws_iam_policy
+  tags:
+  - cis-benchmark
+  - fsbp
+  - high
+  - iam
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: iam-user-group-membership-check
+  engine: rego
+  service: iam
+  file: iam/iam-user-group-membership-check.rego
+  description: Detects IAM users not assigned to at least one IAM group. Equivalent
+    to AWS Config iam-user-group-membership-check.
+  severity: medium
+  terraform_resources:
+  - aws_iam_user
+  tags:
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: iam-user-no-policies-check
+  engine: rego
+  service: iam
+  file: iam/iam-user-no-policies-check.rego
+  description: Detects IAM users with directly attached managed or inline policies;
+    users should receive permissions via groups only.
+  severity: medium
+  terraform_resources:
+  - aws_iam_user_policy
+  tags:
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: iam-no-inline-policy-check
+  engine: c7n
+  service: iam
+  file: iam/iam-no-inline-policy-check.yml
+  description: 'Detects IAM users with inline (embedded) policies attached directly.
+    Inline policies should be replaced with managed policies attached via groups.
+    Equivalent to AWS Config iam-no-inline-policy-check. Maps to: Security Hub FSBP
+    IAM.2 (Medium).'
+  severity: medium
+  terraform_resources:
+  - aws_iam_user_policy
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - security-hub
+  params: []
+- id: iam-password-policy
+  engine: c7n
+  service: iam
+  file: iam/iam-password-policy.yml
+  description: 'Detects accounts with a weak IAM password policy (length, complexity,
+    max age). Equivalent to AWS Config iam-password-policy. Maps to: FSBP IAM.7, IAM.15,
+    IAM.16 (Medium), CIS 1.8-1.11.'
+  severity: medium
+  terraform_resources:
+  - aws_iam_account_password_policy
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - security-hub
+  params: []
+- id: iam-policy-no-statements-with-admin-access
+  engine: c7n
+  service: iam
+  file: iam/iam-policy-no-statements-with-admin-access.yml
+  description: 'Detects customer-managed IAM policies that grant full admin access
+    via Action:* and Resource:* in an Allow statement. Equivalent to AWS Config iam-policy-no-statements-with-admin-access.
+    Maps to: Security Hub FSBP IAM.1 (High), CIS AWS Foundations 1.22.'
+  severity: medium
+  terraform_resources:
+  - aws_iam_policy
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: iam-user-group-membership-check
+  engine: c7n
+  service: iam
+  file: iam/iam-user-group-membership-check.yml
+  description: 'Detects IAM users not assigned to at least one IAM group. Users should
+    receive permissions via groups. Equivalent to AWS Config iam-user-group-membership-check.
+    Maps to: FSBP IAM.1 (Medium), CIS 1.15.'
+  severity: medium
+  terraform_resources:
+  - aws_iam_user
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - security-hub
+  params: []
+- id: iam-user-no-policies-check
+  engine: c7n
+  service: iam
+  file: iam/iam-user-no-policies-check.yml
+  description: 'Detects IAM users with directly attached managed or inline policies.
+    Users should receive permissions via groups only. Equivalent to AWS Config iam-user-no-policies-check.
+    Maps to: Security Hub FSBP IAM.2 (Medium), CIS AWS Foundations 1.15.'
+  severity: medium
+  terraform_resources:
+  - aws_iam_user_policy
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - iam
+  - medium
+  - security-hub
+  params: []
+- id: kinesis-stream-encrypted
+  engine: rego
+  service: kinesis
+  file: kinesis/kinesis-stream-encrypted.rego
+  description: Detects Kinesis Data Streams not encrypted at rest with KMS. Equivalent
+    to AWS Config kinesis-stream-encrypted.
+  severity: medium
+  terraform_resources:
+  - aws_kinesis_stream
+  tags:
+  - fsbp
+  - kinesis
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: kinesis-stream-retention-period-check
+  engine: rego
+  service: kinesis
+  file: kinesis/kinesis-stream-retention-period-check.rego
+  description: Detects Kinesis Data Streams with a retention period below 168 hours
+    (7 days). Equivalent to AWS Config kinesis-stream-retention-period-check.
+  severity: medium
+  terraform_resources:
+  - aws_kinesis_stream
+  tags:
+  - fsbp
+  - kinesis
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: kinesis-stream-encrypted
+  engine: c7n
+  service: kinesis
+  file: kinesis/kinesis-stream-encrypted.yml
+  description: Detects Kinesis Data Streams not encrypted at rest with KMS. Streams
+    with EncryptionType NONE are non-compliant. Equivalent to AWS Config kinesis-stream-encrypted.
+    Maps to FSBP Kinesis.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_kinesis_stream
+  tags:
+  - c7n
+  - fsbp
+  - kinesis
+  - medium
+  - nist-800-53
+  - pci-dss
+  - security-hub
+  params: []
+- id: kinesis-stream-retention-period-check
+  engine: c7n
+  service: kinesis
+  file: kinesis/kinesis-stream-retention-period-check.yml
+  description: Detects Kinesis Data Streams with a retention period below 168 hours
+    (7 days). Equivalent to AWS Config kinesis-stream-retention-period-check. Maps
+    to FSBP Kinesis.3 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_kinesis_stream
+  tags:
+  - c7n
+  - fsbp
+  - kinesis
+  - medium
+  - security-hub
+  params: []
+- id: cmk-backing-key-rotation-enabled
+  engine: rego
+  service: kms
+  file: kms/cmk-backing-key-rotation-enabled.rego
+  description: Detects customer-managed KMS keys (CMKs) that do not have automatic
+    key rotation enabled.
+  severity: medium
+  terraform_resources:
+  - aws_kms_key
+  tags:
+  - cis-benchmark
+  - fsbp
+  - kms
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: iam-customer-policy-blocked-kms-actions
+  engine: rego
+  service: kms
+  file: kms/iam-customer-policy-blocked-kms-actions.rego
+  description: Detects customer-managed IAM policies that allow kms:Decrypt or kms:ReEncryptFrom
+    on all resources. Equivalent to AWS Config iam-customer-policy-blocked-kms-actions.
+  severity: medium
+  terraform_resources:
+  - aws_iam_policy
+  tags:
+  - fsbp
+  - kms
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: iam-inline-policy-blocked-kms-actions
+  engine: rego
+  service: kms
+  file: kms/iam-inline-policy-blocked-kms-actions.rego
+  description: Detects IAM inline policies that allow kms:Decrypt or kms:ReEncryptFrom
+    on all resources. Equivalent to AWS Config iam-inline-policy-blocked-kms-actions.
+  severity: medium
+  terraform_resources:
+  - aws_iam_role_policy
+  tags:
+  - fsbp
+  - kms
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: kms-key-policy-no-public-access
+  engine: rego
+  service: kms
+  file: kms/kms-key-policy-no-public-access.rego
+  description: Detects KMS keys whose key policy grants access to the wildcard principal
+    (*), making cryptographic operations publicly accessible. Equivalent to AWS Config
+    kms-key-policy-no-public-access.
+  severity: critical
+  terraform_resources:
+  - aws_kms_key
+  tags:
+  - critical
+  - fsbp
+  - kms
+  - rego
+  - security-hub
+  params: []
+- id: cmk-backing-key-rotation-enabled
+  engine: c7n
+  service: kms
+  file: kms/cmk-backing-key-rotation-enabled.yml
+  description: Detects customer-managed KMS keys (CMKs) that do not have automatic
+    key rotation enabled. Equivalent to AWS Config cmk-backing-key-rotation-enabled.
+    Maps to FSBP KMS.4 (Medium), CIS 3.7, PCI DSS, nist-800-53.
+  severity: medium
+  terraform_resources:
+  - aws_kms_key
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - kms
+  - medium
+  - nist-800-53
+  - pci-dss
+  - security-hub
+  params: []
+- id: iam-customer-policy-blocked-kms-actions
+  engine: c7n
+  service: kms
+  file: kms/iam-customer-policy-blocked-kms-actions.yml
+  description: Detects customer-managed IAM policies granting full admin access (Action:*),
+    which includes all KMS decryption actions on all resources. Equivalent to AWS
+    Config iam-customer-policy-blocked-kms-actions. Maps to FSBP KMS.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_iam_policy
+  tags:
+  - c7n
+  - fsbp
+  - kms
+  - medium
+  - security-hub
+  params: []
+- id: iam-inline-policy-blocked-kms-actions
+  engine: c7n
+  service: kms
+  file: kms/iam-inline-policy-blocked-kms-actions.yml
+  description: Detects IAM users with inline policies attached directly. Inline policies
+    can grant overly broad KMS decryption access. Equivalent to AWS Config iam-inline-policy-blocked-kms-actions.
+    Maps to FSBP KMS.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_iam_user_policy
+  tags:
+  - c7n
+  - fsbp
+  - kms
+  - medium
+  - security-hub
+  params: []
+- id: kms-key-policy-no-public-access
+  engine: c7n
+  service: kms
+  file: kms/kms-key-policy-no-public-access.yml
+  description: 'Detects KMS keys whose key policy grants access to the wildcard principal
+    (*), making cryptographic operations publicly accessible. Equivalent AWS Config
+    rule: kms-key-policy-no-public-access. Maps to FSBP KMS.5 (Critical).'
+  severity: medium
+  terraform_resources:
+  - aws_kms_key
+  tags:
+  - c7n
+  - fsbp
+  - kms
+  - medium
+  - security-hub
+  params: []
+- id: lambda-concurrency-check
+  engine: rego
+  service: lambda
+  file: lambda/lambda-concurrency-check.rego
+  description: Detects Lambda functions without reserved concurrency configured. Equivalent
+    to AWS Config lambda-concurrency-check.
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - conformance-pack
+  - lambda
+  - medium
+  - rego
+  params: []
+- id: lambda-dlq-check
+  engine: rego
+  service: lambda
+  file: lambda/lambda-dlq-check.rego
+  description: Detects Lambda functions without a Dead Letter Queue (DLQ) configured;
+    failed async invocations are silently discarded without one.
+  severity: low
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - conformance-pack
+  - lambda
+  - low
+  - rego
+  params: []
+- id: lambda-function-public-access-prohibited
+  engine: rego
+  service: lambda
+  file: lambda/lambda-function-public-access-prohibited.rego
+  description: 'Detects Lambda functions with resource-based policies that allow public
+    access (Principal: "*").'
+  severity: critical
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - cis-benchmark
+  - critical
+  - fsbp
+  - lambda
+  - pci-dss
+  - rego
+  - security-hub
+  params: []
+- id: lambda-function-settings-check
+  engine: rego
+  service: lambda
+  file: lambda/lambda-function-settings-check.rego
+  description: Detects Lambda functions using deprecated or end-of-life runtimes.
+    Equivalent to AWS Config lambda-function-settings-check.
+  severity: high
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - conformance-pack
+  - fsbp
+  - high
+  - lambda
+  - rego
+  - security-hub
+  params: []
+- id: lambda-function-xray-enabled
+  engine: rego
+  service: lambda
+  file: lambda/lambda-function-xray-enabled.rego
+  description: Detects Lambda functions that do not have AWS X-Ray active tracing
+    enabled.
+  severity: low
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - fsbp
+  - lambda
+  - low
+  - rego
+  - security-hub
+  params: []
+- id: lambda-inside-vpc
+  engine: rego
+  service: lambda
+  file: lambda/lambda-inside-vpc.rego
+  description: Detects Lambda functions that are not configured to run inside a VPC.
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - conformance-pack
+  - fsbp
+  - lambda
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: lambda-vpc-multi-az-check
+  engine: rego
+  service: lambda
+  file: lambda/lambda-vpc-multi-az-check.rego
+  description: Detects VPC-connected Lambda functions configured with fewer than 2
+    subnets, indicating single-AZ placement. Equivalent to AWS Config lambda-vpc-multi-az-check.
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - fsbp
+  - lambda
+  - medium
+  - rego
+  - security-hub
+  params: []
+- id: lambda-concurrency-check
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-concurrency-check.yml
+  description: 'Detects Lambda functions without reserved concurrency configured.
+    Without it, a function can exhaust the regional concurrency pool. Equivalent AWS
+    Config rule: lambda-concurrency-check. Maps to conformance-pack: Operational Best
+    Practices for Lambda.'
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - c7n
+  - conformance-pack
+  - lambda
+  - medium
+  params: []
+- id: lambda-dlq-check
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-dlq-check.yml
+  description: 'Detects Lambda functions without a Dead Letter Queue (DLQ). Without
+    a DLQ, failed async invocations are silently discarded. Equivalent AWS Config
+    rule: lambda-dlq-check. Maps to conformance-pack: Operational Best Practices for
+    Lambda.'
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - c7n
+  - conformance-pack
+  - lambda
+  - medium
+  params: []
+- id: lambda-function-public-access-prohibited
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-function-public-access-prohibited.yml
+  description: 'Detects Lambda functions with resource-based policies that allow public
+    access (Principal: "*"). Equivalent to AWS Config lambda-function-public-access-prohibited.
+    Maps to FSBP Lambda.1 (Critical), CIS 3.x, PCI DSS.'
+  severity: medium
+  terraform_resources:
+  - aws_lambda_permission
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - lambda
+  - medium
+  - pci-dss
+  - security-hub
+  params: []
+- id: lambda-function-settings-check
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-function-settings-check.yml
+  description: Detects Lambda functions using deprecated or end-of-life runtimes.
+    Equivalent to AWS Config lambda-function-settings-check. Maps to FSBP Lambda.2
+    (High), security-hub, conformance-pack.
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - c7n
+  - conformance-pack
+  - fsbp
+  - lambda
+  - medium
+  - security-hub
+  params: []
+- id: lambda-function-xray-enabled
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-function-xray-enabled.yml
+  description: 'Detects Lambda functions that do not have AWS X-Ray active tracing
+    enabled. Equivalent AWS Config rule: lambda-function-xray-tracing-enabled. Maps
+    to FSBP Lambda.7 (Low).'
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - c7n
+  - fsbp
+  - lambda
+  - medium
+  - security-hub
+  params: []
+- id: lambda-inside-vpc
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-inside-vpc.yml
+  description: Detects Lambda functions that are not configured to run inside a VPC.
+    Equivalent to AWS Config lambda-inside-vpc. Maps to FSBP Lambda.3 (Medium), CIS,
+    conformance-pack.
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - c7n
+  - conformance-pack
+  - fsbp
+  - lambda
+  - medium
+  - security-hub
+  params: []
+- id: lambda-vpc-multi-az-check
+  engine: c7n
+  service: lambda
+  file: lambda/lambda-vpc-multi-az-check.yml
+  description: Detects VPC-connected Lambda functions with fewer than 2 subnets, indicating
+    single-AZ placement. Maps to FSBP Lambda.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_lambda_function
+  tags:
+  - c7n
+  - fsbp
+  - lambda
+  - medium
+  - security-hub
+  params: []
+- id: msk-cluster-public-access-disabled
+  engine: rego
+  service: msk
+  file: msk/msk-cluster-public-access-disabled.rego
+  description: Detects MSK clusters with public broker access enabled. Equivalent
+    to AWS Config FSBP MSK.4.
+  severity: high
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - fsbp
+  - high
+  - msk
+  - rego
+  - security-hub
+  params: []
+- id: msk-cluster-unauthenticated-access-disabled
+  engine: rego
+  service: msk
+  file: msk/msk-cluster-unauthenticated-access-disabled.rego
+  description: Detects MSK clusters with unauthenticated client access enabled. Equivalent
+    to AWS Config FSBP MSK.6.
+  severity: high
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - fsbp
+  - high
+  - msk
+  - rego
+  - security-hub
+  params: []
+- id: msk-enhanced-monitoring-check
+  engine: rego
+  service: msk
+  file: msk/msk-enhanced-monitoring-check.rego
+  description: Detects MSK clusters using DEFAULT monitoring level instead of PER_BROKER
+    or higher. Equivalent to AWS Config FSBP MSK.2.
+  severity: low
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - fsbp
+  - low
+  - msk
+  - rego
+  - security-hub
+  params: []
+- id: msk-in-cluster-node-require-tls
+  engine: rego
+  service: msk
+  file: msk/msk-in-cluster-node-require-tls.rego
+  description: Detects MSK clusters without TLS-only client-broker encryption. Equivalent
+    to AWS Config FSBP MSK.1.
+  severity: medium
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - fsbp
+  - medium
+  - msk
+  - rego
+  - security-hub
+  params: []
+- id: msk-cluster-public-access-disabled
+  engine: c7n
+  service: msk
+  file: msk/msk-cluster-public-access-disabled.yml
+  description: Detects MSK clusters with public broker access enabled. Brokers should
+    not be reachable from the internet. Equivalent to FSBP MSK.4 (High).
+  severity: medium
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - msk
+  - security-hub
+  params: []
+- id: msk-cluster-unauthenticated-access-disabled
+  engine: c7n
+  service: msk
+  file: msk/msk-cluster-unauthenticated-access-disabled.yml
+  description: Detects MSK clusters with unauthenticated client access enabled. All
+    clients should use TLS, SASL, or IAM auth. Equivalent to FSBP MSK.6 (High).
+  severity: medium
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - msk
+  - security-hub
+  params: []
+- id: msk-enhanced-monitoring-check
+  engine: c7n
+  service: msk
+  file: msk/msk-enhanced-monitoring-check.yml
+  description: Detects MSK clusters using DEFAULT monitoring level. Clusters should
+    use PER_BROKER or higher. Equivalent to FSBP MSK.2 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - msk
+  - security-hub
+  params: []
+- id: msk-in-cluster-node-require-tls
+  engine: c7n
+  service: msk
+  file: msk/msk-in-cluster-node-require-tls.yml
+  description: Detects MSK clusters without TLS-only client-broker encryption or in-cluster
+    encryption disabled. Equivalent to FSBP MSK.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_msk_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - msk
+  - security-hub
+  params: []
+- id: neptune-cluster-audit-log-enabled
+  engine: rego
+  service: neptune
+  file: neptune/neptune-cluster-audit-log-enabled.rego
+  description: Detects Neptune DB clusters not exporting audit logs to CloudWatch
+    Logs. Equivalent to AWS Config neptune-cluster-audit-log-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - fsbp
+  - medium
+  - neptune
+  - rego
+  - security-hub
+  params: []
+- id: neptune-cluster-backup-retention-check
+  engine: rego
+  service: neptune
+  file: neptune/neptune-cluster-backup-retention-check.rego
+  description: Detects Neptune DB clusters with backup retention period less than
+    7 days. Equivalent to AWS Config neptune-cluster-backup-retention-check.
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - fsbp
+  - medium
+  - neptune
+  - rego
+  - security-hub
+  params: []
+- id: neptune-cluster-deletion-protection
+  engine: rego
+  service: neptune
+  file: neptune/neptune-cluster-deletion-protection.rego
+  description: Detects Neptune DB clusters where deletion protection is disabled.
+    Equivalent to AWS Config neptune-cluster-deletion-protection.
+  severity: low
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - fsbp
+  - low
+  - neptune
+  - rego
+  - security-hub
+  params: []
+- id: neptune-cluster-encrypted
+  engine: rego
+  service: neptune
+  file: neptune/neptune-cluster-encrypted.rego
+  description: Detects Neptune DB clusters where storage is not encrypted at rest.
+    Equivalent to AWS Config neptune-cluster-encrypted.
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - fsbp
+  - medium
+  - neptune
+  - rego
+  - security-hub
+  params: []
+- id: neptune-cluster-iam-auth-enabled
+  engine: rego
+  service: neptune
+  file: neptune/neptune-cluster-iam-auth-enabled.rego
+  description: Detects Neptune DB clusters where IAM database authentication is disabled.
+    Equivalent to AWS Config neptune-cluster-iam-auth-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - fsbp
+  - medium
+  - neptune
+  - rego
+  - security-hub
+  params: []
+- id: neptune-cluster-audit-log-enabled
+  engine: c7n
+  service: neptune
+  file: neptune/neptune-cluster-audit-log-enabled.yml
+  description: Detects Neptune DB clusters not exporting audit logs to CloudWatch
+    Logs. Equivalent to AWS Config neptune-cluster-audit-log-enabled. Maps to FSBP
+    Neptune.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - neptune
+  - security-hub
+  params: []
+- id: neptune-cluster-backup-retention-check
+  engine: c7n
+  service: neptune
+  file: neptune/neptune-cluster-backup-retention-check.yml
+  description: Detects Neptune DB clusters with BackupRetentionPeriod less than 7
+    days. Equivalent to AWS Config neptune-cluster-backup-retention-check. Maps to
+    FSBP Neptune.5 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - neptune
+  - security-hub
+  params: []
+- id: neptune-cluster-deletion-protection
+  engine: c7n
+  service: neptune
+  file: neptune/neptune-cluster-deletion-protection.yml
+  description: Detects Neptune DB clusters where DeletionProtection=false. Equivalent
+    to AWS Config neptune-cluster-deletion-protection. Maps to FSBP Neptune.4 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - neptune
+  - security-hub
+  params: []
+- id: neptune-cluster-encrypted
+  engine: c7n
+  service: neptune
+  file: neptune/neptune-cluster-encrypted.yml
+  description: Detects Neptune DB clusters where StorageEncrypted=false. Equivalent
+    to AWS Config neptune-cluster-encrypted. Maps to FSBP Neptune.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - neptune
+  - security-hub
+  params: []
+- id: neptune-cluster-iam-auth-enabled
+  engine: c7n
+  service: neptune
+  file: neptune/neptune-cluster-iam-auth-enabled.yml
+  description: Detects Neptune DB clusters where IAMDatabaseAuthenticationEnabled=false.
+    Equivalent to AWS Config neptune-cluster-iam-auth-enabled. Maps to FSBP Neptune.7
+    (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_neptune_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - neptune
+  - security-hub
+  params: []
+- id: netfw-logging-enabled
+  engine: rego
+  service: networkfirewall
+  file: networkfirewall/netfw-logging-enabled.rego
+  description: Detects AWS Network Firewalls with no logging destinations configured.
+    Equivalent to AWS Config FSBP NetworkFirewall.2.
+  severity: medium
+  terraform_resources:
+  - aws_networkfirewall_firewall
+  - aws_networkfirewall_logging_configuration
+  tags:
+  - fsbp
+  - medium
+  - networkfirewall
+  - rego
+  - security-hub
+  params: []
+- id: netfw-logging-enabled
+  engine: c7n
+  service: networkfirewall
+  file: networkfirewall/netfw-logging-enabled.yml
+  description: Detects AWS Network Firewalls with no logging destinations configured.
+    Without logging, flow and alert records are lost, removing visibility into traffic
+    inspection results. Maps to FSBP NetworkFirewall.2 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_networkfirewall_firewall
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - networkfirewall
+  - security-hub
+  params: []
+- id: db-instance-backup-enabled
+  engine: rego
+  service: rds
+  file: rds/db-instance-backup-enabled.rego
+  description: Detects RDS DB instances with automated backups disabled (BackupRetentionPeriod=0).
+    Equivalent to AWS Config db-instance-backup-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-aurora-mysql-audit-logging-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-aurora-mysql-audit-logging-enabled.rego
+  description: Detects Aurora MySQL clusters that do not export audit logs to CloudWatch
+    Logs. Equivalent to AWS Config rds-aurora-mysql-audit-logging-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-automatic-minor-version-upgrade-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-automatic-minor-version-upgrade-enabled.rego
+  description: Detects RDS DB instances with automatic minor version upgrade disabled.
+  severity: high
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - high
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-cluster-auto-minor-version-upgrade-enable
+  engine: rego
+  service: rds
+  file: rds/rds-cluster-auto-minor-version-upgrade-enable.rego
+  description: Detects Aurora DB clusters where auto minor version upgrade is disabled.
+    Equivalent to AWS Config rds-cluster-auto-minor-version-upgrade-enable.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-cluster-default-admin-check
+  engine: rego
+  service: rds
+  file: rds/rds-cluster-default-admin-check.rego
+  description: Detects RDS DB clusters using a default administrator username. Equivalent
+    to AWS Config rds-cluster-default-admin-check.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-cluster-deletion-protection-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-cluster-deletion-protection-enabled.rego
+  description: Detects RDS DB clusters with deletion protection disabled. Equivalent
+    to AWS Config rds-cluster-deletion-protection-enabled.
+  severity: high
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - high
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-cluster-encrypted-at-rest
+  engine: rego
+  service: rds
+  file: rds/rds-cluster-encrypted-at-rest.rego
+  description: Detects RDS DB clusters where storage is not encrypted at rest. Equivalent
+    to AWS Config rds-cluster-encrypted-at-rest.
+  severity: high
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - fsbp
+  - high
+  - nist-800-53
+  - pci-dss
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-cluster-iam-authentication-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-cluster-iam-authentication-enabled.rego
+  description: Detects RDS DB clusters where IAM database authentication is disabled.
+    Equivalent to AWS Config rds-cluster-iam-authentication-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-cluster-multi-az-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-cluster-multi-az-enabled.rego
+  description: Detects RDS DB clusters not configured for multiple Availability Zones.
+    Equivalent to AWS Config rds-cluster-multi-az-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - conformance-pack
+  - fsbp
+  - medium
+  - nist-800-53
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-db-security-group-not-allowed
+  engine: rego
+  service: rds
+  file: rds/rds-db-security-group-not-allowed.rego
+  description: Detects RDS instances using legacy EC2-Classic DB security groups instead
+    of VPC security groups. Equivalent to AWS Config rds-db-security-group-not-allowed.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - cis-benchmark
+  - conformance-pack
+  - medium
+  - rds
+  - rego
+  params: []
+- id: rds-enhanced-monitoring-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-enhanced-monitoring-enabled.rego
+  description: Detects RDS DB instances where enhanced monitoring is disabled (MonitoringInterval=0).
+    Equivalent to AWS Config rds-enhanced-monitoring-enabled.
+  severity: low
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - fsbp
+  - low
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-instance-default-admin-check
+  engine: rego
+  service: rds
+  file: rds/rds-instance-default-admin-check.rego
+  description: Detects RDS DB instances using a default administrator username. Equivalent
+    to AWS Config rds-instance-default-admin-check.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-instance-deletion-protection-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-instance-deletion-protection-enabled.rego
+  description: Detects RDS DB instances with deletion protection disabled, allowing
+    accidental or unauthorized deletion.
+  severity: high
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - high
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-instance-iam-authentication-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-instance-iam-authentication-enabled.rego
+  description: Detects RDS DB instances where IAM database authentication is disabled.
+    Equivalent to AWS Config rds-instance-iam-authentication-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-instance-public-access-check
+  engine: rego
+  service: rds
+  file: rds/rds-instance-public-access-check.rego
+  description: Detects RDS DB instances with PubliclyAccessible=true, exposing the
+    database to the internet.
+  severity: high
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - cis-benchmark
+  - control-tower
+  - fsbp
+  - high
+  - pci-dss
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-logging-enabled
+  engine: rego
+  service: rds
+  file: rds/rds-logging-enabled.rego
+  description: Detects RDS DB instances with no CloudWatch Logs exports configured.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-multi-az-support
+  engine: rego
+  service: rds
+  file: rds/rds-multi-az-support.rego
+  description: Detects RDS DB instances with Multi-AZ disabled, reducing high availability.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - conformance-pack
+  - control-tower
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-proxy-tls-encryption
+  engine: rego
+  service: rds
+  file: rds/rds-proxy-tls-encryption.rego
+  description: Detects RDS proxies not configured to require TLS for client connections.
+    Equivalent to AWS Config rds-proxy-tls-encryption.
+  severity: medium
+  terraform_resources:
+  - aws_db_proxy
+  tags:
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-snapshot-encrypted
+  engine: rego
+  service: rds
+  file: rds/rds-snapshot-encrypted.rego
+  description: Detects RDS DB snapshots where encryption is disabled.
+  severity: medium
+  terraform_resources:
+  - aws_db_snapshot
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-snapshots-public-prohibited
+  engine: rego
+  service: rds
+  file: rds/rds-snapshots-public-prohibited.rego
+  description: Detects RDS DB snapshots shared publicly (restore attribute includes
+    'all').
+  severity: critical
+  terraform_resources:
+  - aws_db_snapshot
+  - aws_db_cluster_snapshot
+  tags:
+  - cis-benchmark
+  - control-tower
+  - critical
+  - fsbp
+  - pci-dss
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: rds-storage-encrypted
+  engine: rego
+  service: rds
+  file: rds/rds-storage-encrypted.rego
+  description: Detects RDS DB instances with storage encryption disabled.
+  severity: high
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - cis-benchmark
+  - control-tower
+  - fsbp
+  - high
+  - pci-dss
+  - rds
+  - rego
+  - security-hub
+  params: []
+- id: db-instance-backup-enabled
+  engine: c7n
+  service: rds
+  file: rds/db-instance-backup-enabled.yml
+  description: Detects RDS DB instances with BackupRetentionPeriod=0 (backups disabled).
+    Equivalent to AWS Config db-instance-backup-enabled. Maps to FSBP RDS.11 (Medium),
+    CT Elective Detective, conformance pack Operational Best Practices.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-aurora-mysql-audit-logging-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-aurora-mysql-audit-logging-enabled.yml
+  description: Detects Aurora MySQL clusters (engine aurora or aurora-mysql) that
+    do not export audit logs to CloudWatch Logs. Equivalent AWS Config rds-aurora-mysql-audit-logging-enabled.
+    Maps to FSBP RDS.34 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-automatic-minor-version-upgrade-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-automatic-minor-version-upgrade-enabled.yml
+  description: Detects RDS DB instances with AutoMinorVersionUpgrade=false. Equivalent
+    to AWS Config rds-automatic-minor-version-upgrade-enabled. Maps to FSBP RDS.13
+    (High), CT Elective Detective, conformance pack Operational Best Practices for
+    RDS.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-cluster-auto-minor-version-upgrade-enable
+  engine: c7n
+  service: rds
+  file: rds/rds-cluster-auto-minor-version-upgrade-enable.yml
+  description: Detects Aurora DB clusters where AutoMinorVersionUpgrade=false. Minor
+    version updates include security patches. Equivalent AWS Config rds-cluster-auto-minor-version-upgrade-enable.
+    Maps to FSBP RDS.35 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-cluster-default-admin-check
+  engine: c7n
+  service: rds
+  file: rds/rds-cluster-default-admin-check.yml
+  description: Detects RDS DB clusters using a default administrator username (admin,
+    root, master, masteruser). Equivalent to AWS Config rds-cluster-default-admin-check.
+    Maps to FSBP RDS.24 (Medium), NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - rds
+  - security-hub
+  params: []
+- id: rds-cluster-deletion-protection-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-cluster-deletion-protection-enabled.yml
+  description: Detects RDS DB clusters with DeletionProtection=false. Equivalent to
+    AWS Config rds-cluster-deletion-protection-enabled. Maps to FSBP RDS.7 (High),
+    CT Elective Detective, conformance pack Operational Best Practices for RDS.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-cluster-encrypted-at-rest
+  engine: c7n
+  service: rds
+  file: rds/rds-cluster-encrypted-at-rest.yml
+  description: Detects RDS DB clusters where StorageEncrypted=false. Equivalent to
+    AWS Config rds-cluster-encrypted-at-rest. Maps to FSBP RDS.27 (High), PCI DSS,
+    NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rds
+  - security-hub
+  params: []
+- id: rds-cluster-iam-authentication-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-cluster-iam-authentication-enabled.yml
+  description: Detects RDS DB clusters where IAMDatabaseAuthenticationEnabled=false.
+    Equivalent to AWS Config rds-cluster-iam-authentication-enabled. Maps to FSBP
+    RDS.12 (Medium), PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rds
+  - security-hub
+  params: []
+- id: rds-cluster-multi-az-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-cluster-multi-az-enabled.yml
+  description: Detects RDS DB clusters not configured for multiple Availability Zones
+    (MultiAZ=false). Equivalent to AWS Config rds-cluster-multi-az-enabled. Maps to
+    FSBP RDS.44 (Medium), NIST 800-53, conformance packs.
+  severity: medium
+  terraform_resources:
+  - aws_rds_cluster
+  tags:
+  - c7n
+  - conformance-pack
+  - fsbp
+  - medium
+  - nist-800-53
+  - rds
+  - security-hub
+  params: []
+- id: rds-db-security-group-not-allowed
+  engine: c7n
+  service: rds
+  file: rds/rds-db-security-group-not-allowed.yml
+  description: Detects RDS instances using legacy EC2-Classic DB security groups instead
+    of VPC security groups. Maps to CIS AWS Foundations Benchmark (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - cis-benchmark
+  - conformance-pack
+  - medium
+  - rds
+  params: []
+- id: rds-enhanced-monitoring-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-enhanced-monitoring-enabled.yml
+  description: Detects RDS DB instances where MonitoringInterval=0 (enhanced monitoring
+    disabled). Equivalent to AWS Config rds-enhanced-monitoring-enabled. Maps to FSBP
+    RDS.6 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-instance-default-admin-check
+  engine: c7n
+  service: rds
+  file: rds/rds-instance-default-admin-check.yml
+  description: Detects RDS DB instances using a default administrator username (admin,
+    root, master, masteruser). Equivalent to AWS Config rds-instance-default-admin-check.
+    Maps to FSBP RDS.25 (Medium), NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - rds
+  - security-hub
+  params: []
+- id: rds-instance-deletion-protection-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-instance-deletion-protection-enabled.yml
+  description: Detects RDS DB instances with DeletionProtection=false. Equivalent
+    to AWS Config rds-instance-deletion-protection-enabled. Maps to FSBP RDS.8 (High),
+    CT Elective Detective, conformance pack Operational Best Practices for RDS.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-instance-iam-authentication-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-instance-iam-authentication-enabled.yml
+  description: Detects RDS DB instances with IAMDatabaseAuthenticationEnabled=false.
+    Equivalent to AWS Config rds-instance-iam-authentication-enabled. Maps to FSBP
+    RDS.10 (Medium), CT Elective Detective, conformance pack Operational Best Practices.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-instance-public-access-check
+  engine: c7n
+  service: rds
+  file: rds/rds-instance-public-access-check.yml
+  description: Detects RDS DB instances with PubliclyAccessible=true. Equivalent to
+    AWS Config rds-instance-public-access-check. Maps to FSBP RDS.2 (High), CIS 2.3.3,
+    PCI DSS, CT Strongly Recommended Detective.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-strongly-recommended
+  - fsbp
+  - medium
+  - pci-dss
+  - rds
+  - security-hub
+  params: []
+- id: rds-logging-enabled
+  engine: c7n
+  service: rds
+  file: rds/rds-logging-enabled.yml
+  description: Detects RDS DB instances with no CloudWatch Logs exports configured.
+    Equivalent to AWS Config rds-logging-enabled. Maps to FSBP RDS.9 (Medium), CT
+    Elective Detective, conformance pack Operational Best Practices for RDS.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-multi-az-support
+  engine: c7n
+  service: rds
+  file: rds/rds-multi-az-support.yml
+  description: Detects RDS DB instances with MultiAZ=false. Equivalent to AWS Config
+    rds-multi-az-support. Maps to FSBP RDS.5 (Medium), CT Elective Detective, conformance
+    pack Operational Best Practices for RDS.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - conformance-pack
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-proxy-tls-encryption
+  engine: c7n
+  service: rds
+  file: rds/rds-proxy-tls-encryption.yml
+  description: Detects RDS proxies not configured to require TLS for client connections.
+    Equivalent to AWS Config rds-proxy-tls-encryption. Maps to FSBP RDS.43 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_db_proxy
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-snapshot-encrypted
+  engine: c7n
+  service: rds
+  file: rds/rds-snapshot-encrypted.yml
+  description: Detects RDS DB snapshots where encryption is disabled (Encrypted=false).
+    Equivalent AWS Config rds-snapshot-encrypted. Maps to FSBP RDS.4 (Medium), CIS
+    2.3.1.
+  severity: medium
+  terraform_resources:
+  - aws_db_snapshot
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - rds
+  - security-hub
+  params: []
+- id: rds-snapshots-public-prohibited
+  engine: c7n
+  service: rds
+  file: rds/rds-snapshots-public-prohibited.yml
+  description: Detects RDS DB snapshots shared publicly (restore attribute includes
+    'all'). Equivalent to AWS Config rds-snapshots-public-prohibited. Maps to FSBP
+    RDS.1 (Critical), CT Mandatory Detective, CIS 2.3.2, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_db_snapshot
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - rds
+  - security-hub
+  params: []
+- id: rds-storage-encrypted
+  engine: c7n
+  service: rds
+  file: rds/rds-storage-encrypted.yml
+  description: Detects RDS DB instances with StorageEncrypted=false. Equivalent to
+    AWS Config rds-storage-encrypted. Maps to FSBP RDS.3 (High), CIS 2.3.1, PCI DSS,
+    CT Strongly Recommended Detective.
+  severity: medium
+  terraform_resources:
+  - aws_db_instance
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-strongly-recommended
+  - fsbp
+  - medium
+  - pci-dss
+  - rds
+  - security-hub
+  params: []
+- id: redshift-backup-enabled
+  engine: rego
+  service: redshift
+  file: redshift/redshift-backup-enabled.rego
+  description: Detects Amazon Redshift clusters with automated snapshots disabled
+    (retention period = 0). Equivalent to AWS Config redshift-backup-enabled.
+  severity: high
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - fsbp
+  - high
+  - nist-800-53
+  - redshift
+  - rego
+  - security-hub
+  params: []
+- id: redshift-cluster-audit-logging-enabled
+  engine: rego
+  service: redshift
+  file: redshift/redshift-cluster-audit-logging-enabled.rego
+  description: Detects Amazon Redshift clusters without audit logging enabled. Equivalent
+    to AWS Config redshift-cluster-audit-logging-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - redshift
+  - rego
+  - security-hub
+  params: []
+- id: redshift-cluster-kms-enabled
+  engine: rego
+  service: redshift
+  file: redshift/redshift-cluster-kms-enabled.rego
+  description: Detects Amazon Redshift clusters not encrypted at rest. Equivalent
+    to AWS Config redshift-cluster-kms-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - redshift
+  - rego
+  - security-hub
+  params: []
+- id: redshift-cluster-public-access-check
+  engine: rego
+  service: redshift
+  file: redshift/redshift-cluster-public-access-check.rego
+  description: Detects Amazon Redshift clusters with public accessibility enabled.
+    Equivalent to AWS Config redshift-cluster-public-access-check.
+  severity: critical
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - cis-benchmark
+  - critical
+  - fsbp
+  - pci-dss
+  - redshift
+  - rego
+  - security-hub
+  params: []
+- id: redshift-default-admin-check
+  engine: rego
+  service: redshift
+  file: redshift/redshift-default-admin-check.rego
+  description: Detects Amazon Redshift clusters using a default administrator username.
+    Equivalent to AWS Config redshift-default-admin-check.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - redshift
+  - rego
+  - security-hub
+  params: []
+- id: redshift-enhanced-vpc-routing-enabled
+  engine: rego
+  service: redshift
+  file: redshift/redshift-enhanced-vpc-routing-enabled.rego
+  description: Detects Amazon Redshift clusters with enhanced VPC routing disabled.
+    Equivalent to AWS Config redshift-enhanced-vpc-routing-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - redshift
+  - rego
+  - security-hub
+  params: []
+- id: redshift-backup-enabled
+  engine: c7n
+  service: redshift
+  file: redshift/redshift-backup-enabled.yml
+  description: Detects Amazon Redshift clusters with AutomatedSnapshotRetentionPeriod=0
+    (backups disabled). Equivalent to AWS Config redshift-backup-enabled. Maps to
+    FSBP Redshift.3 (High), NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - redshift
+  - security-hub
+  params: []
+- id: redshift-cluster-audit-logging-enabled
+  engine: c7n
+  service: redshift
+  file: redshift/redshift-cluster-audit-logging-enabled.yml
+  description: Detects Amazon Redshift clusters without audit logging enabled. Equivalent
+    to AWS Config redshift-cluster-audit-logging-enabled. Maps to FSBP Redshift.4
+    (Medium), CIS benchmark, PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - redshift
+  - security-hub
+  params: []
+- id: redshift-cluster-kms-enabled
+  engine: c7n
+  service: redshift
+  file: redshift/redshift-cluster-kms-enabled.yml
+  description: Detects Amazon Redshift clusters where Encrypted=false (not encrypted
+    at rest). Equivalent to AWS Config redshift-cluster-kms-enabled. Maps to FSBP
+    Redshift.10 (Medium), PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - redshift
+  - security-hub
+  params: []
+- id: redshift-cluster-public-access-check
+  engine: c7n
+  service: redshift
+  file: redshift/redshift-cluster-public-access-check.yml
+  description: Detects Amazon Redshift clusters with PubliclyAccessible=true. Equivalent
+    to AWS Config redshift-cluster-public-access-check. Maps to FSBP Redshift.1 (Critical),
+    CIS benchmark, PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - pci-dss
+  - redshift
+  - security-hub
+  params: []
+- id: redshift-default-admin-check
+  engine: c7n
+  service: redshift
+  file: redshift/redshift-default-admin-check.yml
+  description: Detects Amazon Redshift clusters using a default administrator username
+    (admin, awsuser, master). Equivalent to AWS Config redshift-default-admin-check.
+    Maps to FSBP Redshift.8 (Medium), NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - redshift
+  - security-hub
+  params: []
+- id: redshift-enhanced-vpc-routing-enabled
+  engine: c7n
+  service: redshift
+  file: redshift/redshift-enhanced-vpc-routing-enabled.yml
+  description: Detects Amazon Redshift clusters with EnhancedVpcRouting=false. Equivalent
+    to AWS Config redshift-enhanced-vpc-routing-enabled. Maps to FSBP Redshift.6 (Medium),
+    NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_redshift_cluster
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - redshift
+  - security-hub
+  params: []
+- id: s3-access-point-public-access-blocks
+  engine: rego
+  service: s3
+  file: s3/s3-access-point-public-access-blocks.rego
+  description: Detects S3 access points without all four block public access settings
+    enabled. Equivalent to AWS Config s3-access-point-public-access-blocks.
+  severity: critical
+  terraform_resources:
+  - aws_s3_access_point
+  tags:
+  - critical
+  - fsbp
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-acl-prohibited
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-acl-prohibited.rego
+  description: Detects S3 buckets that do not have ACL ownership enforced (BucketOwnerEnforced).
+    Equivalent to AWS Config s3-bucket-acl-prohibited.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-blacklisted-actions-prohibited
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-blacklisted-actions-prohibited.rego
+  description: Detects S3 buckets with policies granting high-risk actions to all
+    principals (*). Equivalent to AWS Config s3-bucket-blacklisted-actions-prohibited.
+  severity: high
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - fsbp
+  - high
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-cross-region-replication-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-cross-region-replication-enabled.rego
+  description: Detects S3 buckets without cross-region replication configured. Equivalent
+    to AWS Config s3-bucket-replication-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_replication_configuration
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-default-lock-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-default-lock-enabled.rego
+  description: Detects S3 buckets without S3 Object Lock enabled. Equivalent to AWS
+    Config s3-bucket-default-lock-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - fsbp
+  - medium
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-level-public-access-prohibited
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-level-public-access-prohibited.rego
+  description: Detects S3 buckets missing bucket-level Block Public Access settings.
+  severity: critical
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_public_access_block
+  tags:
+  - cis-benchmark
+  - control-tower
+  - critical
+  - fsbp
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-logging-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-logging-enabled.rego
+  description: Detects S3 buckets without server access logging enabled.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_logging
+  tags:
+  - cis-benchmark
+  - control-tower
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-mfa-delete-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-mfa-delete-enabled.rego
+  description: Detects S3 buckets where MFA Delete is not enabled on the versioning
+    configuration. Equivalent to AWS Config s3-bucket-mfa-delete-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_versioning
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-public-read-prohibited
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-public-read-prohibited.rego
+  description: Detects S3 buckets with public read access via ACL grants to AllUsers
+    or AuthenticatedUsers. Equivalent to AWS Config s3-bucket-public-read-prohibited.
+  severity: critical
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_public_access_block
+  tags:
+  - cis-benchmark
+  - control-tower
+  - critical
+  - fsbp
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-public-write-prohibited
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-public-write-prohibited.rego
+  description: Detects S3 buckets with public write access via ACL grants to AllUsers
+    or AuthenticatedUsers. Equivalent to AWS Config s3-bucket-public-write-prohibited.
+  severity: critical
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_public_access_block
+  tags:
+  - cis-benchmark
+  - control-tower
+  - critical
+  - fsbp
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-server-side-encryption-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-server-side-encryption-enabled.rego
+  description: Detects S3 buckets without default server-side encryption configured.
+    Equivalent to AWS Config s3-bucket-server-side-encryption-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_server_side_encryption_configuration
+  tags:
+  - cis-benchmark
+  - control-tower
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-ssl-requests-only
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-ssl-requests-only.rego
+  description: Detects S3 buckets without a bucket policy that explicitly denies non-SSL
+    requests. Equivalent to AWS Config s3-bucket-ssl-requests-only.
+  severity: high
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - cis-benchmark
+  - control-tower
+  - fsbp
+  - high
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-versioning-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-bucket-versioning-enabled.rego
+  description: Detects S3 buckets without versioning enabled or with versioning suspended.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_versioning
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-default-encryption-kms
+  engine: rego
+  service: s3
+  file: s3/s3-default-encryption-kms.rego
+  description: Detects S3 buckets not encrypted with AWS KMS; flags buckets with no
+    encryption or AES256 encryption.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  - aws_s3_bucket_server_side_encryption_configuration
+  tags:
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-event-notifications-enabled
+  engine: rego
+  service: s3
+  file: s3/s3-event-notifications-enabled.rego
+  description: Detects S3 buckets without any event notification configuration. Equivalent
+    to AWS Config s3-event-notifications-enabled.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - conformance-pack
+  - fsbp
+  - medium
+  - nist-800-53
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-lifecycle-policy-check
+  engine: rego
+  service: s3
+  file: s3/s3-lifecycle-policy-check.rego
+  description: Detects S3 buckets without a lifecycle configuration. Equivalent to
+    AWS Config s3-lifecycle-policy-check.
+  severity: low
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - conformance-pack
+  - fsbp
+  - low
+  - nist-800-53
+  - rego
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-acl-prohibited
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-acl-prohibited.yml
+  description: Detects S3 buckets that do not have Object Ownership set to BucketOwnerEnforced,
+    which disables ACLs. Equivalent to AWS Config s3-bucket-acl-prohibited. Maps to
+    FSBP S3.12, CIS 2.1.5.1.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-blacklisted-actions-prohibited
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-blacklisted-actions-prohibited.yml
+  description: Detects S3 bucket policies granting high-risk actions (GetObject, DeleteObject,
+    GetBucketAcl, GetBucketPolicy) to all principals (Principal "*"). Equivalent AWS
+    Config s3-bucket-blacklisted-actions-prohibited. Maps to FSBP S3.6 (High).
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_policy
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-cross-region-replication-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-cross-region-replication-enabled.yml
+  description: Detects S3 buckets without cross-region replication configured. Equivalent
+    to AWS Config s3-bucket-replication-enabled. Maps to FSBP S3.11 (Medium), CIS
+    2.1.4, PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-default-lock-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-default-lock-enabled.yml
+  description: Detects S3 buckets without S3 Object Lock enabled. Object Lock implements
+    WORM protection preventing object deletion or overwrite. Equivalent AWS Config
+    s3-bucket-default-lock-enabled. Maps to FSBP S3.15 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-level-public-access-prohibited
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-level-public-access-prohibited.yml
+  description: 'Detects S3 buckets missing bucket-level Block Public Access settings.
+    Equivalent to AWS Config s3-bucket-level-public-access-prohibited. Maps to CT
+    Mandatory #3, FSBP S3.8, CIS 2.1.5, PCI DSS.'
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_public_access_block
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-logging-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-logging-enabled.yml
+  description: Detects S3 buckets without server access logging enabled. Equivalent
+    to AWS Config s3-bucket-logging-enabled. Maps to CT Elective, FSBP S3.9, CIS 3.1,
+    PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_logging
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-mfa-delete-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-mfa-delete-enabled.yml
+  description: Detects S3 buckets where MFA Delete is not enabled on the versioning
+    configuration. Equivalent to AWS Config s3-bucket-mfa-delete-enabled. Maps to
+    FSBP S3.15 (Medium), CIS 2.1.2, PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_versioning
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-public-read-prohibited
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-public-read-prohibited.yml
+  description: 'Detects S3 buckets with public read access via ACL grants to AllUsers
+    or AuthenticatedUsers. Equivalent to AWS Config s3-bucket-public-read-prohibited.
+    Maps to CT Mandatory #1, CT Strongly Recommended #5, FSBP S3.2, CIS 2.1.1, PCI
+    DSS.'
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-mandatory
+  - control-tower-strongly-recommended
+  - fsbp
+  - medium
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-public-write-prohibited
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-public-write-prohibited.yml
+  description: 'Detects S3 buckets with public write access via ACL grants to AllUsers
+    or AuthenticatedUsers. Equivalent to AWS Config s3-bucket-public-write-prohibited.
+    Maps to CT Mandatory #2, FSBP S3.3, CIS 2.1.1, PCI DSS.'
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-mandatory
+  - fsbp
+  - medium
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-server-side-encryption-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-server-side-encryption-enabled.yml
+  description: Detects S3 buckets without default server-side encryption configured.
+    Equivalent to AWS Config s3-bucket-server-side-encryption-enabled. Maps to CT
+    Elective, FSBP S3.4, CIS 2.1.1, PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_server_side_encryption_configuration
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-elective
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-ssl-requests-only
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-ssl-requests-only.yml
+  description: 'Detects S3 buckets without a bucket policy that denies non-SSL requests.
+    Equivalent to AWS Config s3-bucket-ssl-requests-only. Maps to CT Strongly Recommended
+    #6, FSBP S3.5, CIS 2.1.2, PCI DSS.'
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_policy
+  tags:
+  - c7n
+  - cis-benchmark
+  - control-tower
+  - control-tower-strongly-recommended
+  - fsbp
+  - medium
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-bucket-versioning-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-bucket-versioning-enabled.yml
+  description: Detects S3 buckets without versioning enabled or with versioning suspended.
+    Equivalent to AWS Config s3-bucket-versioning-enabled. Maps to FSBP S3.14, CIS
+    2.1.3, PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_versioning
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-default-encryption-kms
+  engine: c7n
+  service: s3
+  file: s3/s3-default-encryption-kms.yml
+  description: Detects S3 buckets not encrypted with AWS KMS. Flags buckets with no
+    encryption or AES256 encryption. Equivalent to AWS Config s3-default-encryption-kms.
+    Maps to FSBP S3.17, CIS 2.1.1, PCI DSS, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_server_side_encryption_configuration
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - s3
+  - security-hub
+  params: []
+- id: s3-event-notifications-enabled
+  engine: c7n
+  service: s3
+  file: s3/s3-event-notifications-enabled.yml
+  description: Detects S3 buckets without any event notification configuration. Event
+    notifications enable alerting on object operations. Equivalent to AWS Config s3-event-notifications-enabled.
+    Maps to FSBP S3.11, NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_notification
+  tags:
+  - c7n
+  - conformance-pack
+  - fsbp
+  - medium
+  - nist-800-53
+  - s3
+  - security-hub
+  params: []
+- id: s3-lifecycle-policy-check
+  engine: c7n
+  service: s3
+  file: s3/s3-lifecycle-policy-check.yml
+  description: Detects S3 buckets without a lifecycle configuration. Lifecycle policies
+    enable automatic transition and expiration of objects. Equivalent to AWS Config
+    s3-lifecycle-policy-check. Maps to FSBP S3.13 (Low), NIST 800-53.
+  severity: medium
+  terraform_resources:
+  - aws_s3_bucket_lifecycle_configuration
+  tags:
+  - c7n
+  - conformance-pack
+  - fsbp
+  - medium
+  - nist-800-53
+  - s3
+  - security-hub
+  params: []
+- id: sagemaker-notebook-instance-inside-vpc
+  engine: rego
+  service: sagemaker
+  file: sagemaker/sagemaker-notebook-instance-inside-vpc.rego
+  description: Detects SageMaker notebook instances not launched inside a custom VPC.
+    Equivalent to AWS Config sagemaker-notebook-instance-inside-vpc.
+  severity: high
+  terraform_resources:
+  - aws_sagemaker_notebook_instance
+  tags:
+  - fsbp
+  - high
+  - rego
+  - sagemaker
+  - security-hub
+  params: []
+- id: sagemaker-notebook-instance-root-access-check
+  engine: rego
+  service: sagemaker
+  file: sagemaker/sagemaker-notebook-instance-root-access-check.rego
+  description: Detects SageMaker notebook instances with root access enabled. Equivalent
+    to AWS Config sagemaker-notebook-instance-root-access-check.
+  severity: high
+  terraform_resources:
+  - aws_sagemaker_notebook_instance
+  tags:
+  - fsbp
+  - high
+  - rego
+  - sagemaker
+  - security-hub
+  params: []
+- id: sagemaker-notebook-no-direct-internet-access
+  engine: rego
+  service: sagemaker
+  file: sagemaker/sagemaker-notebook-no-direct-internet-access.rego
+  description: Detects SageMaker notebook instances with direct internet access enabled.
+    Equivalent to AWS Config sagemaker-notebook-no-direct-internet-access.
+  severity: high
+  terraform_resources:
+  - aws_sagemaker_notebook_instance
+  tags:
+  - control-tower
+  - fsbp
+  - high
+  - rego
+  - sagemaker
+  - security-hub
+  params: []
+- id: sagemaker-notebook-instance-inside-vpc
+  engine: c7n
+  service: sagemaker
+  file: sagemaker/sagemaker-notebook-instance-inside-vpc.yml
+  description: Detects SageMaker notebook instances not launched inside a custom VPC.
+    Equivalent to AWS Config sagemaker-notebook-instance-inside-vpc. Maps to FSBP
+    SageMaker.2 (High).
+  severity: medium
+  terraform_resources:
+  - aws_sagemaker_notebook_instance
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - sagemaker
+  - security-hub
+  params: []
+- id: sagemaker-notebook-instance-root-access-check
+  engine: c7n
+  service: sagemaker
+  file: sagemaker/sagemaker-notebook-instance-root-access-check.yml
+  description: Detects SageMaker notebook instances with root access enabled for users.
+    Equivalent to AWS Config sagemaker-notebook-instance-root-access-check. Maps to
+    FSBP SageMaker.3 (High).
+  severity: medium
+  terraform_resources:
+  - aws_sagemaker_notebook_instance
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - sagemaker
+  - security-hub
+  params: []
+- id: sagemaker-notebook-no-direct-internet-access
+  engine: c7n
+  service: sagemaker
+  file: sagemaker/sagemaker-notebook-no-direct-internet-access.yml
+  description: 'Detects SageMaker notebook instances with DirectInternetAccess=Enabled,
+    bypassing VPC network controls. Equivalent AWS Config rule: sagemaker-notebook-no-direct-internet-access.
+    Maps to FSBP SageMaker.1 (High), CT Strongly Recommended Detective.'
+  severity: medium
+  terraform_resources:
+  - aws_sagemaker_notebook_instance
+  tags:
+  - c7n
+  - control-tower
+  - control-tower-strongly-recommended
+  - fsbp
+  - medium
+  - sagemaker
+  - security-hub
+  params: []
+- id: secretsmanager-rotation-enabled-check
+  engine: rego
+  service: secretsmanager
+  file: secretsmanager/secretsmanager-rotation-enabled-check.rego
+  description: Detects Secrets Manager secrets that do not have automatic rotation
+    enabled.
+  severity: high
+  terraform_resources:
+  - aws_secretsmanager_secret
+  - aws_secretsmanager_secret_rotation
+  tags:
+  - fsbp
+  - high
+  - nist-800-53
+  - pci-dss
+  - rego
+  - secretsmanager
+  - security-hub
+  params: []
+- id: secretsmanager-using-cmk
+  engine: rego
+  service: secretsmanager
+  file: secretsmanager/secretsmanager-using-cmk.rego
+  description: Detects Secrets Manager secrets not encrypted with a customer-managed
+    KMS key. Equivalent to AWS Config secretsmanager-using-cmk.
+  severity: medium
+  terraform_resources:
+  - aws_secretsmanager_secret
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - secretsmanager
+  - security-hub
+  params: []
+- id: secretsmanager-rotation-enabled-check
+  engine: c7n
+  service: secretsmanager
+  file: secretsmanager/secretsmanager-rotation-enabled-check.yml
+  description: Detects Secrets Manager secrets that do not have automatic rotation
+    enabled. Equivalent to AWS Config secretsmanager-rotation-enabled-check. Maps
+    to FSBP SecretsManager.1 (High), PCI DSS, nist-800-53.
+  severity: medium
+  terraform_resources:
+  - aws_secretsmanager_secret_rotation
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - secretsmanager
+  - security-hub
+  params: []
+- id: secretsmanager-using-cmk
+  engine: c7n
+  service: secretsmanager
+  file: secretsmanager/secretsmanager-using-cmk.yml
+  description: Detects Secrets Manager secrets not encrypted with a customer-managed
+    KMS key (CMK). Non-compliant when KmsKeyId is absent or references alias/aws/secretsmanager.
+    Maps to FSBP SecretsManager.5 (Medium), NIST 800-53 SC-28, PCI DSS Req 3.4.
+  severity: medium
+  terraform_resources:
+  - aws_secretsmanager_secret
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - secretsmanager
+  - security-hub
+  params: []
+- id: sns-encrypted-kms
+  engine: rego
+  service: sns
+  file: sns/sns-encrypted-kms.rego
+  description: Detects SNS topics not encrypted at rest using AWS KMS.
+  severity: medium
+  terraform_resources:
+  - aws_sns_topic
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  - sns
+  params: []
+- id: sns-topic-public-access-prohibited
+  engine: rego
+  service: sns
+  file: sns/sns-topic-public-access-prohibited.rego
+  description: Detects SNS topics whose access policies grant public access via wildcard
+    principal (*). Equivalent to AWS Config sns-topic-no-public-access.
+  severity: high
+  terraform_resources:
+  - aws_sns_topic
+  - aws_sns_topic_policy
+  tags:
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  - sns
+  params: []
+- id: sns-encrypted-kms
+  engine: c7n
+  service: sns
+  file: sns/sns-encrypted-kms.yml
+  description: Detects SNS topics not encrypted at rest using AWS KMS. Topics without
+    a KmsMasterKeyId are non-compliant. Equivalent to AWS Config sns-encrypted-kms.
+    Maps to FSBP SNS.1 (Medium) and PCI DSS.
+  severity: medium
+  terraform_resources:
+  - aws_sns_topic
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - security-hub
+  - sns
+  params: []
+- id: sns-topic-public-access-prohibited
+  engine: c7n
+  service: sns
+  file: sns/sns-topic-public-access-prohibited.yml
+  description: 'Detects SNS topics whose access policies grant public access (Principal:
+    *). Equivalent to AWS Config sns-topic-no-public-access. Maps to FSBP SNS.4 (High).'
+  severity: medium
+  terraform_resources:
+  - aws_sns_topic_policy
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  - sns
+  params: []
+- id: sqs-queue-encrypted
+  engine: rego
+  service: sqs
+  file: sqs/sqs-queue-encrypted.rego
+  description: Detects SQS queues not encrypted at rest; a queue is compliant if it
+    uses a customer KMS key or SQS-managed SSE.
+  severity: medium
+  terraform_resources:
+  - aws_sqs_queue
+  tags:
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - rego
+  - security-hub
+  - sqs
+  params: []
+- id: sqs-queue-public-access-prohibited
+  engine: rego
+  service: sqs
+  file: sqs/sqs-queue-public-access-prohibited.rego
+  description: Detects SQS queues whose access policies grant public access via wildcard
+    principal (*). Equivalent to AWS Config sqs-queue-no-public-access.
+  severity: high
+  terraform_resources:
+  - aws_sqs_queue
+  - aws_sqs_queue_policy
+  tags:
+  - fsbp
+  - high
+  - rego
+  - security-hub
+  - sqs
+  params: []
+- id: sqs-queue-encrypted
+  engine: c7n
+  service: sqs
+  file: sqs/sqs-queue-encrypted.yml
+  description: Detects SQS queues not encrypted at rest. A queue is compliant if it
+    has a KmsMasterKeyId (customer KMS) or SqsManagedSseEnabled=true. Equivalent to
+    AWS Config sqs-queue-encrypted. Maps to FSBP SQS.1 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_sqs_queue
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - nist-800-53
+  - pci-dss
+  - security-hub
+  - sqs
+  params: []
+- id: sqs-queue-public-access-prohibited
+  engine: c7n
+  service: sqs
+  file: sqs/sqs-queue-public-access-prohibited.yml
+  description: 'Detects SQS queues whose access policies grant public access (Principal:
+    *). Equivalent to AWS Config sqs-queue-no-public-access. Maps to FSBP SQS.3 (High).'
+  severity: medium
+  terraform_resources:
+  - aws_sqs_queue_policy
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  - sqs
+  params: []
+- id: ssm-document-not-public
+  engine: rego
+  service: ssm
+  file: ssm/ssm-document-not-public.rego
+  description: Detects SSM documents shared publicly with all AWS accounts. Equivalent
+    to AWS Config ssm-document-not-public.
+  severity: critical
+  terraform_resources:
+  - aws_ssm_document
+  tags:
+  - cis-benchmark
+  - critical
+  - fsbp
+  - nist-800-53
+  - rego
+  - security-hub
+  - ssm
+  params: []
+- id: ssm-document-not-public
+  engine: c7n
+  service: ssm
+  file: ssm/ssm-document-not-public.yml
+  description: Detects SSM documents shared publicly with all AWS accounts. Documents
+    with permission granted to "all" are non-compliant. Equivalent to AWS Config ssm-document-not-public.
+    Maps to FSBP SSM.4 (Critical).
+  severity: medium
+  terraform_resources:
+  - aws_ssm_document
+  tags:
+  - c7n
+  - cis-benchmark
+  - fsbp
+  - medium
+  - nist-800-53
+  - security-hub
+  - ssm
+  params: []
+- id: wafv2-logging-enabled
+  engine: rego
+  service: waf
+  file: waf/wafv2-logging-enabled.rego
+  description: Detects WAFv2 Web ACLs with no logging configured. Equivalent to AWS
+    Config FSBP WAF.11.
+  severity: low
+  terraform_resources:
+  - aws_wafv2_web_acl
+  - aws_wafv2_web_acl_logging_configuration
+  tags:
+  - fsbp
+  - low
+  - rego
+  - security-hub
+  - waf
+  params: []
+- id: wafv2-webacl-not-empty
+  engine: rego
+  service: waf
+  file: waf/wafv2-webacl-not-empty.rego
+  description: Detects WAFv2 Web ACLs with no rules configured, providing no protection.
+    Equivalent to AWS Config FSBP WAF.10.
+  severity: medium
+  terraform_resources:
+  - aws_wafv2_web_acl
+  tags:
+  - fsbp
+  - medium
+  - rego
+  - security-hub
+  - waf
+  params: []
+- id: wafv2-logging-enabled
+  engine: c7n
+  service: waf
+  file: waf/wafv2-logging-enabled.yml
+  description: Detects WAFv2 Web ACLs with no logging configured. WAF logging records
+    request details (IP, URI, rules, action). Without it, security teams lack visibility
+    into web traffic and attacks. Maps to FSBP WAF.11 (Low).
+  severity: medium
+  terraform_resources:
+  - aws_wafv2_web_acl_logging_configuration
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  - waf
+  params: []
+- id: wafv2-webacl-not-empty
+  engine: c7n
+  service: waf
+  file: waf/wafv2-webacl-not-empty.yml
+  description: Detects WAFv2 Web ACLs with no rules configured. An empty Web ACL applies
+    only the default action to all requests, providing no protection against SQL injection,
+    XSS, or other web attacks. Maps to FSBP WAF.10 (Medium).
+  severity: medium
+  terraform_resources:
+  - aws_wafv2_web_acl
+  tags:
+  - c7n
+  - fsbp
+  - medium
+  - security-hub
+  - waf
+  params: []

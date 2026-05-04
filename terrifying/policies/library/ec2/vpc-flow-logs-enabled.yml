@@ -1,0 +1,9 @@
+policies:
+  - name: vpc-flow-logs-enabled
+    description: VPCs must have flow logs enabled
+    resource: terraform.aws_vpc
+    filters:
+      - type: value
+        key: flow_log
+        value: absent
+        op: eq

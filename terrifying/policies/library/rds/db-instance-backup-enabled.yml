@@ -1,0 +1,15 @@
+policies:
+  - name: db-instance-backup-enabled
+    description: >
+      Detects RDS DB instances with BackupRetentionPeriod=0 (backups disabled).
+      Equivalent to AWS Config db-instance-backup-enabled. Maps to FSBP RDS.11
+      (Medium), CT Elective Detective, conformance pack Operational Best Practices.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - backup_retention_period: 0

@@ -1,0 +1,15 @@
+policies:
+  - name: codebuild-project-s3-logs-encrypted
+    description: >
+      Detects CodeBuild projects where S3 logging is enabled but encryption_disabled=true,
+      leaving build logs unencrypted at rest. Equivalent to AWS Config
+      codebuild-project-s3-logs-encrypted. Maps to FSBP CodeBuild.3 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_codebuild_project
+    filters:
+      - type: value
+        key: logs_config.s3_logs.encryption_disabled
+        value: true
+        op: eq

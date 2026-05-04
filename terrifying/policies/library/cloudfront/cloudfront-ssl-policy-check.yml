@@ -1,0 +1,18 @@
+policies:
+  - name: cloudfront-ssl-policy-check
+    description: >
+      Detects CloudFront distributions using an outdated TLS security policy for viewer connections
+      (SSLv3, TLSv1, TLSv1_2016, TLSv1.1_2016). Equivalent to FSBP CloudFront.15. Medium severity.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: viewer_certificate.minimum_protocol_version
+        op: in
+        value:
+          - SSLv3
+          - TLSv1
+          - TLSv1_2016
+          - TLSv1.1_2016

@@ -1,0 +1,12 @@
+policies:
+  - name: vpc-sg-open-only-to-authorized-ports
+    description: Security groups must only allow unrestricted ingress on ports 80 and 443
+    resource: terraform.aws_security_group
+    filters:
+      - or:
+        - type: ingress
+          OnlyPorts: [80, 443]
+          Cidr: "0.0.0.0/0"
+        - type: ingress
+          OnlyPorts: [80, 443]
+          CidrV6: "::/0"

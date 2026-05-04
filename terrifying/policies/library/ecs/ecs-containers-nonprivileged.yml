@@ -1,0 +1,13 @@
+policies:
+  - name: ecs-containers-nonprivileged
+    description: >
+      Detects ECS task definitions where any container has privileged=true.
+      Privileged containers have root-level host access and can escape container
+      isolation. Equivalent to AWS Config ecs-containers-nonprivileged.
+      Maps to FSBP ECS.4 (High).
+    resource: terraform.aws_ecs_task_definition
+    filters:
+      - type: value
+        key: "container_definitions"
+        value: present
+        op: eq

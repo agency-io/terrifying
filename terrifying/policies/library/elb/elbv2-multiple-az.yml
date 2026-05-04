@@ -1,0 +1,16 @@
+policies:
+  - name: elbv2-multiple-az
+    description: >
+      Detects Application and Network Load Balancers deployed in fewer than two
+      Availability Zones. Single-AZ deployments create a single point of failure.
+      Equivalent to AWS Config elbv2-multiple-az. Maps to FSBP ELB.13.
+    tags:
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_lb
+    filters:
+      - type: value
+        key: "length(subnets)"
+        value: 2
+        op: lt

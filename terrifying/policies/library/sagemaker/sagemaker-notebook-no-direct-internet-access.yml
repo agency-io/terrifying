@@ -1,0 +1,17 @@
+policies:
+  - name: sagemaker-notebook-no-direct-internet-access
+    description: >
+      Detects SageMaker notebook instances with DirectInternetAccess=Enabled,
+      bypassing VPC network controls.
+      Equivalent AWS Config rule: sagemaker-notebook-no-direct-internet-access.
+      Maps to FSBP SageMaker.1 (High), CT Strongly Recommended Detective.
+    tags:
+      - control-tower
+      - control-tower-strongly-recommended
+      - security-hub
+      - fsbp
+    resource: terraform.aws_sagemaker_notebook_instance
+    filters:
+      - type: value
+        key: "direct_internet_access"
+        value: "Enabled"

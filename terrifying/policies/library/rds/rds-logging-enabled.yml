@@ -1,0 +1,17 @@
+policies:
+  - name: rds-logging-enabled
+    description: >
+      Detects RDS DB instances with no CloudWatch Logs exports configured. Equivalent
+      to AWS Config rds-logging-enabled. Maps to FSBP RDS.9 (Medium), CT Elective
+      Detective, conformance pack Operational Best Practices for RDS.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - type: value
+        key: "enabled_cloudwatch_logs_exports"
+        value: empty

@@ -1,0 +1,16 @@
+policies:
+  - name: iam-user-group-membership-check
+    description: >
+      Detects IAM users not assigned to at least one IAM group. Users should receive
+      permissions via groups. Equivalent to AWS Config iam-user-group-membership-check.
+      Maps to: FSBP IAM.1 (Medium), CIS 1.15.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+    resource: terraform.aws_iam_user
+    filters:
+      - type: value
+        key: groups
+        value: absent
+        op: eq

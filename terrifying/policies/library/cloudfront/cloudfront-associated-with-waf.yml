@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-associated-with-waf
+    description: >
+      Detects CloudFront distributions without a WAF Web ACL associated.
+      Non-compliant when web_acl_id is absent or empty. Equivalent to AWS Config
+      cloudfront-associated-with-waf. Maps to FSBP CloudFront.6 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: web_acl_id
+        value: absent
+        op: eq

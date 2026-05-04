@@ -1,0 +1,17 @@
+policies:
+  - name: lambda-vpc-multi-az-check
+    description: >
+      Detects VPC-connected Lambda functions with fewer than 2 subnets, indicating
+      single-AZ placement. Maps to FSBP Lambda.5 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_lambda_function
+    filters:
+      - type: value
+        key: vpc_config.subnet_ids
+        value: present
+      - type: value
+        key: "length(vpc_config.subnet_ids)"
+        value: 2
+        op: lt

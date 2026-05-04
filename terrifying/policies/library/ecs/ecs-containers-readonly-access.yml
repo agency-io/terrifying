@@ -1,0 +1,12 @@
+policies:
+  - name: ecs-containers-readonly-access
+    description: >
+      Detects ECS task definitions where any container lacks readonlyRootFilesystem=true.
+      A writable root filesystem lets attackers modify system files and persist changes.
+      Equivalent to AWS Config ecs-containers-readonly-access. Maps to FSBP ECS.5 (High).
+    resource: terraform.aws_ecs_task_definition
+    filters:
+      - type: value
+        key: "container_definitions"
+        value: present
+        op: eq

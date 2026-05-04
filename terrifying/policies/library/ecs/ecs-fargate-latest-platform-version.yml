@@ -1,0 +1,13 @@
+policies:
+  - name: ecs-fargate-latest-platform-version
+    description: >
+      Detects ECS Fargate services not running on the latest Fargate platform
+      version. Equivalent to AWS Config ecs-fargate-latest-platform-version.
+      Maps to FSBP ECS.10 (Medium).
+    resource: terraform.aws_ecs_service
+    filters:
+      - launch_type: FARGATE
+      - type: value
+        key: platform_version
+        op: ne
+        value: LATEST

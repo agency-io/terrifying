@@ -1,0 +1,14 @@
+policies:
+  - name: sns-topic-public-access-prohibited
+    description: >
+      Detects SNS topics whose access policies grant public access (Principal: *).
+      Equivalent to AWS Config sns-topic-no-public-access. Maps to FSBP SNS.4 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_sns_topic_policy
+    filters:
+      - type: value
+        key: "policy"
+        value: '"Principal":"*"'
+        op: contains

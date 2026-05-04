@@ -1,0 +1,19 @@
+policies:
+  - name: codebuild-project-envvar-awscred-check
+    description: >
+      Detects CodeBuild projects that store AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY
+      as PLAINTEXT environment variables. Equivalent to AWS Config
+      codebuild-project-envvar-awscred-check. Maps to FSBP CodeBuild.2 (Critical).
+      Note: The runtime filter uses JMESPath to intersect PLAINTEXT env var names;
+      here we flag projects that declare any environment block without a type override.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_codebuild_project
+    filters:
+      - type: value
+        key: "environment.environment_variable[?type=='PLAINTEXT'].name"
+        op: intersect
+        value:
+          - AWS_ACCESS_KEY_ID
+          - AWS_SECRET_ACCESS_KEY

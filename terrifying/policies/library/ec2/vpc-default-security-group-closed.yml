@@ -1,0 +1,17 @@
+policies:
+  - name: vpc-default-security-group-closed
+    description: The default VPC security group must not allow any inbound or outbound traffic
+    resource: terraform.aws_security_group
+    filters:
+      - type: value
+        key: name
+        value: default
+      - or:
+        - type: value
+          key: "length(ingress)"
+          value: 0
+          op: greater-than
+        - type: value
+          key: "length(egress)"
+          value: 0
+          op: greater-than

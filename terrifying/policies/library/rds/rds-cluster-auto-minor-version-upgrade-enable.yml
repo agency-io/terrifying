@@ -1,0 +1,12 @@
+policies:
+  - name: rds-cluster-auto-minor-version-upgrade-enable
+    description: >
+      Detects Aurora DB clusters where AutoMinorVersionUpgrade=false. Minor version
+      updates include security patches. Equivalent AWS Config
+      rds-cluster-auto-minor-version-upgrade-enable. Maps to FSBP RDS.35 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_rds_cluster
+    filters:
+      - auto_minor_version_upgrade: false

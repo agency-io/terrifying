@@ -1,0 +1,13 @@
+policies:
+  - name: ecr-private-repo-kms-encrypted
+    description: ECR private repositories must be encrypted with a customer managed KMS key
+    resource: terraform.aws_ecr_repository
+    filters:
+      - or:
+        - type: value
+          key: "encryption_configuration.encryption_type"
+          op: ne
+          value: KMS
+        - type: value
+          key: "encryption_configuration.kms_key"
+          value: absent

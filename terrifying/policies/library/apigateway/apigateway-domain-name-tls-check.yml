@@ -1,0 +1,16 @@
+policies:
+  - name: apigateway-domain-name-tls-check
+    description: >
+      Detects API Gateway custom domain names not using the recommended TLS
+      security policy (TLS_1_2). Non-compliant when securityPolicy is TLS_1_0.
+      Equivalent to AWS Config apigateway-domain-name-tls-check.
+      Maps to FSBP APIGateway.11 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_api_gateway_domain_name
+    filters:
+      - type: value
+        key: security_policy
+        value: TLS_1_2
+        op: ne

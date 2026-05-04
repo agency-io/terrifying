@@ -1,0 +1,17 @@
+policies:
+  - name: sqs-queue-encrypted
+    description: >
+      Detects SQS queues not encrypted at rest. A queue is compliant if it has a
+      KmsMasterKeyId (customer KMS) or SqsManagedSseEnabled=true. Equivalent to
+      AWS Config sqs-queue-encrypted. Maps to FSBP SQS.1 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_sqs_queue
+    filters:
+      - type: value
+        key: kms_master_key_id
+        value: absent
+        op: eq

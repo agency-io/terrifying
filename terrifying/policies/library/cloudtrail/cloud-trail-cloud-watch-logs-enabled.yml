@@ -1,0 +1,19 @@
+policies:
+  - name: cloud-trail-cloud-watch-logs-enabled
+    description: >
+      Detects CloudTrail trails not integrated with CloudWatch Logs. Equivalent to AWS Config
+      cloud-trail-cloud-watch-logs-enabled. Maps to CT Mandatory, FSBP CloudTrail.5,
+      CIS 3.4, PCI DSS.
+    tags:
+      - control-tower
+      - control-tower-mandatory
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_cloudtrail
+    filters:
+      - type: value
+        key: cloud_watch_logs_group_arn
+        value: absent
+        op: eq

@@ -1,0 +1,15 @@
+policies:
+  - name: lambda-function-xray-enabled
+    description: >
+      Detects Lambda functions that do not have AWS X-Ray active tracing enabled.
+      Equivalent AWS Config rule: lambda-function-xray-tracing-enabled.
+      Maps to FSBP Lambda.7 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_lambda_function
+    filters:
+      - type: value
+        key: tracing_config.mode
+        value: Active
+        op: ne

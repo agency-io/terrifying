@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-origin-failover-enabled
+    description: >
+      Detects CloudFront distributions that have no origin groups configured.
+      Origin groups enable automatic failover to a secondary origin.
+      Equivalent: cloudfront-origin-failover-enabled. FSBP CloudFront.4.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: origin_group
+        value: absent
+        op: eq

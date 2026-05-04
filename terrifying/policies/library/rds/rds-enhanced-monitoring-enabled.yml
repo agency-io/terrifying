@@ -1,0 +1,18 @@
+policies:
+  - name: rds-enhanced-monitoring-enabled
+    description: >
+      Detects RDS DB instances where MonitoringInterval=0 (enhanced monitoring disabled).
+      Equivalent to AWS Config rds-enhanced-monitoring-enabled. Maps to FSBP RDS.6 (Low).
+    tags:
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - or:
+          - type: value
+            key: "monitoring_interval"
+            value: 0
+          - type: value
+            key: "monitoring_interval"
+            value: absent

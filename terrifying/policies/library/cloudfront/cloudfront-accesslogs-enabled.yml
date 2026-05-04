@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-accesslogs-enabled
+    description: >
+      Detects CloudFront distributions that do not have access logging enabled.
+      Access logs are required for security auditing and incident investigation.
+      Equivalent: cloudfront-accesslogs-enabled. FSBP CloudFront.5.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: logging_config
+        value: absent
+        op: eq

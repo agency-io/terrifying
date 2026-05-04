@@ -1,0 +1,13 @@
+policies:
+  - name: autoscaling-launch-config-public-ip-disabled
+    description: >
+      Detects Auto Scaling launch configurations with AssociatePublicIpAddress=true,
+      exposing instances directly to the internet.
+      Equivalent to AWS Config autoscaling-launch-config-public-ip-disabled.
+      Maps to FSBP AutoScaling.5 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_launch_configuration
+    filters:
+      - associate_public_ip_address: true

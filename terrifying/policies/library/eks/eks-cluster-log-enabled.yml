@@ -1,0 +1,12 @@
+policies:
+  - name: eks-cluster-log-enabled
+    description: >
+      Detects EKS clusters where audit logging is disabled. Without audit logs,
+      API server activity cannot be monitored or investigated.
+      Equivalent AWS Config rule: eks-cluster-log-enabled. Maps to FSBP EKS.8 (Medium).
+    resource: terraform.aws_eks_cluster
+    filters:
+      - type: value
+        key: enabled_cluster_log_types
+        value: absent
+        op: eq

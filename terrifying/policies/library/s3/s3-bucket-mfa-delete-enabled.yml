@@ -1,0 +1,18 @@
+policies:
+  - name: s3-bucket-mfa-delete-enabled
+    description: >
+      Detects S3 buckets where MFA Delete is not enabled on the versioning configuration.
+      Equivalent to AWS Config s3-bucket-mfa-delete-enabled.
+      Maps to FSBP S3.15 (Medium), CIS 2.1.2, PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_s3_bucket_versioning
+    filters:
+      - type: value
+        key: "versioning_configuration[0].mfa_delete"
+        value: "Enabled"
+        op: ne

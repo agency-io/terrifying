@@ -1,0 +1,12 @@
+policies:
+  - name: rds-proxy-tls-encryption
+    description: >
+      Detects RDS proxies not configured to require TLS for client connections.
+      Equivalent to AWS Config rds-proxy-tls-encryption. Maps to FSBP RDS.43
+      (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_db_proxy
+    filters:
+      - require_tls: false

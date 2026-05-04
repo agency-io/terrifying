@@ -1,0 +1,15 @@
+policies:
+  - name: rds-multi-az-support
+    description: >
+      Detects RDS DB instances with MultiAZ=false. Equivalent to AWS Config
+      rds-multi-az-support. Maps to FSBP RDS.5 (Medium), CT Elective Detective,
+      conformance pack Operational Best Practices for RDS.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - multi_az: false

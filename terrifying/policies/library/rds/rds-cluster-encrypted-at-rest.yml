@@ -1,0 +1,13 @@
+policies:
+  - name: rds-cluster-encrypted-at-rest
+    description: >
+      Detects RDS DB clusters where StorageEncrypted=false. Equivalent to AWS Config
+      rds-cluster-encrypted-at-rest. Maps to FSBP RDS.27 (High), PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_rds_cluster
+    filters:
+      - storage_encrypted: false

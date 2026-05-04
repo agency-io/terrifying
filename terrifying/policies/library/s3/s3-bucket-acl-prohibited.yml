@@ -1,0 +1,16 @@
+policies:
+  - name: s3-bucket-acl-prohibited
+    description: >
+      Detects S3 buckets that do not have Object Ownership set to BucketOwnerEnforced,
+      which disables ACLs. Equivalent to AWS Config s3-bucket-acl-prohibited.
+      Maps to FSBP S3.12, CIS 2.1.5.1.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+    resource: terraform.aws_s3_bucket
+    filters:
+      - type: value
+        key: "object_ownership"
+        value: "BucketOwnerEnforced"
+        op: ne

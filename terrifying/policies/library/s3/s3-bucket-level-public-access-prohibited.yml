@@ -1,0 +1,19 @@
+policies:
+  - name: s3-bucket-level-public-access-prohibited
+    description: >
+      Detects S3 buckets missing bucket-level Block Public Access settings.
+      Equivalent to AWS Config s3-bucket-level-public-access-prohibited.
+      Maps to CT Mandatory #3, FSBP S3.8, CIS 2.1.5, PCI DSS.
+    tags:
+      - control-tower
+      - control-tower-mandatory
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_s3_bucket_public_access_block
+    filters:
+      - type: value
+        key: "block_public_acls"
+        value: true
+        op: ne

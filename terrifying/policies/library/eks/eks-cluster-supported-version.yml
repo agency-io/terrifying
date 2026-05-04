@@ -1,0 +1,12 @@
+policies:
+  - name: eks-cluster-supported-version
+    description: >
+      Detects EKS clusters running Kubernetes versions older than 1.28.
+      Unsupported versions no longer receive security patches.
+      Equivalent AWS Config rule: eks-cluster-supported-version. Maps to FSBP EKS.2 (High).
+    resource: terraform.aws_eks_cluster
+    filters:
+      - type: value
+        key: version
+        op: lt
+        value: "1.28"

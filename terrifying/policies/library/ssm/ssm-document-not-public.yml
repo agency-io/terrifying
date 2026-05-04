@@ -1,0 +1,17 @@
+policies:
+  - name: ssm-document-not-public
+    description: >
+      Detects SSM documents shared publicly with all AWS accounts. Documents with
+      permission granted to "all" are non-compliant. Equivalent to AWS Config
+      ssm-document-not-public. Maps to FSBP SSM.4 (Critical).
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - nist-800-53
+    resource: terraform.aws_ssm_document
+    filters:
+      - type: value
+        key: "permissions.account_ids"
+        value: "all"
+        op: contains

@@ -1,0 +1,9 @@
+policies:
+  - name: efs-encrypted-check
+    description: >
+      Detects Amazon EFS file systems that are not encrypted at rest.
+      Encryption must be enabled at creation time and cannot be changed afterward.
+      Equivalent AWS Config rule: (custom). Maps to: AWS Security Hub FSBP EFS.1 (Medium).
+    resource: terraform.aws_efs_file_system
+    filters:
+      - encrypted: false

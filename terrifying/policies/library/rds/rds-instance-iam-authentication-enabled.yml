@@ -1,0 +1,15 @@
+policies:
+  - name: rds-instance-iam-authentication-enabled
+    description: >
+      Detects RDS DB instances with IAMDatabaseAuthenticationEnabled=false. Equivalent
+      to AWS Config rds-instance-iam-authentication-enabled. Maps to FSBP RDS.10
+      (Medium), CT Elective Detective, conformance pack Operational Best Practices.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - iam_database_authentication_enabled: false

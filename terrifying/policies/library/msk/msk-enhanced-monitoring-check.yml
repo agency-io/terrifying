@@ -1,0 +1,13 @@
+policies:
+  - name: msk-enhanced-monitoring-check
+    description: >
+      Detects MSK clusters using DEFAULT monitoring level. Clusters should use
+      PER_BROKER or higher. Equivalent to FSBP MSK.2 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_msk_cluster
+    filters:
+      - type: value
+        key: "enhanced_monitoring"
+        value: "DEFAULT"

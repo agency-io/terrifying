@@ -1,0 +1,15 @@
+policies:
+  - name: rds-cluster-deletion-protection-enabled
+    description: >
+      Detects RDS DB clusters with DeletionProtection=false. Equivalent to AWS Config
+      rds-cluster-deletion-protection-enabled. Maps to FSBP RDS.7 (High), CT Elective
+      Detective, conformance pack Operational Best Practices for RDS.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_rds_cluster
+    filters:
+      - deletion_protection: false

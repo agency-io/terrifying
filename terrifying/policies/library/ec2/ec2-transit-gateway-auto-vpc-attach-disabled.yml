@@ -1,0 +1,8 @@
+policies:
+  - name: ec2-transit-gateway-auto-vpc-attach-disabled
+    description: Transit Gateways must not have auto-accept shared attachments enabled
+    resource: terraform.aws_ec2_transit_gateway
+    filters:
+      - type: value
+        key: "auto_accept_shared_attachments"
+        value: enable

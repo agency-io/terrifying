@@ -1,0 +1,13 @@
+policies:
+  - name: redshift-backup-enabled
+    description: >
+      Detects Amazon Redshift clusters with AutomatedSnapshotRetentionPeriod=0 (backups
+      disabled). Equivalent to AWS Config redshift-backup-enabled. Maps to FSBP
+      Redshift.3 (High), NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+    resource: terraform.aws_redshift_cluster
+    filters:
+      - automated_snapshot_retention_period: 0

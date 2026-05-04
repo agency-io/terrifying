@@ -254,6 +254,43 @@ Plain YAML with no Jinja2 syntax passes through to `c7n-left` unchanged.
 
 Requires `c7n-left` on PATH (`pip install c7n-left`). If absent, a `c7n_unavailable` test item is reported.
 
+## Bundled policy library
+
+terrifying ships a curated library of ~370 shift-left-compatible AWS best-practice policies covering CIS, FSBP, PCI-DSS, NIST 800-53, and Control Tower requirements — available in both OPA/Rego and c7n-left formats.
+
+### Browse and add policies
+
+```bash
+# Interactive TUI — browse by tag, select policies, preview delta, confirm
+terrifying add                          # requires: pip install terrifying[tui]
+
+# Non-interactive — add specific policies by ID
+terrifying add rds-storage-encrypted s3-bucket-server-side-encryption-enabled
+
+# Choose engine (default: both)
+terrifying add rds-storage-encrypted --engine rego
+terrifying add rds-storage-encrypted --engine c7n
+
+# Preview what would be added without writing anything
+terrifying add rds-storage-encrypted --dry-run
+```
+
+When you add a policy, terrifying:
+1. Copies the `.rego` / `.yml` file to your configured policies directory
+2. Prompts for any configurable params (e.g. `required_tags`) and writes them to `terrifying.yml`
+3. Shows a diff of `terrifying.yml` changes before applying
+
+### List available policies
+
+```bash
+terrifying list                         # all policies (both engines)
+terrifying list --engine rego           # Rego only
+terrifying list --tag fsbp              # filter by compliance framework
+terrifying list --tag s3 --tag high     # multiple tags (AND)
+```
+
+Available tags include compliance frameworks (`fsbp`, `cis-benchmark`, `pci-dss`, `nist-800-53`, `control-tower-mandatory`, `control-tower-strongly-recommended`, `control-tower-elective`), AWS services (`s3`, `rds`, `ec2`, …), severities (`high`, `medium`, `low`), and engines (`rego`, `c7n`).
+
 ## CLI
 
 For use in scripts or CI pipelines without pytest:

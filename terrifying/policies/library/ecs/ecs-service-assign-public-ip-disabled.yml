@@ -1,0 +1,12 @@
+policies:
+  - name: ecs-service-assign-public-ip-disabled
+    description: >
+      Detects ECS services with assign_public_ip=ENABLED in their network
+      configuration. Public IPs on ECS tasks expose them directly to the internet.
+      Equivalent to AWS Config ecs-service-assign-public-ip-disabled.
+      Maps to FSBP ECS.2 (High).
+    resource: terraform.aws_ecs_service
+    filters:
+      - type: value
+        key: "network_configuration[0].assign_public_ip"
+        value: true

@@ -1,0 +1,16 @@
+policies:
+  - name: s3-bucket-server-side-encryption-enabled
+    description: >
+      Detects S3 buckets without default server-side encryption configured.
+      Equivalent to AWS Config s3-bucket-server-side-encryption-enabled.
+      Maps to CT Elective, FSBP S3.4, CIS 2.1.1, PCI DSS, NIST 800-53.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_s3_bucket_server_side_encryption_configuration
+    filters: []

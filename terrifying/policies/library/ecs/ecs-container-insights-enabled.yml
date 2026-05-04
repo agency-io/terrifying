@@ -1,0 +1,12 @@
+policies:
+  - name: ecs-container-insights-enabled
+    description: >
+      Detects ECS clusters where Container Insights is not enabled, leaving operators
+      without visibility into cluster metrics and logs. Equivalent to AWS Config
+      ecs-container-insights-enabled. Maps to FSBP ECS.12 (Medium).
+    resource: terraform.aws_ecs_cluster
+    filters:
+      - type: value
+        key: "setting[?name=='containerInsights'].value | [0]"
+        value: enabled
+        op: ne

@@ -1,0 +1,14 @@
+policies:
+  - name: sagemaker-notebook-instance-inside-vpc
+    description: >
+      Detects SageMaker notebook instances not launched inside a custom VPC.
+      Equivalent to AWS Config sagemaker-notebook-instance-inside-vpc.
+      Maps to FSBP SageMaker.2 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_sagemaker_notebook_instance
+    filters:
+      - type: value
+        key: "subnet_id"
+        value: absent

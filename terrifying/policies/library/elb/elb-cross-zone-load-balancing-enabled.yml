@@ -1,0 +1,14 @@
+policies:
+  - name: elb-cross-zone-load-balancing-enabled
+    description: >
+      Detects Classic Load Balancers without cross-zone load balancing enabled.
+      Equivalent to AWS Config elb-cross-zone-load-balancing-enabled.
+      Maps to FSBP ELB.9, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+      - conformance-pack
+    resource: terraform.aws_elb
+    filters:
+      - cross_zone_load_balancing: false

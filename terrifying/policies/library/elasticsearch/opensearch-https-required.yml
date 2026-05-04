@@ -1,0 +1,10 @@
+policies:
+  - name: opensearch-https-required
+    description: >
+      Detects OpenSearch Service domains with domain_endpoint_options.enforce_https=false.
+      Equivalent to AWS Config opensearch-https-required. Maps to FSBP Opensearch.8 (Medium).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - type: value
+        key: "domain_endpoint_options[0].enforce_https"
+        value: false

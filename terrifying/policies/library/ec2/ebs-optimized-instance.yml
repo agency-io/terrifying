@@ -1,0 +1,8 @@
+policies:
+  - name: ebs-optimized-instance
+    description: EC2 instances must have EBS optimization enabled
+    resource: terraform.aws_instance
+    filters:
+      - type: value
+        key: "ebs_optimized"
+        value: false

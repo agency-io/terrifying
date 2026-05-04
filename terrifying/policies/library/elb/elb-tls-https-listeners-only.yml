@@ -1,0 +1,15 @@
+policies:
+  - name: elb-tls-https-listeners-only
+    description: >
+      Detects Classic Load Balancers with HTTP or TCP listeners that lack TLS
+      encryption. Equivalent to AWS Config elb-tls-https-listeners-only.
+      Maps to FSBP ELB.3 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_lb_listener
+    filters:
+      - type: value
+        key: protocol
+        value: HTTPS
+        op: ne

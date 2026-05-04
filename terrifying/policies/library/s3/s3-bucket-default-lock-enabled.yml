@@ -1,0 +1,15 @@
+policies:
+  - name: s3-bucket-default-lock-enabled
+    description: >
+      Detects S3 buckets without S3 Object Lock enabled. Object Lock implements
+      WORM protection preventing object deletion or overwrite. Equivalent AWS Config
+      s3-bucket-default-lock-enabled. Maps to FSBP S3.15 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_s3_bucket
+    filters:
+      - type: value
+        key: "object_lock_enabled"
+        value: true
+        op: ne

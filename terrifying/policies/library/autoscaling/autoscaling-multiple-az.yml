@@ -1,0 +1,15 @@
+policies:
+  - name: autoscaling-multiple-az
+    description: >
+      Detects Auto Scaling groups configured with fewer than two Availability Zones,
+      creating a single point of failure. Equivalent to AWS Config
+      autoscaling-multiple-az. Maps to FSBP AutoScaling.2 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_autoscaling_group
+    filters:
+      - type: value
+        key: "length(availability_zones)"
+        value: 2
+        op: lt

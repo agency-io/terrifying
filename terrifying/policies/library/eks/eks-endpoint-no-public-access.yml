@@ -1,0 +1,11 @@
+policies:
+  - name: eks-endpoint-no-public-access
+    description: >
+      Detects ECS clusters with endpoint_public_access=true, exposing the Kubernetes
+      API server to the internet. Equivalent AWS Config rule: eks-endpoint-no-public-access.
+      Maps to FSBP EKS.1 (High).
+    resource: terraform.aws_eks_cluster
+    filters:
+      - type: value
+        key: "vpc_config[0].endpoint_public_access"
+        value: true

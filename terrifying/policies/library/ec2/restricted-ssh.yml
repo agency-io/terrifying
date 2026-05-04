@@ -1,0 +1,8 @@
+policies:
+  - name: restricted-ssh
+    description: Security groups must not allow unrestricted SSH (port 22) inbound from 0.0.0.0/0
+    resource: terraform.aws_security_group
+    filters:
+      - type: ingress
+        Ports: [22]
+        Cidr: "0.0.0.0/0"

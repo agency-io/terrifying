@@ -1,0 +1,9 @@
+policies:
+  - name: ec2-imdsv2-check
+    description: EC2 instances must require IMDSv2 (HttpTokens = required)
+    resource: terraform.aws_instance
+    filters:
+      - not:
+        - type: value
+          key: "metadata_options.http_tokens"
+          value: required

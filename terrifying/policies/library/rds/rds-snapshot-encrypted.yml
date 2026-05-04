@@ -1,0 +1,13 @@
+policies:
+  - name: rds-snapshot-encrypted
+    description: >
+      Detects RDS DB snapshots where encryption is disabled (Encrypted=false).
+      Equivalent AWS Config rds-snapshot-encrypted. Maps to FSBP RDS.4 (Medium),
+      CIS 2.3.1.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+    resource: terraform.aws_db_snapshot
+    filters:
+      - encrypted: false

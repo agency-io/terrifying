@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-viewer-policy-https
+    description: >
+      Detects CloudFront distributions whose default_cache_behavior viewer_protocol_policy
+      is "allow-all", permitting unencrypted HTTP from viewers.
+      Equivalent AWS Config rule: cloudfront-viewer-policy-https. FSBP CloudFront.3.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: default_cache_behavior.viewer_protocol_policy
+        value: allow-all
+        op: eq

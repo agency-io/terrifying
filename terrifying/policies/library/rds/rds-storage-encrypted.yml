@@ -1,0 +1,16 @@
+policies:
+  - name: rds-storage-encrypted
+    description: >
+      Detects RDS DB instances with StorageEncrypted=false. Equivalent to AWS Config
+      rds-storage-encrypted. Maps to FSBP RDS.3 (High), CIS 2.3.1, PCI DSS, CT
+      Strongly Recommended Detective.
+    tags:
+      - control-tower
+      - control-tower-strongly-recommended
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_db_instance
+    filters:
+      - storage_encrypted: false
