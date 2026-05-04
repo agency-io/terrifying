@@ -85,6 +85,25 @@ def _cmd_list(args: argparse.Namespace) -> None:
         print("No policies match the given filters.")
         return
 
+    if args.format == "json":
+        print(
+            json.dumps(
+                [
+                    {
+                        "id": e.id,
+                        "engine": e.engine,
+                        "service": e.service,
+                        "severity": e.severity,
+                        "description": e.description,
+                        "terraform_resources": e.terraform_resources,
+                        "tags": e.tags,
+                    }
+                    for e in entries
+                ]
+            )
+        )
+        return
+
     current_service = None
     for entry in sorted(entries, key=lambda e: (e.service, e.id, e.engine)):
         if entry.service != current_service:
@@ -201,6 +220,12 @@ def main() -> None:
         dest="tags",
         metavar="TAG",
         help="Filter by tag (can be repeated, e.g. --tag fsbp --tag s3)",
+    )
+    list_cmd.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+        help="Output format (default: text)",
     )
 
     args = parser.parse_args()

@@ -72,13 +72,17 @@ policies:
 ## Adding bundled policies
 
 ```bash
-terrifying add                          # TUI browser (requires pip install terrifying[tui])
-terrifying add rds-storage-encrypted    # Add specific policy
-terrifying add --engine rego            # Rego only
-terrifying add --dry-run                # Preview changes
-terrifying list                         # Browse available policies
-terrifying list --tag s3 --engine rego  # Filter by tag and engine
+terrifying add                                      # TUI browser (requires pip install terrifying[tui])
+terrifying add rds-storage-encrypted                # Add specific policy
+terrifying add --engine rego                        # Rego only
+terrifying add --dry-run                            # Preview changes
+terrifying list                                     # Browse available policies (human-readable)
+terrifying list --format json                       # Full catalog as JSON (use this to discover policies)
+terrifying list --format json --tag s3              # Filter by tag
+terrifying list --format json --engine rego --tag s3  # Filter by engine and tag
 ```
+
+When helping a user choose policies, run `terrifying list --format json` first to discover what is available. Each entry includes `id`, `engine`, `service`, `severity`, `description` (full), `terraform_resources`, and `tags`.
 
 ## Running checks
 
