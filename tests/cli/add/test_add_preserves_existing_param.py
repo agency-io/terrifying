@@ -2,7 +2,6 @@ from unittest.mock import patch
 from terrifying.policies.library import (
     load_manifest,
     filter_by_engine,
-    PolicyEntry,
     ParamDescriptor,
 )
 from terrifying.policies.add import run_add

@@ -3,7 +3,6 @@
 import argparse
 import json
 import pytest
-from pathlib import Path
 from terrifying.cli import _cmd_check
 
 

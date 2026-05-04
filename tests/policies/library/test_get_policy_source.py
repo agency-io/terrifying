@@ -1,4 +1,3 @@
-import pytest
 from terrifying.policies.library import load_manifest, get_policy_source
 
 

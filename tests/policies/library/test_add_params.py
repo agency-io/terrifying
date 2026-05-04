@@ -86,7 +86,7 @@ def test_collect_params_skips_existing():
         [ParamDescriptor(name="min_days", type="str", description="x", default=7)],
     )
     existing_config = {"policies": {"opa": {"params": {"min_days": 14}}}}
-    with patch("builtins.input", side_effect=AssertionError("should not prompt")) as m:
+    with patch("builtins.input", side_effect=AssertionError("should not prompt")):
         result = _collect_params([entry], existing_config)
     assert result["opa"] == {}
 
@@ -103,8 +103,6 @@ def test_collect_params_eofError_uses_default():
 
 
 def test_build_delta_with_c7n_entry(tmp_path):
-    entry = _make_entry("rds-storage-encrypted", "c7n")
-    # Point file to actual library file
     from terrifying.policies.library import load_manifest, filter_by_engine
 
     entries = [
@@ -145,11 +143,10 @@ def test_run_add_existing_param_notification(tmp_path, capsys):
         "rego",
         [ParamDescriptor(name="min_days", type="str", description="x", default=7)],
     )
-    from terrifying.policies.library import get_policy_source
 
     with (
         patch("terrifying.policies.add.Path.cwd", return_value=tmp_path),
-        patch("terrifying.policies.library.get_policy_source", return_value="# stub"),
+        patch("terrifying.policies.add.get_policy_source", return_value="# stub"),
         patch("builtins.input", return_value="n"),
     ):
         run_add([entry], dry_run=False)

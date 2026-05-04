@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import dataclasses
 import importlib.resources
-from pathlib import Path
-
 import yaml
 
 
 @dataclasses.dataclass
 class ParamDescriptor:
+    """Describes a configurable parameter for a bundled policy."""
+
     name: str
     type: str
     description: str
@@ -18,7 +18,9 @@ class ParamDescriptor:
 
 
 @dataclasses.dataclass
-class PolicyEntry:
+class PolicyEntry:  # pylint: disable=too-many-instance-attributes
+    """A single entry in the bundled policy manifest."""
+
     id: str
     engine: str  # "rego" | "c7n"
     service: str
@@ -30,6 +32,7 @@ class PolicyEntry:
     params: list[ParamDescriptor]
 
     def has_tag(self, tag: str) -> bool:
+        """Return True if this entry carries the given tag."""
         return tag in self.tags
 
 

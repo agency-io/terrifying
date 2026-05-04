@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
+import copy
 import dataclasses
 import difflib
-import sys
+import io
 from pathlib import Path
 
 from ruamel.yaml import YAML
 
-from terrifying.policies.library import PolicyEntry
+from terrifying.policies.library import PolicyEntry, get_policy_source
 
 
 @dataclasses.dataclass
@@ -33,7 +34,6 @@ def _load_yml(config_path: Path) -> tuple[dict, str]:
     yaml.preserve_quotes = True
     if config_path.exists():
         text = config_path.read_text(encoding="utf-8")
-        import io
 
         data = yaml.load(text) or {}
     else:
@@ -45,8 +45,6 @@ def _load_yml(config_path: Path) -> tuple[dict, str]:
 def _dump_yml(data: dict) -> str:
     yaml = YAML()
     yaml.default_flow_style = False
-    import io
-
     buf = io.StringIO()
     yaml.dump(data, buf)
     return buf.getvalue()
@@ -61,53 +59,92 @@ def _ensure_nested(data: dict, *keys: str) -> dict:
     return node
 
 
+def _params_needed(
+    entries: list[PolicyEntry], engine: str, existing: dict
+) -> dict[str, object]:
+    """Return {name: default} for params not already in existing."""
+    needed: dict[str, object] = {}
+    for e in entries:
+        if e.engine != engine:
+            continue
+        for p in e.params:
+            if p.name not in existing and p.name not in needed:
+                needed[p.name] = p.default
+    return needed
+
+
+def _prompt_param(name: str, default: object) -> object:
+    """Prompt the user for a param value; return default on empty input or EOF."""
+    label = f"{name} [default: {default}]: " if default is not None else f"{name}: "
+    try:
+        val = input(label).strip()
+    except EOFError:
+        val = ""
+    return val if val else default
+
+
 def _collect_params(entries: list[PolicyEntry], config: dict) -> dict[str, dict]:
     """Prompt for unique undeclared params; return {engine: {name: value}}."""
     existing_opa = config.get("policies", {}).get("opa", {}).get("params", {}) or {}
     existing_c7n = config.get("policies", {}).get("c7n", {}).get("params", {}) or {}
 
-    rego_entries = [e for e in entries if e.engine == "rego"]
-    c7n_entries = [e for e in entries if e.engine == "c7n"]
+    rego_needed = _params_needed(entries, "rego", existing_opa)
+    c7n_needed = _params_needed(entries, "c7n", existing_c7n)
+    shared = set(rego_needed) & set(c7n_needed)
 
-    # Collect all unique param names needed
-    rego_params_needed: dict[str, object] = {}
-    for e in rego_entries:
-        for p in e.params:
-            if p.name not in existing_opa and p.name not in rego_params_needed:
-                rego_params_needed[p.name] = p.default
-
-    c7n_params_needed: dict[str, object] = {}
-    for e in c7n_entries:
-        for p in e.params:
-            if p.name not in existing_c7n and p.name not in c7n_params_needed:
-                c7n_params_needed[p.name] = p.default
-
-    # Shared param names — prompt once
-    shared = set(rego_params_needed) & set(c7n_params_needed)
     prompted: dict[str, object] = {}
+    for name, default in {**rego_needed, **c7n_needed}.items():
+        if name not in prompted:
+            prompted[name] = _prompt_param(name, default)
 
-    all_needed = {**rego_params_needed, **c7n_params_needed}
-    for name, default in all_needed.items():
-        if name in prompted:
-            continue
-        label = f"{name} [default: {default}]: " if default is not None else f"{name}: "
-        try:
-            val = input(label).strip()
-        except EOFError:
-            val = ""
-        prompted[name] = val if val else default
-
-    opa_new = {k: prompted[k] for k in rego_params_needed if k in prompted}
-    c7n_new = {k: prompted[k] for k in c7n_params_needed if k in prompted}
-
-    # Notify about shared params written to both
     for name in shared:
         if name in prompted:
             print(
                 f"  (shared param '{name}' will be written to both opa and c7n sections)"
             )
 
-    return {"opa": opa_new, "c7n": c7n_new}
+    return {
+        "opa": {k: prompted[k] for k in rego_needed if k in prompted},
+        "c7n": {k: prompted[k] for k in c7n_needed if k in prompted},
+    }
+
+
+def _engine_path(config: dict, engine_key: str, default: str) -> str:
+    """Return the configured path for an engine section, or the default."""
+    section = config.get("policies", {}).get(engine_key)
+    if isinstance(section, dict):
+        return section.get("path") or default
+    return default
+
+
+def _build_file_ops(
+    entries: list[PolicyEntry], opa_dir: Path, c7n_dir: Path
+) -> list[_FileOp]:
+    """Build the list of file copy operations for the given entries."""
+    ops = []
+    for entry in entries:
+        ext = ".rego" if entry.engine == "rego" else ".yml"
+        out_dir = opa_dir if entry.engine == "rego" else c7n_dir
+        ops.append(
+            _FileOp(
+                dest=out_dir / f"{entry.id}{ext}",
+                source=get_policy_source(entry),
+                engine=entry.engine,
+            )
+        )
+    return ops
+
+
+def _update_engine_section(
+    policies: dict, key: str, path_str: str, params: dict
+) -> None:
+    """Ensure the engine section exists with path and params set."""
+    if not isinstance(policies.get(key), dict):
+        policies[key] = {}
+    if "path" not in policies[key]:
+        policies[key]["path"] = path_str
+    if params:
+        policies[key].setdefault("params", {}).update(params)
 
 
 def _build_delta(
@@ -115,63 +152,24 @@ def _build_delta(
     new_params: dict[str, dict],
     config_path: Path,
 ) -> _Delta:
+    """Build a delta describing files to copy and config changes to make."""
     config, yml_before = _load_yml(config_path)
 
-    # Determine output directories
-    opa_path_str = (
-        config.get("policies", {}).get("opa", {}).get("path")
-        if isinstance(config.get("policies", {}).get("opa"), dict)
-        else None
-    ) or "./policies/opa"
-    c7n_path_str = (
-        config.get("policies", {}).get("c7n", {}).get("path")
-        if isinstance(config.get("policies", {}).get("c7n"), dict)
-        else None
-    ) or "./policies/c7n"
-
+    opa_path_str = _engine_path(config, "opa", "./policies/opa")
+    c7n_path_str = _engine_path(config, "c7n", "./policies/c7n")
     opa_dir = (config_path.parent / opa_path_str).resolve()
     c7n_dir = (config_path.parent / c7n_path_str).resolve()
 
-    from terrifying.policies.library import get_policy_source
-
-    file_ops: list[_FileOp] = []
-    for entry in entries:
-        source = get_policy_source(entry)
-        ext = ".rego" if entry.engine == "rego" else ".yml"
-        out_dir = opa_dir if entry.engine == "rego" else c7n_dir
-        dest = out_dir / f"{entry.id}{ext}"
-        file_ops.append(_FileOp(dest=dest, source=source, engine=entry.engine))
-
-    # Build updated config
-    import copy
+    file_ops = _build_file_ops(entries, opa_dir, c7n_dir)
 
     new_config = copy.deepcopy(config) if config else {}
-
     policies = _ensure_nested(new_config, "policies")
-
-    rego_entries = [e for e in entries if e.engine == "rego"]
-    c7n_entries = [e for e in entries if e.engine == "c7n"]
-
-    if rego_entries:
-        if not isinstance(policies.get("opa"), dict):
-            policies["opa"] = {}
-        if "path" not in policies["opa"]:
-            policies["opa"]["path"] = opa_path_str
-        if new_params.get("opa"):
-            params_node = policies["opa"].setdefault("params", {})
-            params_node.update(new_params["opa"])
-
-    if c7n_entries:
-        if not isinstance(policies.get("c7n"), dict):
-            policies["c7n"] = {}
-        if "path" not in policies["c7n"]:
-            policies["c7n"]["path"] = c7n_path_str
-        if new_params.get("c7n"):
-            params_node = policies["c7n"].setdefault("params", {})
-            params_node.update(new_params["c7n"])
+    if any(e.engine == "rego" for e in entries):
+        _update_engine_section(policies, "opa", opa_path_str, new_params.get("opa", {}))
+    if any(e.engine == "c7n" for e in entries):
+        _update_engine_section(policies, "c7n", c7n_path_str, new_params.get("c7n", {}))
 
     yml_after = _dump_yml(new_config) if new_config != (config or {}) else yml_before
-
     return _Delta(
         file_ops=file_ops,
         yml_before=yml_before,
