@@ -74,9 +74,29 @@ custom:
   path: ./rules
 
 # Policy engine integrations (binaries must be on PATH)
+# Plain path — no parameters
 policies:
-  opa: ./policies/opa       # directory of .rego files
-  c7n: ./policies/c7n       # directory of c7n YAML policies
+  opa: ./policies/opa
+  c7n: ./policies/c7n
+
+# Or nested format with global and per-policy parameters
+policies:
+  opa:
+    path: ./policies/opa
+    params:
+      required_tags: [Environment, Team]    # available as input.params in Rego
+    policies:
+      require_encryption:
+        params:
+          algorithm: AES256                 # overrides global for this policy only
+  c7n:
+    path: ./policies/c7n
+    params:
+      required_tags: [Environment, Team]    # injected as Jinja2 variables
+    policies:
+      require-retention:
+        params:
+          min_retention_days: 90
 ```
 
 ## Built-in rules
@@ -118,7 +138,7 @@ class NoCount(Rule):
 
 ## OPA integration
 
-Place `.rego` files in the directory configured under `policies.opa`. Policies must use the `data.terrifying.deny` rule:
+Place `.rego` files in the directory configured under `policies.opa`. Policies use `data.terrifying.deny` and receive the Terraform context plus any configured params as `input.params`:
 
 ```rego
 package terrifying
@@ -127,24 +147,31 @@ import rego.v1
 
 deny contains msg if {
     resource := input.resources[_]
-    not resource.attributes.tags.Environment
-    msg := sprintf("Resource %v.%v is missing tag 'Environment'", [resource.type, resource.name])
+    tag := input.params.required_tags[_]
+    not resource.attributes.tags[tag]
+    msg := sprintf("Resource %v.%v is missing required tag '%v'", [resource.type, resource.name, tag])
 }
 ```
+
+Parameters are set in `terrifying.yml` and merged per-policy — global params apply to all policies, per-policy params override them for a specific policy.
 
 Requires `opa` on PATH. If absent, a single `opa_unavailable` test item is reported.
 
 ## c7n integration
 
-Place c7n YAML policy files in the directory configured under `policies.c7n`:
+Place c7n YAML files in the directory configured under `policies.c7n`. Files are treated as Jinja2 templates — configured params are available as template variables:
 
 ```yaml
 policies:
-  - name: require-environment-tag
+{% for tag in required_tags %}
+  - name: require-{{ tag | lower }}-tag
     resource: terraform.aws_s3_bucket
     filters:
-      - "tag:Environment": absent
+      - "tag:{{ tag }}": absent
+{% endfor %}
 ```
+
+Files with no Jinja2 syntax pass through unchanged. Rendered YAML is passed to `c7n-left` via a temporary file — the original is never modified.
 
 Requires `c7n-left` on PATH (`pip install c7n-left`). If absent, a `c7n_unavailable` test item is reported.
 
