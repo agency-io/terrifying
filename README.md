@@ -283,13 +283,27 @@ When you add a policy, terrifying:
 ### List available policies
 
 ```bash
-terrifying list                         # all policies (both engines)
-terrifying list --engine rego           # Rego only
-terrifying list --tag fsbp              # filter by compliance framework
-terrifying list --tag s3 --tag high     # multiple tags (AND)
+terrifying list                              # all policies, human-readable
+terrifying list --engine rego                # Rego only
+terrifying list --tag fsbp                   # filter by compliance framework
+terrifying list --tag s3 --tag high          # multiple tags (AND)
+terrifying list --format json                # full catalog as JSON
+terrifying list --format json --tag s3       # filtered JSON
 ```
 
+Use `--format json` to get machine-readable output with full descriptions, tags, and resource types — useful for scripting or AI-assisted policy selection.
+
 Available tags include compliance frameworks (`fsbp`, `cis-benchmark`, `pci-dss`, `nist-800-53`, `control-tower-mandatory`, `control-tower-strongly-recommended`, `control-tower-elective`), AWS services (`s3`, `rds`, `ec2`, …), severities (`high`, `medium`, `low`), and engines (`rego`, `c7n`).
+
+### Claude Code skill
+
+Generate a Claude Code slash command that teaches Claude how to write terrifying policies and use the bundled library:
+
+```bash
+terrifying skill > .claude/commands/terrifying.md
+```
+
+Once installed, Claude Code users can invoke `/terrifying` to get context-aware help writing Rego and c7n policies, adding bundled policies, and configuring `terrifying.yml`.
 
 ## CLI
 

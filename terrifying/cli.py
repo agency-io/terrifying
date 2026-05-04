@@ -85,6 +85,25 @@ def _cmd_list(args: argparse.Namespace) -> None:
         print("No policies match the given filters.")
         return
 
+    if args.format == "json":
+        print(
+            json.dumps(
+                [
+                    {
+                        "id": e.id,
+                        "engine": e.engine,
+                        "service": e.service,
+                        "severity": e.severity,
+                        "description": e.description,
+                        "terraform_resources": e.terraform_resources,
+                        "tags": e.tags,
+                    }
+                    for e in entries
+                ]
+            )
+        )
+        return
+
     current_service = None
     for entry in sorted(entries, key=lambda e: (e.service, e.id, e.engine)):
         if entry.service != current_service:
@@ -96,6 +115,20 @@ def _cmd_list(args: argparse.Namespace) -> None:
         )
 
     print(f"\n{len(entries)} policies")
+
+
+def _cmd_skill(args: argparse.Namespace) -> None:
+    """Print an AI assistant skill document to stdout."""
+    # pylint: disable=import-outside-toplevel
+    from terrifying.skill import CLAUDE_CODE_SKILL, ISSUES_URL
+
+    if args.format == "claude-code":
+        print(CLAUDE_CODE_SKILL, end="")
+    else:
+        print(
+            f"Format '{args.format}' is not yet supported.\n"
+            f"Please raise a GitHub issue to request it: {ISSUES_URL}/new"
+        )
 
 
 def _cmd_add(args: argparse.Namespace) -> None:
@@ -164,6 +197,16 @@ def main() -> None:
         help="Print delta without writing any files",
     )
 
+    skill_cmd = sub.add_parser(
+        "skill", help="Print an AI assistant skill document to stdout"
+    )
+    skill_cmd.add_argument(
+        "--format",
+        default="claude-code",
+        metavar="FORMAT",
+        help="Skill format to output (default: claude-code)",
+    )
+
     list_cmd = sub.add_parser("list", help="List available bundled policies")
     list_cmd.add_argument(
         "--engine",
@@ -178,6 +221,12 @@ def main() -> None:
         metavar="TAG",
         help="Filter by tag (can be repeated, e.g. --tag fsbp --tag s3)",
     )
+    list_cmd.add_argument(
+        "--format",
+        choices=["text", "json"],
+        default="text",
+        help="Output format (default: text)",
+    )
 
     args = parser.parse_args()
 
@@ -187,6 +236,8 @@ def main() -> None:
         _cmd_add(args)
     elif args.command == "list":
         _cmd_list(args)
+    elif args.command == "skill":
+        _cmd_skill(args)
     else:
         parser.print_help()
         sys.exit(1)

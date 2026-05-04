@@ -1,8 +1,5 @@
-# cli Specification
+## ADDED Requirements
 
-## Purpose
-TBD - created by archiving change add-policy-library. Update Purpose after archive.
-## Requirements
 ### Requirement: terrifying add — engine selection
 The `terrifying add` command SHALL require the user to specify which policy engine they want: `rego`, `c7n`, or `both`. In TUI mode this SHALL be presented as a radio-button selection at the top of the screen before the policy browser. In non-interactive mode it SHALL be controlled by a `--engine rego|c7n|both` flag (default: `both`).
 
@@ -107,21 +104,3 @@ For each selected policy that declares configurable params, the CLI SHALL prompt
 #### Scenario: textual missing, non-interactive works
 - **WHEN** textual is not installed and the user runs `terrifying add <policy-id>`
 - **THEN** the policy is added without requiring textual
-
-### Requirement: Skill Command
-The CLI SHALL provide a `skill` subcommand with a `--format` flag (default: `claude-code`) that writes an AI assistant skill document to stdout.
-
-#### Scenario: Claude Code format output
-- **WHEN** the user runs `terrifying skill` or `terrifying skill --format claude-code`
-- **THEN** a markdown document is printed to stdout suitable for use as a Claude Code slash command
-- **AND** the document covers writing Rego and c7n tests, using `terrifying add`, and configuring `terrifying.yml`
-
-#### Scenario: Pipeable to Claude Code commands directory
-- **WHEN** the user runs `terrifying skill > .claude/commands/terrifying.md`
-- **THEN** the file is created and usable as a Claude Code slash command
-
-#### Scenario: Unsupported format
-- **WHEN** the user runs `terrifying skill --format <unsupported>`
-- **THEN** a message is printed to stdout indicating the format is not yet supported
-- **AND** the message includes the GitHub issues URL so the user can request support
-
