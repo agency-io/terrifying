@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "terrifying"
-version = "0.1.0"
+version = "0.1.1"
 description = "Architecture testing framework for Terraform — write Python rules that verify structure, conventions, and policy."
 readme = "README.md"
 license = { text = "MIT" }
