@@ -62,24 +62,24 @@ class TerraformCheckCollector(pytest.Collector):
                 violations=violations,
             )
 
-        if config.opa_policy_dir and config.opa_policy_dir.is_dir():
+        if config.opa and config.opa.path.is_dir():
             from terrifying.policies.opa import (  # pylint: disable=import-outside-toplevel
                 OpaAdapter,
             )
 
-            violations = OpaAdapter(config.opa_policy_dir).run(context)
+            violations = OpaAdapter(config.opa).run(context)
             yield TerraformCheckItem.from_parent(
                 self,
                 name="opa",
                 violations=violations,
             )
 
-        if config.c7n_policy_dir and config.c7n_policy_dir.is_dir():
+        if config.c7n and config.c7n.path.is_dir():
             from terrifying.policies.c7n import (  # pylint: disable=import-outside-toplevel
                 C7nAdapter,
             )
 
-            violations = C7nAdapter(config.c7n_policy_dir).run(tf_dir)
+            violations = C7nAdapter(config.c7n).run(tf_dir)
             yield TerraformCheckItem.from_parent(
                 self,
                 name="c7n",

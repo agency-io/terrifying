@@ -1,0 +1,7 @@
+policies:
+{% for tag in required_tags %}
+  - name: require-{{ tag | lower }}-tag
+    resource: terraform.aws_s3_bucket
+    filters:
+      - "tag:{{ tag }}": absent
+{% endfor %}

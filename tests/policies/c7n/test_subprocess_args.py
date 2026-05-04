@@ -35,7 +35,9 @@ def test_subprocess_called_with_correct_args(tmp_path: Path) -> None:
     cmd = args[0]
     assert cmd[0] == "c7n-left"
     assert "--policy" in cmd
-    assert str(tmp_path) in cmd
+    # policy arg is now a temp file, not the policy dir directly
+    policy_arg = cmd[cmd.index("--policy") + 1]
+    assert policy_arg.endswith(".yml")
     assert "--directory" in cmd
     assert str(tf_dir) in cmd
     assert "--output" in cmd

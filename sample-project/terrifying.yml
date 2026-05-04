@@ -23,5 +23,15 @@ custom:
   path: ./custom_rules
 
 policies:
-  opa: ./policies/opa
-  c7n: ./policies/c7n
+  opa:
+    path: ./policies/opa
+    params:
+      required_tags:
+        - Environment
+        - Team
+  c7n:
+    path: ./policies/c7n
+    params:
+      required_tags:
+        - Environment
+        - Team
