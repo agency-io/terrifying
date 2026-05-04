@@ -4,5 +4,10 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = ["terrifying"]
 
+[dependency-groups]
+dev = ["pytest>=8"]
+
 [tool.uv.sources]
 terrifying = { path = "..", editable = true }
+
+[tool.pytest.ini_options]

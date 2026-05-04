@@ -18,6 +18,7 @@ class Config:
     custom_path: Path | None = None
     opa_policy_dir: Path | None = None
     c7n_policy_dir: Path | None = None
+    terraform_path: Path | None = None
 
 
 class ConfigLoader:  # pylint: disable=too-few-public-methods
@@ -42,11 +43,15 @@ class ConfigLoader:  # pylint: disable=too-few-public-methods
         c7n_policy_dir = None
         if "policies" in data and "c7n" in data["policies"]:
             c7n_policy_dir = Path(data["policies"]["c7n"])
+        terraform_path = None
+        if "terraform" in data and "path" in data["terraform"]:
+            terraform_path = Path(data["terraform"]["path"])
         return Config(
             rules=rules,
             custom_path=custom_path,
             opa_policy_dir=opa_policy_dir,
             c7n_policy_dir=c7n_policy_dir,
+            terraform_path=terraform_path,
         )
 
     def build_rules(self, config: Config) -> list[Rule]:

@@ -1,4 +1,5 @@
 """Custom rule: flag resources that use the count meta-argument."""
+
 from terrifying.core import Rule, Violation, TerraformContext
 
 
