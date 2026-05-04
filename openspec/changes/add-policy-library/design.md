@@ -1,56 +1,57 @@
 ## Context
 
-spire-controls-staging contains 208 OPA/Rego policies written against Steampipe live-resource row schemas (`input.db_instance_identifier`, `input.storage_encrypted`, etc.) and 194 c7n policies written for CloudTrail event-driven Lambda mode. Neither format is directly consumable by terrifying. The Rego policies need their input schema rewritten to match TerraformContext (`input.resources[_]`). The c7n policies use runtime event mode and are out of scope for this change (c7n-left has a different resource model and is a separate effort).
+spire-controls-staging contains 208 OPA/Rego policies written against Steampipe live-resource row schemas and 194 c7n policies written for CloudTrail event-driven Lambda mode. Neither format is directly consumable by terrifying:
 
-~16 of the 208 Rego policies check live runtime state that cannot be inferred from Terraform source (instance stopped state, key rotation age, EIP association, last-accessed timestamps). These are excluded.
+- Rego policies use per-row Steampipe input (`input.db_instance_identifier`, `input.storage_encrypted`) and `violation` rule. terrifying expects `input.resources[_].attributes` and `deny`.
+- c7n policies use `resource: aws.*` (runtime resource type), `mode: type: cloudtrail`, event triggers, and SQS `notify` actions. terrifying's c7n integration uses `c7n-left` which expects `resource: terraform.*`, no `mode` block, and attribute-based filters only.
+
+~16 of the 208 Rego policies check live runtime state (instance stopped state, key rotation age, EIP association, last-accessed timestamps). These are excluded from both engines.
 
 ## Goals / Non-Goals
 
 - Goals:
-  - Bundle ~190 rewritten shift-left Rego policies inside the terrifying package
-  - Provide a TUI CLI to let users pick policies by compliance tag and add them to their project
-  - Detect configurable params and inject them into terrifying.yml with user confirmation
+  - Bundle ~190 rewritten shift-left Rego policies and ~180 c7n-left policies inside the terrifying package
+  - TUI lets users choose engine (Rego, c7n, or both) then browse and select policies by tag
+  - Detect configurable params and inject them into the correct section of terrifying.yml
   - Keep the source repo (spire-controls-staging) unmodified
 
 - Non-Goals:
-  - Bundling c7n policies (separate effort; c7n-left resource model differs significantly)
   - Auto-updating bundled policies when spire-controls-staging changes (manual re-sync for now)
-  - Executing or testing policies at TUI time (add only; validation happens on next `pytest` run)
+  - Executing or validating policies at TUI time (add only; validation happens on next `pytest` run)
+  - Generating c7n-left policies for controls that have no Terraform-attribute equivalent (e.g. tag-based controls requiring live resource scan)
 
 ## Decisions
 
-### Policy rewrite schema
+### Rego rewrite schema
 
-**Decision**: Rewrite each policy to use `input.resources[_]` with the TerraformContext schema rather than Steampipe row fields.
+**Decision**: Rewrite each Rego policy to use `input.resources[_]` with the TerraformContext schema.
 
-The TerraformContext input document passed to OPA looks like:
+The TerraformContext input document passed to OPA:
 
 ```json
 {
   "resources": [
     {
-      "type": "aws_s3_bucket",
-      "name": "my_bucket",
+      "type": "aws_db_instance",
+      "name": "primary",
       "file": "infra/main.tf",
-      "attributes": {
-        "server_side_encryption_configuration": [...]
-      }
+      "attributes": { "storage_encrypted": true }
     }
   ],
   "params": { ... }
 }
 ```
 
-Rewritten policies iterate `input.resources[_]` and filter by `resource.type`, then check `resource.attributes.*`. Example:
-
+Before (Steampipe):
 ```rego
-# Before (Steampipe):
 violation contains msg if {
     input.storage_encrypted == false
     msg := sprintf("RDS instance '%v' lacks encryption", [input.db_instance_identifier])
 }
+```
 
-# After (TerraformContext):
+After (TerraformContext):
+```rego
 deny contains msg if {
     resource := input.resources[_]
     resource.type == "aws_db_instance"
@@ -59,81 +60,119 @@ deny contains msg if {
 }
 ```
 
-Note the rule changes from `violation` to `deny` to match the terrifying OPA convention.
+Rule changes from `violation` to `deny`; package changes from `spire.controls.*` to `terrifying`.
 
-### Package naming
+### c7n rewrite schema
 
-**Decision**: Rewritten policies use `package terrifying` (not `package spire.controls.*`) so they work with the existing `data.terrifying.deny` evaluation path in terrifying's OPA adapter.
+**Decision**: Rewrite each c7n policy from CloudTrail event mode to c7n-left IaC-scanning format.
+
+Before (runtime c7n):
+```yaml
+- name: rds-storage-encrypted
+  resource: rds
+  mode:
+    type: cloudtrail
+    role: arn:aws:iam::{account_id}:role/SpireControls
+    events:
+      - source: rds.amazonaws.com
+        event: CreateDBInstance
+        ids: "requestParameters.dBInstanceIdentifier"
+  filters:
+    - StorageEncrypted: false
+  actions:
+    - type: notify
+      to: [spire-findings-queue]
+      transport:
+        type: sqs
+        queue: arn:aws:sqs:{region}:{account_id}:spire-findings
+```
+
+After (c7n-left):
+```yaml
+- name: rds-storage-encrypted
+  resource: terraform.aws_db_instance
+  filters:
+    - storage_encrypted: false
+```
+
+Changes: `resource` uses `terraform.*` prefix; `mode` block removed; runtime-specific filters replaced with attribute filters; `actions` removed.
+
+### Package naming (Rego)
+
+**Decision**: All rewritten Rego policies use `package terrifying` so they work with the existing `data.terrifying.deny` evaluation path in terrifying's OPA adapter.
 
 ### Manifest format
 
-**Decision**: `manifest.yaml` in the library root. One entry per policy:
+**Decision**: `manifest.yaml` with one entry per engine variant. A control implemented in both engines has two entries (same `id`, different `engine`).
 
 ```yaml
 policies:
-  - id: s3-bucket-server-side-encryption-enabled
-    service: s3
-    file: s3/s3-bucket-server-side-encryption-enabled.rego
-    description: S3 buckets must have default server-side encryption configured
-    severity: medium
-    terraform_resources: [aws_s3_bucket]
-    tags: [fsbp, cis-benchmark, pci-dss, nist-800-53, control-tower-elective, s3, encryption-at-rest]
+  - id: rds-storage-encrypted
+    engine: rego
+    service: rds
+    file: rds/rds-storage-encrypted.rego
+    description: RDS instances must have storage encryption enabled
+    severity: high
+    terraform_resources: [aws_db_instance]
+    tags: [fsbp, cis-benchmark, pci-dss, control-tower-strongly-recommended, rds, high, rego]
     params: []
-  - id: required-tags
-    ...
-    params:
-      - name: required_tags
-        type: list[string]
-        description: Tag keys that every resource must carry
-        default: [Environment, Team]
+  - id: rds-storage-encrypted
+    engine: c7n
+    service: rds
+    file: rds/rds-storage-encrypted.yml
+    description: RDS instances must have storage encryption enabled
+    severity: high
+    terraform_resources: [aws_db_instance]
+    tags: [fsbp, cis-benchmark, pci-dss, control-tower-strongly-recommended, rds, high, c7n]
+    params: []
 ```
 
-Tags are normalized to kebab-case. Service tags are added automatically from the directory name.
+Engine tags (`rego`, `c7n`) are added automatically so users can filter by engine in the TUI.
 
-### TUI library
+### TUI layout and engine selection
 
-**Decision**: `textual>=0.60`. It provides a full-screen terminal UI with composable widgets, keyboard navigation, and is well-maintained. `questionary` was considered but only supports linear prompts — not a browsable tree + checkbox list.
-
-### TUI layout
+The TUI opens with an engine selection step before the policy browser. The user picks `Rego`, `c7n`, or `Both`. The tag browser and policy list are then filtered to the selected engine(s). Policies available in both engines show a badge when `Both` is selected.
 
 ```
-┌─ terrifying add ──────────────────────────────────────┐
-│ Filter by tag: [___________]                          │
-├──────────────────┬────────────────────────────────────┤
-│ Tags             │ Policies (12 selected)             │
-│ > fsbp (87)      │ [x] s3-bucket-server-side-enc...  │
-│   cis (64)       │ [x] rds-storage-encrypted          │
-│   pci (41)       │ [ ] ec2-imdsv2-check               │
-│   high (52)      │ [ ] eks-endpoint-no-public-access  │
-│   s3 (16)        │                                    │
-│   rds (21)       │ Description:                       │
-│                  │ S3 buckets must have default SSE   │
-│                  │ Severity: medium                   │
-│                  │ Resources: aws_s3_bucket           │
-├──────────────────┴────────────────────────────────────┤
-│ [A] Select all visible  [Space] Toggle  [Enter] Add   │
-└───────────────────────────────────────────────────────┘
+┌─ terrifying add ──────────────────────────────────────────────┐
+│ Engine: ( ) Rego  ( ) c7n  (•) Both                          │
+├──────────────────┬────────────────────────────────────────────┤
+│ Tags             │ Policies                    [rego] [c7n]  │
+│ > fsbp (87)      │ [x] rds-storage-encrypted   [R]   [C]    │
+│   cis (64)       │ [ ] s3-bucket-sse-enabled   [R]   [C]    │
+│   high (52)      │ [ ] ec2-imdsv2-check        [R]          │
+│   rds (21)       │                                           │
+│                  │ Description: RDS storage encryption       │
+│                  │ Severity: high                            │
+│                  │ Resources: aws_db_instance                │
+├──────────────────┴────────────────────────────────────────────┤
+│ [Tab] Switch engine  [Space] Toggle  [A] All  [Enter] Add    │
+└───────────────────────────────────────────────────────────────┘
 ```
 
-On Enter, the TUI exits and the CLI enters the confirmation flow.
+When a policy is selected and available in both engines, the user selects which engine variant to add (or both).
 
-### Param injection flow
+### Param injection — per engine
 
-1. For each selected policy that declares params, collect unique param names.
-2. For each param not already present in `terrifying.yml`, prompt the user: `required_tags [default: Environment, Team]:`.
-3. Print a unified diff of the terrifying.yml changes + list of `.rego` files to be written.
-4. Prompt `Apply? [y/N]`.
-5. On confirm: write files, update YAML in-place preserving comments where possible (use ruamel.yaml).
+Rego params → `policies.opa.params` in terrifying.yml
+c7n params → `policies.c7n.params` in terrifying.yml
 
-### Output directory
+If the same param (e.g. `required_tags`) is used by both a Rego and a c7n policy being added simultaneously, the CLI prompts once and writes to both sections.
 
-Policies are written to the OPA path configured in `terrifying.yml` (`policies.opa.path`). If not configured, default to `./policies/opa/` and add the section to `terrifying.yml`.
+### Output directories
+
+- Rego files → `policies.opa.path` from terrifying.yml, default `./policies/opa/`
+- c7n files → `policies.c7n.path` from terrifying.yml, default `./policies/c7n/`
+
+### textual optional dependency
+
+`textual>=0.60` is an optional extras group (`terrifying[tui]`). The non-interactive `terrifying add <id>` path works without textual.
 
 ## Risks / Trade-offs
 
-- **Rewrite accuracy**: ~190 manual rewrites risk introducing subtle bugs. Each rewritten policy must include a comment block documenting the Terraform resource type(s) it targets and the attribute path checked, making review practical.
-- **HCL attribute shape**: python-hcl2 parses nested blocks as lists of dicts. Attribute paths in rewritten policies must match the parsed shape, not the HCL source shape. A reference mapping of common attribute paths will be maintained in `design.md`.
-- **textual dependency**: Adds ~2MB to the installed package. Acceptable given it's a dev/authoring tool, not a CI dependency. `textual` is optional — if not installed the CLI prints an error suggesting `pip install terrifying[tui]`.
+- **Rewrite accuracy**: ~190 Rego + ~180 c7n rewrites risk introducing subtle bugs. Each rewritten policy retains a comment block documenting the Terraform resource type(s) and attribute path(s) checked.
+- **HCL attribute shape**: python-hcl2 parses nested blocks as lists of dicts. Attribute paths in rewritten policies must match the parsed shape, not the HCL source shape. See reference table below.
+- **c7n-left filter coverage**: Not all runtime c7n filters have c7n-left equivalents. Policies using runtime-only filter types (`bucket-encryption`, `shield-enabled`, etc.) will be excluded from the c7n library if no equivalent attribute filter exists.
 
 ## Common HCL Attribute Paths (python-hcl2)
 
@@ -144,8 +183,5 @@ Policies are written to the OPA path configured in `terrifying.yml` (`policies.o
 | `tags = { Environment = "prod" }` | `attributes["tags"]["Environment"]` |
 | `logging { target_bucket = "..." }` | `attributes["logging"][0]["target_bucket"]` |
 | `vpc_config { subnet_ids = [...] }` | `attributes["vpc_config"][0]["subnet_ids"]` |
-
-## Open Questions
-
-- Should policies be organized in subdirectories by service (`s3/`, `rds/`) or flat? — **Decision: subdirectories by service** to mirror the source and make bulk service-level selection natural in the TUI.
-- Should `terrifying add` also support adding individual policies by ID non-interactively (e.g. `terrifying add s3-bucket-server-side-encryption-enabled`)? — Yes, support both modes: with no args → TUI; with policy IDs as positional args → non-interactive add.
+| `multi_az = true` | `attributes["multi_az"] == True` |
+| `publicly_accessible = false` | `attributes["publicly_accessible"] == False` |
