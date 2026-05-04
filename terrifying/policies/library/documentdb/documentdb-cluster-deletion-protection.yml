@@ -1,0 +1,6 @@
+policies:
+  - name: documentdb-cluster-deletion-protection
+    description: DocumentDB clusters must have deletion protection enabled
+    resource: terraform.aws_docdb_cluster
+    filters:
+      - deletion_protection: false

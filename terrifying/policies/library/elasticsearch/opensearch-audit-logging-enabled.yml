@@ -1,0 +1,11 @@
+policies:
+  - name: opensearch-audit-logging-enabled
+    description: >
+      Detects OpenSearch Service domains without audit logging enabled in log_publishing_options.
+      Equivalent to AWS Config opensearch-audit-logging-enabled. Maps to FSBP Opensearch.5 (Medium).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - type: value
+        key: log_publishing_options
+        value: absent
+        op: eq

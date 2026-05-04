@@ -1,0 +1,12 @@
+policies:
+  - name: ecs-task-definition-log-configuration
+    description: >
+      Detects ECS task definitions where any container lacks a log_configuration block.
+      Without logging, container output is lost and incident investigations lack evidence.
+      Equivalent to AWS Config ecs-task-definition-log-configuration. FSBP ECS.9 (High).
+    resource: terraform.aws_ecs_task_definition
+    filters:
+      - type: value
+        key: "container_definitions"
+        value: present
+        op: eq

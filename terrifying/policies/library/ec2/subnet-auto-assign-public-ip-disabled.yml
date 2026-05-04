@@ -1,0 +1,8 @@
+policies:
+  - name: subnet-auto-assign-public-ip-disabled
+    description: Subnets must not automatically assign public IP addresses on launch
+    resource: terraform.aws_subnet
+    filters:
+      - type: value
+        key: "map_public_ip_on_launch"
+        value: true

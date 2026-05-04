@@ -1,0 +1,17 @@
+policies:
+  - name: kinesis-stream-encrypted
+    description: >
+      Detects Kinesis Data Streams not encrypted at rest with KMS. Streams with
+      EncryptionType NONE are non-compliant. Equivalent to AWS Config
+      kinesis-stream-encrypted. Maps to FSBP Kinesis.1 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_kinesis_stream
+    filters:
+      - type: value
+        key: encryption_type
+        value: KMS
+        op: ne

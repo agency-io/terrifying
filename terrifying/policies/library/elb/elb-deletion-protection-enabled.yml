@@ -1,0 +1,14 @@
+policies:
+  - name: elb-deletion-protection-enabled
+    description: >
+      Detects Application and Network Load Balancers without deletion protection enabled.
+      Equivalent to AWS Config elb-deletion-protection-enabled. Maps to FSBP ELB.6 (Medium),
+      PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_lb
+    filters:
+      - enable_deletion_protection: false

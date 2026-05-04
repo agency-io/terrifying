@@ -1,0 +1,8 @@
+policies:
+  - name: elasticsearch-node-to-node-encryption-check
+    description: >
+      Detects Elasticsearch/OpenSearch domains with node_to_node_encryption disabled.
+      Equivalent to AWS Config elasticsearch-node-to-node-encryption-check. Maps to FSBP ES.3 (Medium).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - node_to_node_encryption: false

@@ -1,0 +1,15 @@
+policies:
+  - name: cmk-backing-key-rotation-enabled
+    description: >
+      Detects customer-managed KMS keys (CMKs) that do not have automatic key rotation
+      enabled. Equivalent to AWS Config cmk-backing-key-rotation-enabled.
+      Maps to FSBP KMS.4 (Medium), CIS 3.7, PCI DSS, nist-800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_kms_key
+    filters:
+      - enable_key_rotation: false

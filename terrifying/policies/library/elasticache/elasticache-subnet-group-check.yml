@@ -1,0 +1,13 @@
+policies:
+  - name: elasticache-subnet-group-check
+    description: >
+      Detects ElastiCache clusters using the default subnet group. Default
+      subnet groups may place clusters in publicly accessible subnets.
+      Equivalent to AWS Config elasticache-subnet-group-check. Maps to FSBP
+      ElastiCache.7 (High).
+    resource: terraform.aws_elasticache_cluster
+    filters:
+      - type: value
+        key: subnet_group_name
+        op: eq
+        value: "default"

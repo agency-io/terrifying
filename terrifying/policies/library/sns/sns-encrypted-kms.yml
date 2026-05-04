@@ -1,0 +1,17 @@
+policies:
+  - name: sns-encrypted-kms
+    description: >
+      Detects SNS topics not encrypted at rest using AWS KMS. Topics without a
+      KmsMasterKeyId are non-compliant. Equivalent to AWS Config
+      sns-encrypted-kms. Maps to FSBP SNS.1 (Medium) and PCI DSS.
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_sns_topic
+    filters:
+      - type: value
+        key: kms_master_key_id
+        value: absent
+        op: eq

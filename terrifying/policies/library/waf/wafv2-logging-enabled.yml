@@ -1,0 +1,13 @@
+policies:
+  - name: wafv2-logging-enabled
+    description: >
+      Detects WAFv2 Web ACLs with no logging configured. WAF logging records
+      request details (IP, URI, rules, action). Without it, security teams lack
+      visibility into web traffic and attacks.
+      Maps to FSBP WAF.11 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    # Check that a logging configuration resource exists for each WAF ACL.
+    resource: terraform.aws_wafv2_web_acl_logging_configuration
+    filters: []

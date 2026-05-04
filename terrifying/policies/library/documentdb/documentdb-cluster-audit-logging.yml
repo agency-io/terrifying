@@ -1,0 +1,10 @@
+policies:
+  - name: documentdb-cluster-audit-logging
+    description: DocumentDB clusters must publish audit logs to CloudWatch Logs
+    resource: terraform.aws_docdb_cluster
+    filters:
+      - not:
+        - type: value
+          key: "enabled_cloudwatch_logs_exports"
+          value: "audit"
+          op: contains

@@ -1,0 +1,20 @@
+policies:
+  - name: autoscaling-launchconfig-requires-imdsv2
+    description: >
+      Detects Auto Scaling launch configurations where metadata_options.http_tokens
+      is not set to "required", allowing IMDSv1 usage. Equivalent to AWS Config
+      autoscaling-launchconfig-requires-imdsv2. Maps to FSBP AutoScaling.3 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_launch_configuration
+    filters:
+      - or:
+        - type: value
+          key: metadata_options
+          value: absent
+          op: eq
+        - type: value
+          key: metadata_options.http_tokens
+          value: required
+          op: ne

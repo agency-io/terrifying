@@ -1,0 +1,19 @@
+policies:
+  - name: rds-snapshots-public-prohibited
+    description: >
+      Detects RDS DB snapshots shared publicly (restore attribute includes 'all').
+      Equivalent to AWS Config rds-snapshots-public-prohibited. Maps to FSBP RDS.1
+      (Critical), CT Mandatory Detective, CIS 2.3.2, PCI DSS.
+    tags:
+      - control-tower
+      - control-tower-mandatory
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_db_snapshot
+    filters:
+      - type: value
+        key: "shared_accounts"
+        value: "all"
+        op: contains

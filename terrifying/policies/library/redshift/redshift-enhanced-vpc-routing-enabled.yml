@@ -1,0 +1,13 @@
+policies:
+  - name: redshift-enhanced-vpc-routing-enabled
+    description: >
+      Detects Amazon Redshift clusters with EnhancedVpcRouting=false. Equivalent to AWS
+      Config redshift-enhanced-vpc-routing-enabled. Maps to FSBP Redshift.6 (Medium),
+      NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+    resource: terraform.aws_redshift_cluster
+    filters:
+      - enhanced_vpc_routing: false

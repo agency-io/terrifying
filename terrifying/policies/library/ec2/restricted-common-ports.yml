@@ -1,0 +1,15 @@
+policies:
+  - name: restricted-common-ports
+    description: Security groups must not allow unrestricted inbound access on high-risk ports (3389, 3306, 5432) from 0.0.0.0/0
+    resource: terraform.aws_security_group
+    filters:
+      - or:
+        - type: ingress
+          Ports: [3389]
+          Cidr: "0.0.0.0/0"
+        - type: ingress
+          Ports: [3306]
+          Cidr: "0.0.0.0/0"
+        - type: ingress
+          Ports: [5432]
+          Cidr: "0.0.0.0/0"

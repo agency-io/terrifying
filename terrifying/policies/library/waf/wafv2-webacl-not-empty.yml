@@ -1,0 +1,16 @@
+policies:
+  - name: wafv2-webacl-not-empty
+    description: >
+      Detects WAFv2 Web ACLs with no rules configured. An empty Web ACL applies
+      only the default action to all requests, providing no protection against
+      SQL injection, XSS, or other web attacks.
+      Maps to FSBP WAF.10 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_wafv2_web_acl
+    filters:
+      - type: value
+        key: rule
+        value: []
+        op: eq

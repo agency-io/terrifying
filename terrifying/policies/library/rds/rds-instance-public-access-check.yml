@@ -1,0 +1,16 @@
+policies:
+  - name: rds-instance-public-access-check
+    description: >
+      Detects RDS DB instances with PubliclyAccessible=true. Equivalent to AWS Config
+      rds-instance-public-access-check. Maps to FSBP RDS.2 (High), CIS 2.3.3, PCI DSS,
+      CT Strongly Recommended Detective.
+    tags:
+      - control-tower
+      - control-tower-strongly-recommended
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_db_instance
+    filters:
+      - publicly_accessible: true

@@ -1,0 +1,15 @@
+policies:
+  - name: rds-automatic-minor-version-upgrade-enabled
+    description: >
+      Detects RDS DB instances with AutoMinorVersionUpgrade=false. Equivalent to AWS
+      Config rds-automatic-minor-version-upgrade-enabled. Maps to FSBP RDS.13 (High),
+      CT Elective Detective, conformance pack Operational Best Practices for RDS.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - auto_minor_version_upgrade: false

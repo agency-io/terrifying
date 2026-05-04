@@ -1,0 +1,15 @@
+policies:
+  - name: kinesis-stream-retention-period-check
+    description: >
+      Detects Kinesis Data Streams with a retention period below 168 hours (7 days).
+      Equivalent to AWS Config kinesis-stream-retention-period-check.
+      Maps to FSBP Kinesis.3 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_kinesis_stream
+    filters:
+      - type: value
+        key: retention_period
+        value: 168
+        op: lt

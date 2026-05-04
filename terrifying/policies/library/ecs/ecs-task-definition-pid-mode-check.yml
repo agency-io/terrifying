@@ -1,0 +1,9 @@
+policies:
+  - name: ecs-task-definition-pid-mode-check
+    description: >
+      Detects ECS task definitions with pid_mode=host, which shares the host process
+      namespace and breaks container isolation. Equivalent to AWS Config
+      ecs-task-definition-pid-mode-check. Maps to FSBP ECS.3 (High).
+    resource: terraform.aws_ecs_task_definition
+    filters:
+      - pid_mode: host

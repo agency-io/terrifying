@@ -1,0 +1,16 @@
+policies:
+  - name: lambda-inside-vpc
+    description: >
+      Detects Lambda functions that are not configured to run inside a VPC.
+      Equivalent to AWS Config lambda-inside-vpc.
+      Maps to FSBP Lambda.3 (Medium), CIS, conformance-pack.
+    tags:
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_lambda_function
+    filters:
+      - type: value
+        key: vpc_config
+        value: absent
+        op: eq

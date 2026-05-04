@@ -1,0 +1,14 @@
+policies:
+  - name: rds-cluster-iam-authentication-enabled
+    description: >
+      Detects RDS DB clusters where IAMDatabaseAuthenticationEnabled=false.
+      Equivalent to AWS Config rds-cluster-iam-authentication-enabled.
+      Maps to FSBP RDS.12 (Medium), PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_rds_cluster
+    filters:
+      - iam_database_authentication_enabled: false

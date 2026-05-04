@@ -1,0 +1,11 @@
+policies:
+  - name: elasticsearch-logs-to-cloudwatch
+    description: >
+      Detects Elasticsearch/OpenSearch domains with no CloudWatch log publishing configured.
+      Equivalent to AWS Config elasticsearch-logs-to-cloudwatch. Maps to FSBP ES.4 (Medium).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - type: value
+        key: log_publishing_options
+        value: absent
+        op: eq

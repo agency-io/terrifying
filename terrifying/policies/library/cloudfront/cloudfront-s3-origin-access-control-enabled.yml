@@ -1,0 +1,14 @@
+policies:
+  - name: cloudfront-s3-origin-access-control-enabled
+    description: >
+      Detects CloudFront distributions with S3 origins that lack an origin_access_control_id,
+      allowing public S3 access. Equivalent to FSBP CloudFront.13. Medium severity.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: origin_access_control_id
+        value: absent
+        op: eq

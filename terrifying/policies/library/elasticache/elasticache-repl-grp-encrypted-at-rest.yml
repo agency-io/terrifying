@@ -1,0 +1,9 @@
+policies:
+  - name: elasticache-repl-grp-encrypted-at-rest
+    description: >
+      Detects ElastiCache replication groups where at_rest_encryption_enabled=false.
+      Equivalent to AWS Config elasticache-repl-grp-encrypted-at-rest. Maps to FSBP
+      ElastiCache.5 (High), PCI DSS, NIST 800-53.
+    resource: terraform.aws_elasticache_replication_group
+    filters:
+      - at_rest_encryption_enabled: false

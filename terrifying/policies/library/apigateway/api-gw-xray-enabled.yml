@@ -1,0 +1,13 @@
+policies:
+  - name: api-gw-xray-enabled
+    description: >
+      Detects API Gateway REST stages without AWS X-Ray active tracing enabled.
+      A stage is non-compliant when tracingEnabled is false or absent.
+      Equivalent AWS Config rule: api-gw-xray-enabled.
+      Maps to: FSBP APIGateway.3 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_api_gateway_stage
+    filters:
+      - xray_tracing_enabled: false

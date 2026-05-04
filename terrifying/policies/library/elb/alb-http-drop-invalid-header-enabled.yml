@@ -1,0 +1,14 @@
+policies:
+  - name: alb-http-drop-invalid-header-enabled
+    description: >
+      Detects Application Load Balancers where dropping invalid HTTP headers is
+      not enabled. This prevents HTTP desync attacks. Equivalent to AWS Config
+      alb-http-drop-invalid-header-enabled. Maps to FSBP ELB.4, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+      - conformance-pack
+    resource: terraform.aws_lb
+    filters:
+      - drop_invalid_header_fields: false

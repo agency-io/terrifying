@@ -1,0 +1,16 @@
+policies:
+  - name: s3-bucket-logging-enabled
+    description: >
+      Detects S3 buckets without server access logging enabled.
+      Equivalent to AWS Config s3-bucket-logging-enabled.
+      Maps to CT Elective, FSBP S3.9, CIS 3.1, PCI DSS, NIST 800-53.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_s3_bucket_logging
+    filters: []

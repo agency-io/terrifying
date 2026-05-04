@@ -1,0 +1,13 @@
+policies:
+  - name: s3-lifecycle-policy-check
+    description: >
+      Detects S3 buckets without a lifecycle configuration. Lifecycle policies
+      enable automatic transition and expiration of objects. Equivalent to AWS
+      Config s3-lifecycle-policy-check. Maps to FSBP S3.13 (Low), NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+      - conformance-pack
+    resource: terraform.aws_s3_bucket_lifecycle_configuration
+    filters: []

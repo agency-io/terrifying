@@ -1,0 +1,20 @@
+import shutil
+from pathlib import Path
+import pytest
+from tests.policies.library.helpers import eval_rego_policy, rego_input, resource
+
+pytestmark = pytest.mark.skipif(
+    not shutil.which("opa"), reason="opa not on PATH"
+)
+
+POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/redshift/redshift-backup-enabled.rego"
+
+
+def test_compliant():
+    inp = rego_input([resource("aws_redshift_cluster", "cluster", {"automated_snapshot_retention_period": 7})])
+    assert eval_rego_policy(POLICY, inp) == []
+
+
+def test_violation():
+    inp = rego_input([resource("aws_redshift_cluster", "cluster", {"automated_snapshot_retention_period": 0})])
+    assert eval_rego_policy(POLICY, inp) != []

@@ -1,0 +1,16 @@
+policies:
+  - name: neptune-cluster-audit-log-enabled
+    description: >
+      Detects Neptune DB clusters not exporting audit logs to CloudWatch Logs.
+      Equivalent to AWS Config neptune-cluster-audit-log-enabled.
+      Maps to FSBP Neptune.2 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_neptune_cluster
+    filters:
+      - not:
+        - type: value
+          key: "enable_cloudwatch_logs_exports"
+          value: audit
+          op: contains

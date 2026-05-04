@@ -1,0 +1,15 @@
+policies:
+  - name: emr-master-no-public-ip
+    description: >
+      Detects EMR clusters launched without a VPC subnet (Ec2SubnetId absent),
+      where the master node may receive a public IP exposing management interfaces.
+      Maps to FSBP EMR.1 (High). Trigger: RunJobFlow.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_emr_cluster
+    filters:
+      - type: value
+        key: ec2_attributes
+        value: absent
+        op: eq

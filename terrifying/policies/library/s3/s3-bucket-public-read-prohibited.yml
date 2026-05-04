@@ -1,0 +1,20 @@
+policies:
+  - name: s3-bucket-public-read-prohibited
+    description: >
+      Detects S3 buckets with public read access via ACL grants to AllUsers or
+      AuthenticatedUsers. Equivalent to AWS Config s3-bucket-public-read-prohibited.
+      Maps to CT Mandatory #1, CT Strongly Recommended #5, FSBP S3.2, CIS 2.1.1, PCI DSS.
+    tags:
+      - control-tower
+      - control-tower-mandatory
+      - control-tower-strongly-recommended
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_s3_bucket
+    filters:
+      - type: value
+        key: bucket_acl
+        value: public-read
+        op: eq

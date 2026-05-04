@@ -1,0 +1,11 @@
+policies:
+  - name: opensearch-access-control-enabled
+    description: >
+      Detects OpenSearch Service domains with advanced_security_options disabled
+      (fine-grained access control disabled). Equivalent to AWS Config
+      opensearch-access-control-enabled. Maps to FSBP Opensearch.7 (High).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - type: value
+        key: "advanced_security_options[0].enabled"
+        value: false

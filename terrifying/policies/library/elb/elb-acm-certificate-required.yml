@@ -1,0 +1,16 @@
+policies:
+  - name: elb-acm-certificate-required
+    description: >
+      Detects Classic Load Balancers with HTTPS or SSL listeners using a certificate
+      not managed by AWS Certificate Manager. IAM-stored certificates lack automatic
+      renewal. Equivalent to AWS Config elb-acm-certificate-required. Maps to FSBP ELB.2.
+    tags:
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_elb
+    filters:
+      - type: value
+        key: "listener[?ssl_certificate_id != null && !starts_with(ssl_certificate_id, 'arn:aws:acm:')]"
+        value: []
+        op: ne

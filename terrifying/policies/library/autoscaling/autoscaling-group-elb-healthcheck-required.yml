@@ -1,0 +1,16 @@
+policies:
+  - name: autoscaling-group-elb-healthcheck-required
+    description: >
+      Detects Auto Scaling groups with load balancers attached but health_check_type
+      not set to ELB. EC2-only checks miss app-layer failures.
+      Equivalent to AWS Config autoscaling-group-elb-healthcheck-required.
+      Maps to FSBP AutoScaling.1 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_autoscaling_group
+    filters:
+      - type: value
+        key: health_check_type
+        value: ELB
+        op: ne

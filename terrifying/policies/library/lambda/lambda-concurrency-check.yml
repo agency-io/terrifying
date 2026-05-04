@@ -1,0 +1,15 @@
+policies:
+  - name: lambda-concurrency-check
+    description: >
+      Detects Lambda functions without reserved concurrency configured.
+      Without it, a function can exhaust the regional concurrency pool.
+      Equivalent AWS Config rule: lambda-concurrency-check.
+      Maps to conformance-pack: Operational Best Practices for Lambda.
+    tags:
+      - conformance-pack
+    resource: terraform.aws_lambda_function
+    filters:
+      - type: value
+        key: reserved_concurrent_executions
+        value: absent
+        op: eq

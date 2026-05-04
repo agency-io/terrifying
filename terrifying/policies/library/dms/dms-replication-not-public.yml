@@ -1,0 +1,6 @@
+policies:
+  - name: dms-replication-not-public
+    description: DMS replication instances must not be publicly accessible
+    resource: terraform.aws_dms_replication_instance
+    filters:
+      - publicly_accessible: true

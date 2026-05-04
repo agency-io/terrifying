@@ -1,0 +1,15 @@
+policies:
+  - name: api-gw-ssl-enabled
+    description: >
+      Detects API Gateway REST stages without an SSL client certificate for backend
+      authentication. Non-compliant when clientCertificateId is absent or null.
+      Equivalent Config rule: api-gw-ssl-enabled. Maps to: FSBP APIGateway.2 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_api_gateway_stage
+    filters:
+      - type: value
+        key: client_certificate_id
+        value: absent
+        op: eq

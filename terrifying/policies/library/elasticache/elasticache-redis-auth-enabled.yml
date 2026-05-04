@@ -1,0 +1,12 @@
+policies:
+  - name: elasticache-redis-auth-enabled
+    description: >
+      Detects ElastiCache Redis replication groups where auth_token is not set.
+      Equivalent to AWS Config elasticache-redis-auth-enabled. Maps to FSBP
+      ElastiCache.6 (Medium).
+    resource: terraform.aws_elasticache_replication_group
+    filters:
+      - type: value
+        key: auth_token
+        value: absent
+        op: eq

@@ -1,0 +1,12 @@
+policies:
+  - name: beanstalk-enhanced-health-reporting-enabled
+    description: >
+      Detects Elastic Beanstalk environments where enhanced health reporting is not
+      enabled. Equivalent to AWS Config beanstalk-enhanced-health-reporting-enabled.
+      Maps to FSBP ElasticBeanstalk.1 (Low).
+    resource: terraform.aws_elastic_beanstalk_environment
+    filters:
+      - type: value
+        key: "setting[?namespace=='aws:elasticbeanstalk:healthreporting:system' && name=='SystemType'].value | [0]"
+        value: enhanced
+        op: ne

@@ -1,0 +1,18 @@
+policies:
+  - name: elb-logging-enabled
+    description: >
+      Detects Application Load Balancers without access logs enabled. Equivalent to AWS Config
+      elb-logging-enabled. Maps to FSBP ELB.5 (Medium), CIS 5.4,
+      PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_lb
+    filters:
+      - type: value
+        key: access_logs
+        value: absent
+        op: eq

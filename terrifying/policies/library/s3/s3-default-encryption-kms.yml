@@ -1,0 +1,18 @@
+policies:
+  - name: s3-default-encryption-kms
+    description: >
+      Detects S3 buckets not encrypted with AWS KMS. Flags buckets with no encryption
+      or AES256 encryption. Equivalent to AWS Config s3-default-encryption-kms.
+      Maps to FSBP S3.17, CIS 2.1.1, PCI DSS, NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+      - nist-800-53
+    resource: terraform.aws_s3_bucket_server_side_encryption_configuration
+    filters:
+      - type: value
+        key: "rule[0].apply_server_side_encryption_by_default[0].sse_algorithm"
+        value: "aws:kms"
+        op: ne

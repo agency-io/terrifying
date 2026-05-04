@@ -1,0 +1,9 @@
+policies:
+  - name: no-unrestricted-route-to-igw
+    description: Route tables must not have a 0.0.0.0/0 route pointing to an internet gateway
+    resource: terraform.aws_route_table
+    filters:
+      - type: value
+        key: "route[?cidr_block=='0.0.0.0/0' && gateway_id != null] | length(@)"
+        op: greater-than
+        value: 0

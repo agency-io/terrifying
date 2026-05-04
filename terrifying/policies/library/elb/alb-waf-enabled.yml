@@ -1,0 +1,14 @@
+policies:
+  - name: alb-waf-enabled
+    description: >
+      Detects Application Load Balancers not associated with a WAFv2 web ACL.
+      Unprotected ALBs are exposed to common web exploits. Equivalent to AWS
+      Config alb-waf-enabled. Maps to FSBP ELB.16 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_lb
+    filters:
+      - type: value
+        key: load_balancer_type
+        value: application

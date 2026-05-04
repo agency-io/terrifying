@@ -1,0 +1,13 @@
+policies:
+  - name: netfw-logging-enabled
+    description: >
+      Detects AWS Network Firewalls with no logging destinations configured.
+      Without logging, flow and alert records are lost, removing visibility
+      into traffic inspection results. Maps to FSBP NetworkFirewall.2 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    # Check that a logging configuration resource exists for each firewall.
+    # A firewall without an aws_networkfirewall_logging_configuration is non-compliant.
+    resource: terraform.aws_networkfirewall_firewall
+    filters: []

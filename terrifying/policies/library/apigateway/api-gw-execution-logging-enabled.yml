@@ -1,0 +1,16 @@
+policies:
+  - name: api-gw-execution-logging-enabled
+    description: >
+      Detects API Gateway REST stages with execution logging disabled.
+      A stage is non-compliant when access_log_settings is absent (no logging destination configured).
+      Equivalent AWS Config rule: api-gw-execution-logging-enabled.
+      Maps to: FSBP APIGateway.1 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_api_gateway_stage
+    filters:
+      - type: value
+        key: access_log_settings
+        value: absent
+        op: eq

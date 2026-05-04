@@ -1,0 +1,9 @@
+policies:
+  - name: nacl-no-unrestricted-ssh-rdp
+    description: Network ACLs must not allow unrestricted SSH or RDP ingress from 0.0.0.0/0
+    resource: terraform.aws_network_acl
+    filters:
+      - type: value
+        key: "ingress[?cidr_block=='0.0.0.0/0' && protocol=='6' && rule_action=='allow' && (from_port<=`22` && to_port>=`22` || from_port<=`3389` && to_port>=`3389`)]"
+        value: []
+        op: ne

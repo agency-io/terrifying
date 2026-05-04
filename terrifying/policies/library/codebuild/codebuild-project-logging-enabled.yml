@@ -1,0 +1,15 @@
+policies:
+  - name: codebuild-project-logging-enabled
+    description: >
+      Detects CodeBuild projects with neither CloudWatch Logs nor S3 logging enabled,
+      leaving no audit trail for build activity. Equivalent to AWS Config
+      codebuild-project-logging-enabled. Maps to FSBP CodeBuild.4 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_codebuild_project
+    filters:
+      - type: value
+        key: logs_config
+        value: absent
+        op: eq

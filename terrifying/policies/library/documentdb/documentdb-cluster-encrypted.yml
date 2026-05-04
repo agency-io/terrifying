@@ -1,0 +1,6 @@
+policies:
+  - name: documentdb-cluster-encrypted
+    description: DocumentDB clusters must have storage encryption enabled
+    resource: terraform.aws_docdb_cluster
+    filters:
+      - storage_encrypted: false

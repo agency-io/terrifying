@@ -1,0 +1,15 @@
+policies:
+  - name: neptune-cluster-backup-retention-check
+    description: >
+      Detects Neptune DB clusters with BackupRetentionPeriod less than 7 days.
+      Equivalent to AWS Config neptune-cluster-backup-retention-check.
+      Maps to FSBP Neptune.5 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_neptune_cluster
+    filters:
+      - type: value
+        key: backup_retention_period
+        op: less-than
+        value: 7

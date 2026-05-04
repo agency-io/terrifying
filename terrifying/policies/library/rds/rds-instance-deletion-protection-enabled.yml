@@ -1,0 +1,15 @@
+policies:
+  - name: rds-instance-deletion-protection-enabled
+    description: >
+      Detects RDS DB instances with DeletionProtection=false. Equivalent to AWS Config
+      rds-instance-deletion-protection-enabled. Maps to FSBP RDS.8 (High), CT Elective
+      Detective, conformance pack Operational Best Practices for RDS.
+    tags:
+      - control-tower
+      - control-tower-elective
+      - security-hub
+      - fsbp
+      - conformance-pack
+    resource: terraform.aws_db_instance
+    filters:
+      - deletion_protection: false

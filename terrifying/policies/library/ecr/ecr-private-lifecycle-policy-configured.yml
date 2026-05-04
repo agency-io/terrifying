@@ -1,0 +1,9 @@
+policies:
+  - name: ecr-private-lifecycle-policy-configured
+    description: ECR private repositories must have a lifecycle policy configured
+    resource: terraform.aws_ecr_repository
+    filters:
+      - type: value
+        key: lifecycle_policy
+        value: absent
+        op: eq

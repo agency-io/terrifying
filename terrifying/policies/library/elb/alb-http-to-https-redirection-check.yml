@@ -1,0 +1,16 @@
+policies:
+  - name: alb-http-to-https-redirection-check
+    description: >
+      Detects ALBs with HTTP listeners that do not redirect to HTTPS. Equivalent to AWS Config
+      alb-http-to-https-redirection-check. Maps to FSBP ELB.1 (Critical),
+      CIS 5.4, PCI DSS.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_lb_listener
+    filters:
+      - type: value
+        key: protocol
+        value: HTTP

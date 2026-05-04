@@ -1,0 +1,11 @@
+policies:
+  - name: neptune-cluster-deletion-protection
+    description: >
+      Detects Neptune DB clusters where DeletionProtection=false. Equivalent to
+      AWS Config neptune-cluster-deletion-protection. Maps to FSBP Neptune.4 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_neptune_cluster
+    filters:
+      - deletion_protection: false

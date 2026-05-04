@@ -1,0 +1,20 @@
+policies:
+  - name: rds-aurora-mysql-audit-logging-enabled
+    description: >
+      Detects Aurora MySQL clusters (engine aurora or aurora-mysql) that do not
+      export audit logs to CloudWatch Logs. Equivalent AWS Config
+      rds-aurora-mysql-audit-logging-enabled. Maps to FSBP RDS.34 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_rds_cluster
+    filters:
+      - type: value
+        key: "engine"
+        value: ["aurora", "aurora-mysql"]
+        op: in
+      - not:
+        - type: value
+          key: "enabled_cloudwatch_logs_exports"
+          value: audit
+          op: contains

@@ -1,0 +1,14 @@
+policies:
+  - name: rds-cluster-multi-az-enabled
+    description: >
+      Detects RDS DB clusters not configured for multiple Availability Zones (MultiAZ=false).
+      Equivalent to AWS Config rds-cluster-multi-az-enabled. Maps to FSBP RDS.44 (Medium),
+      NIST 800-53, conformance packs.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+      - conformance-pack
+    resource: terraform.aws_rds_cluster
+    filters:
+      - multi_az: false

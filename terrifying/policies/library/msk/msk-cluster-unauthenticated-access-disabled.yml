@@ -1,0 +1,13 @@
+policies:
+  - name: msk-cluster-unauthenticated-access-disabled
+    description: >
+      Detects MSK clusters with unauthenticated client access enabled. All
+      clients should use TLS, SASL, or IAM auth. Equivalent to FSBP MSK.6 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_msk_cluster
+    filters:
+      - type: value
+        key: "client_authentication[0].unauthenticated[0].enabled"
+        value: true

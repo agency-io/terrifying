@@ -1,0 +1,19 @@
+policies:
+  - name: cloud-trail-encryption-enabled
+    description: >
+      Detects CloudTrail trails without KMS encryption at rest. Equivalent to AWS Config
+      cloud-trail-encryption-enabled. Maps to CT Mandatory, FSBP CloudTrail.2,
+      CIS 3.7, PCI DSS.
+    tags:
+      - control-tower
+      - control-tower-mandatory
+      - security-hub
+      - fsbp
+      - cis-benchmark
+      - pci-dss
+    resource: terraform.aws_cloudtrail
+    filters:
+      - type: value
+        key: kms_key_id
+        value: absent
+        op: eq

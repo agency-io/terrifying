@@ -1,0 +1,13 @@
+policies:
+  - name: ecs-task-definition-linux-user-non-root
+    description: >
+      Detects ECS task definitions where any container runs as root (user=root or absent).
+      Root containers have elevated host privileges that attackers can exploit.
+      Equivalent to AWS Config ecs-task-definition-linux-user-non-root.
+      Maps to FSBP ECS.20 (Medium).
+    resource: terraform.aws_ecs_task_definition
+    filters:
+      - type: value
+        key: "container_definitions"
+        value: present
+        op: eq

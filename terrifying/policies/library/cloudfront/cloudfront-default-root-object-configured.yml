@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-default-root-object-configured
+    description: >
+      Detects CloudFront distributions with an empty default_root_object. Without a root
+      object, root URL requests may expose origin directory contents or return errors.
+      Equivalent: cloudfront-default-root-object-configured. FSBP CloudFront.1.
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: default_root_object
+        value: absent
+        op: eq

@@ -1,0 +1,19 @@
+policies:
+  - name: redshift-default-admin-check
+    description: >
+      Detects Amazon Redshift clusters using a default administrator username (admin,
+      awsuser, master). Equivalent to AWS Config redshift-default-admin-check.
+      Maps to FSBP Redshift.8 (Medium), NIST 800-53.
+    tags:
+      - security-hub
+      - fsbp
+      - nist-800-53
+    resource: terraform.aws_redshift_cluster
+    filters:
+      - type: value
+        key: "master_username"
+        op: in
+        value:
+          - admin
+          - awsuser
+          - master

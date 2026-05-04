@@ -1,0 +1,15 @@
+policies:
+  - name: cloudwatch-alarm-action-check
+    description: >
+      Detects CloudWatch alarms with no actions configured on alarm_actions,
+      ok_actions, or insufficient_data_actions. Equivalent to AWS Config
+      cloudwatch-alarm-action-check. Maps to FSBP CloudWatch.15 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudwatch_metric_alarm
+    filters:
+      - type: value
+        key: alarm_actions
+        value: absent
+        op: eq

@@ -1,0 +1,11 @@
+policies:
+  - name: elasticsearch-in-vpc-only
+    description: >
+      Detects Elasticsearch/OpenSearch domains not deployed inside a VPC (vpc_options absent).
+      Equivalent to AWS Config elasticsearch-in-vpc-only. Maps to FSBP ES.2 (Critical).
+    resource: terraform.aws_elasticsearch_domain
+    filters:
+      - type: value
+        key: vpc_options
+        value: absent
+        op: eq

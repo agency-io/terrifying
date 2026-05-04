@@ -1,0 +1,12 @@
+policies:
+  - name: elasticache-redis-cluster-automatic-backup-check
+    description: >
+      Detects ElastiCache Redis replication groups where snapshot_retention_limit=0
+      (automatic backups disabled). Equivalent to AWS Config
+      elasticache-redis-cluster-automatic-backup-check. Maps to FSBP ElastiCache.1 (High).
+    resource: terraform.aws_elasticache_replication_group
+    filters:
+      - type: value
+        key: snapshot_retention_limit
+        value: 0
+        op: eq

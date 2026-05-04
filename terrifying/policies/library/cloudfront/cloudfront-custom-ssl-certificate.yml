@@ -1,0 +1,15 @@
+policies:
+  - name: cloudfront-custom-ssl-certificate
+    description: >
+      Detects CloudFront distributions using the default CloudFront SSL certificate
+      instead of a custom one. Non-compliant when viewer_certificate uses cloudfront_default_certificate.
+      Equivalent to cloudfront-custom-ssl-certificate. FSBP CloudFront.7 (Low).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_cloudfront_distribution
+    filters:
+      - type: value
+        key: viewer_certificate.cloudfront_default_certificate
+        value: true
+        op: eq

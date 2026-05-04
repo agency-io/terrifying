@@ -1,0 +1,15 @@
+policies:
+  - name: lambda-dlq-check
+    description: >
+      Detects Lambda functions without a Dead Letter Queue (DLQ).
+      Without a DLQ, failed async invocations are silently discarded.
+      Equivalent AWS Config rule: lambda-dlq-check.
+      Maps to conformance-pack: Operational Best Practices for Lambda.
+    tags:
+      - conformance-pack
+    resource: terraform.aws_lambda_function
+    filters:
+      - type: value
+        key: dead_letter_config
+        value: absent
+        op: eq

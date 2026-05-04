@@ -1,0 +1,9 @@
+policies:
+  - name: ecs-task-definition-host-network-mode
+    description: >
+      Detects ECS task definitions using host network mode, which shares the
+      host network namespace and bypasses container network isolation.
+      Equivalent to AWS Config ecs-task-definition-host-network-mode. FSBP ECS.17 (Medium).
+    resource: terraform.aws_ecs_task_definition
+    filters:
+      - network_mode: host

@@ -1,0 +1,19 @@
+policies:
+  - name: alb-desync-mode-check
+    description: >
+      Detects Application Load Balancers where the HTTP desync mitigation mode is
+      set to "monitor" instead of "defensive" or "strictest". Equivalent to AWS
+      Config alb-desync-mode-check. Maps to FSBP ELB.12, PCI DSS.
+    tags:
+      - security-hub
+      - fsbp
+      - pci-dss
+      - conformance-pack
+    resource: terraform.aws_lb
+    filters:
+      - type: value
+        key: desync_mitigation_mode
+        value:
+          - defensive
+          - strictest
+        op: not-in

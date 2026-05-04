@@ -1,0 +1,9 @@
+policies:
+  - name: ecr-private-image-scanning-enabled
+    description: ECR private repositories must have scan-on-push enabled
+    resource: terraform.aws_ecr_repository
+    filters:
+      - not:
+        - type: value
+          key: "image_scanning_configuration.scan_on_push"
+          value: true

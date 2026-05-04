@@ -1,0 +1,12 @@
+policies:
+  - name: neptune-cluster-iam-auth-enabled
+    description: >
+      Detects Neptune DB clusters where IAMDatabaseAuthenticationEnabled=false.
+      Equivalent to AWS Config neptune-cluster-iam-auth-enabled.
+      Maps to FSBP Neptune.7 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_neptune_cluster
+    filters:
+      - iam_database_authentication_enabled: false

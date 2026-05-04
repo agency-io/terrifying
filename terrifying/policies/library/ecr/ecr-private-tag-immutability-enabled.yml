@@ -1,0 +1,8 @@
+policies:
+  - name: ecr-private-tag-immutability-enabled
+    description: ECR private repositories must have image tag immutability enabled
+    resource: terraform.aws_ecr_repository
+    filters:
+      - type: value
+        key: "image_tag_mutability"
+        value: MUTABLE

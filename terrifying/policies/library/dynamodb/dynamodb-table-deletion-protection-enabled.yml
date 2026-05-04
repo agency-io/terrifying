@@ -1,0 +1,12 @@
+policies:
+  - name: dynamodb-table-deletion-protection-enabled
+    description: DynamoDB tables must have deletion protection enabled
+    resource: terraform.aws_dynamodb_table
+    filters:
+      - or:
+        - type: value
+          key: "deletion_protection_enabled"
+          value: false
+        - type: value
+          key: "deletion_protection_enabled"
+          value: absent

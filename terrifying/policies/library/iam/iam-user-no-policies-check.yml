@@ -1,0 +1,12 @@
+policies:
+  - name: iam-user-no-policies-check
+    description: >
+      Detects IAM users with directly attached managed or inline policies.
+      Users should receive permissions via groups only.
+      Equivalent to AWS Config iam-user-no-policies-check.
+      Maps to: Security Hub FSBP IAM.2 (Medium), CIS AWS Foundations 1.15.
+    tags:
+      - security-hub
+      - fsbp
+      - cis-benchmark
+    resource: terraform.aws_iam_user_policy

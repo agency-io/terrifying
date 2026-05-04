@@ -1,0 +1,14 @@
+policies:
+  - name: sagemaker-notebook-instance-root-access-check
+    description: >
+      Detects SageMaker notebook instances with root access enabled for users.
+      Equivalent to AWS Config sagemaker-notebook-instance-root-access-check.
+      Maps to FSBP SageMaker.3 (High).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_sagemaker_notebook_instance
+    filters:
+      - type: value
+        key: "root_access"
+        value: "Enabled"

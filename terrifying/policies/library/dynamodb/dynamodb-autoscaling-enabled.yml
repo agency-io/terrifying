@@ -1,0 +1,12 @@
+policies:
+  - name: dynamodb-autoscaling-enabled
+    description: DynamoDB tables using PROVISIONED billing mode must have auto-scaling enabled
+    resource: terraform.aws_dynamodb_table
+    filters:
+      - or:
+        - type: value
+          key: "billing_mode"
+          value: PROVISIONED
+        - type: value
+          key: "billing_mode"
+          value: absent

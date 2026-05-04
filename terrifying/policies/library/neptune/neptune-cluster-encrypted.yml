@@ -1,0 +1,11 @@
+policies:
+  - name: neptune-cluster-encrypted
+    description: >
+      Detects Neptune DB clusters where StorageEncrypted=false. Equivalent to
+      AWS Config neptune-cluster-encrypted. Maps to FSBP Neptune.1 (Medium).
+    tags:
+      - security-hub
+      - fsbp
+    resource: terraform.aws_neptune_cluster
+    filters:
+      - storage_encrypted: false

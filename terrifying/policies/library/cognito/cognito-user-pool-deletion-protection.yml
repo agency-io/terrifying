@@ -1,0 +1,8 @@
+policies:
+  - name: cognito-user-pool-deletion-protection
+    description: Cognito user pools must have deletion protection enabled
+    resource: terraform.aws_cognito_user_pool
+    filters:
+      - type: value
+        key: deletion_protection
+        value: "INACTIVE"

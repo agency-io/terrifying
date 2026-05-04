@@ -1,0 +1,9 @@
+policies:
+  - name: documentdb-cluster-backup-retention
+    description: DocumentDB clusters must have a backup retention period of at least 7 days
+    resource: terraform.aws_docdb_cluster
+    filters:
+      - type: value
+        key: "backup_retention_period"
+        value: 7
+        op: less-than
