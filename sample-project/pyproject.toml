@@ -9,3 +9,5 @@ dev = ["pytest>=8"]
 
 [tool.uv.sources]
 terrifying = { path = "..", editable = true }
+
+[tool.pytest.ini_options]
