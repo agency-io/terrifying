@@ -7,14 +7,21 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/apigateway/apigateway-domain-name-tls-check.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/apigateway/apigateway-domain-name-tls-check.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_api_gateway_domain_name", "my_domain", '  security_policy = "TLS_1_2"\n')
+    tf = tf_resource(
+        "aws_api_gateway_domain_name", "my_domain", '  security_policy = "TLS_1_2"\n'
+    )
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_api_gateway_domain_name", "my_domain", '  security_policy = "TLS_1_0"\n')
+    tf = tf_resource(
+        "aws_api_gateway_domain_name", "my_domain", '  security_policy = "TLS_1_0"\n'
+    )
     assert c7n_violations(POLICY, tf) != []

@@ -1,4 +1,5 @@
 """TUI for terrifying add — requires textual (pip install terrifying[tui])."""
+
 from __future__ import annotations
 
 from terrifying.policies.library import PolicyEntry
@@ -148,8 +149,7 @@ def run_tui(entries: list[PolicyEntry], engine: str) -> list[PolicyEntry]:
 
         def action_confirm(self) -> None:
             self._selected_entries = [
-                e for e in self._all
-                if (e.id, e.engine) in self._selected_ids
+                e for e in self._all if (e.id, e.engine) in self._selected_ids
             ]
             self.exit(self._selected_entries)
 

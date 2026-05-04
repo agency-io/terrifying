@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ecs/ecs-fargate-latest-platform-version.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ecs/ecs-fargate-latest-platform-version.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_ecs_service", "main",
+        "aws_ecs_service",
+        "main",
         '  launch_type      = "FARGATE"\n  platform_version = "LATEST"\n',
     )
     assert c7n_violations(POLICY, tf) == []
@@ -20,7 +24,8 @@ def test_compliant():
 
 def test_violation():
     tf = tf_resource(
-        "aws_ecs_service", "main",
+        "aws_ecs_service",
+        "main",
         '  launch_type      = "FARGATE"\n  platform_version = "1.3.0"\n',
     )
     assert c7n_violations(POLICY, tf) != []
@@ -28,7 +33,8 @@ def test_violation():
 
 def test_non_fargate_compliant():
     tf = tf_resource(
-        "aws_ecs_service", "main",
+        "aws_ecs_service",
+        "main",
         '  launch_type      = "EC2"\n  platform_version = "1.3.0"\n',
     )
     assert c7n_violations(POLICY, tf) == []

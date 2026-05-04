@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/secretsmanager/secretsmanager-using-cmk.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/secretsmanager/secretsmanager-using-cmk.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_secretsmanager_secret", "secret",
+        "aws_secretsmanager_secret",
+        "secret",
         '  name       = "my-secret"\n  kms_key_id = "arn:aws:kms:us-east-1:123:key/my-key"\n',
     )
     assert c7n_violations(POLICY, tf) == []

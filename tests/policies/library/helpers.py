@@ -1,4 +1,5 @@
 """Test helpers for per-policy unit tests."""
+
 from __future__ import annotations
 
 import json
@@ -19,18 +20,20 @@ def rego_input(resources: list[dict], params: dict | None = None) -> dict:
 
 def eval_rego_policy(policy_path: Path, input_doc: dict) -> list[str]:
     """Run opa eval data.terrifying.deny and return deny messages."""
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".json", delete=False
-    ) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(input_doc, f)
         input_file = f.name
 
     result = subprocess.run(
         [
-            "opa", "eval",
-            "--data", str(policy_path),
-            "--input", input_file,
-            "--format", "json",
+            "opa",
+            "eval",
+            "--data",
+            str(policy_path),
+            "--input",
+            input_file,
+            "--format",
+            "json",
             "data.terrifying.deny",
         ],
         capture_output=True,
@@ -68,9 +71,12 @@ def c7n_violations(policy_path: Path, tf_fixture: str) -> list[dict]:
         result = subprocess.run(
             [
                 "c7n-left",
-                "--policy", str(policy_path),
-                "--directory", str(tmp),
-                "--output", "json",
+                "--policy",
+                str(policy_path),
+                "--directory",
+                str(tmp),
+                "--output",
+                "json",
             ],
             capture_output=True,
             text=True,

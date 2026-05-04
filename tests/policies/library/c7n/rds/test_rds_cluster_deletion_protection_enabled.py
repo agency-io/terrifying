@@ -7,14 +7,17 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/rds/rds-cluster-deletion-protection-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/rds/rds-cluster-deletion-protection-enabled.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_rds_cluster", "db", '  deletion_protection = true\n')
+    tf = tf_resource("aws_rds_cluster", "db", "  deletion_protection = true\n")
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_rds_cluster", "db", '  deletion_protection = false\n')
+    tf = tf_resource("aws_rds_cluster", "db", "  deletion_protection = false\n")
     assert c7n_violations(POLICY, tf) != []

@@ -7,7 +7,10 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/kms/iam-inline-policy-blocked-kms-actions.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/kms/iam-inline-policy-blocked-kms-actions.yml"
+)
 
 
 def test_compliant():
@@ -19,7 +22,8 @@ def test_compliant():
 def test_violation():
     # Any aws_iam_user_policy resource is a violation
     tf = tf_resource(
-        "aws_iam_user_policy", "my_policy",
-        '  name   = "my-inline-policy"\n  user   = "my-user"\n  policy = "{\\\"Version\\\":\\\"2012-10-17\\\",\\\"Statement\\\":[{\\\"Effect\\\":\\\"Allow\\\",\\\"Action\\\":\\\"kms:*\\\",\\\"Resource\\\":\\\"*\\\"}]}"\n',
+        "aws_iam_user_policy",
+        "my_policy",
+        '  name   = "my-inline-policy"\n  user   = "my-user"\n  policy = "{\\"Version\\":\\"2012-10-17\\",\\"Statement\\":[{\\"Effect\\":\\"Allow\\",\\"Action\\":\\"kms:*\\",\\"Resource\\":\\"*\\"}]}"\n',
     )
     assert c7n_violations(POLICY, tf) != []

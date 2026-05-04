@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate terrifying/policies/library/manifest.yaml by scanning bundled policy files."""
+
 from __future__ import annotations
 
 import re
@@ -37,7 +38,7 @@ def _parse_rego_meta(text: str) -> dict:
         line = line.strip().lstrip("# ")
         for key in ("title", "description", "severity", "tags", "terraform_resources"):
             if line.startswith(f"{key}:"):
-                val = line[len(key) + 1:].strip()
+                val = line[len(key) + 1 :].strip()
                 if key in ("tags", "terraform_resources"):
                     meta[key] = [t.strip() for t in val.split(",") if t.strip()]
                 else:
@@ -54,17 +55,27 @@ def _parse_c7n_meta(text: str) -> dict:
     tags_raw = p.get("tags", [])
     # c7n resource type → terraform resource type (strip terraform. prefix for display)
     resource = p.get("resource", "")
-    tf_resource = resource.replace("terraform.", "") if resource.startswith("terraform.") else resource
+    tf_resource = (
+        resource.replace("terraform.", "")
+        if resource.startswith("terraform.")
+        else resource
+    )
     return {
         "title": p.get("name", ""),
         "description": p.get("description", "").strip(),
-        "severity": p.get("metadata", {}).get("severity", "medium") if isinstance(p.get("metadata"), dict) else "medium",
+        "severity": (
+            p.get("metadata", {}).get("severity", "medium")
+            if isinstance(p.get("metadata"), dict)
+            else "medium"
+        ),
         "tags": tags_raw if isinstance(tags_raw, list) else [],
         "terraform_resources": [tf_resource] if tf_resource else [],
     }
 
 
-def _build_entry(policy_id: str, engine: str, service: str, rel_file: str, meta: dict) -> dict:
+def _build_entry(
+    policy_id: str, engine: str, service: str, rel_file: str, meta: dict
+) -> dict:
     tags = list(meta.get("tags", []))
     # Normalize tags to kebab-case
     tags = [t.lower().replace("_", "-").strip() for t in tags]
@@ -119,7 +130,9 @@ def main() -> None:
                 errors.append(f"  {yml_file}: {e}")
 
     manifest = {"policies": entries}
-    MANIFEST.write_text(yaml.dump(manifest, default_flow_style=False, sort_keys=False), encoding="utf-8")
+    MANIFEST.write_text(
+        yaml.dump(manifest, default_flow_style=False, sort_keys=False), encoding="utf-8"
+    )
 
     print(f"Generated manifest with {len(entries)} entries")
     if errors:

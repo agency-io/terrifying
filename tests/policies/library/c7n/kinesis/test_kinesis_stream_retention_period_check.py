@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/kinesis/kinesis-stream-retention-period-check.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/kinesis/kinesis-stream-retention-period-check.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_kinesis_stream", "my_stream",
+        "aws_kinesis_stream",
+        "my_stream",
         '  name             = "my-stream"\n  retention_period = 168\n',
     )
     assert c7n_violations(POLICY, tf) == []
@@ -20,7 +24,8 @@ def test_compliant():
 
 def test_violation():
     tf = tf_resource(
-        "aws_kinesis_stream", "my_stream",
+        "aws_kinesis_stream",
+        "my_stream",
         '  name             = "my-stream"\n  retention_period = 24\n',
     )
     assert c7n_violations(POLICY, tf) != []

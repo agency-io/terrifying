@@ -7,11 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ec2/vpc-flow-logs-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ec2/vpc-flow-logs-enabled.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_vpc", "vpc", '  cidr_block = "10.0.0.0/16"\n  enable_dns_support = true\n')
+    tf = tf_resource(
+        "aws_vpc", "vpc", '  cidr_block = "10.0.0.0/16"\n  enable_dns_support = true\n'
+    )
     assert c7n_violations(POLICY, tf) == []
 
 

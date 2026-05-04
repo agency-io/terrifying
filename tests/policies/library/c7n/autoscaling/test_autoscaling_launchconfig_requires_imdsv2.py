@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/autoscaling/autoscaling-launchconfig-requires-imdsv2.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/autoscaling/autoscaling-launchconfig-requires-imdsv2.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_launch_configuration", "lc",
+        "aws_launch_configuration",
+        "lc",
         '  metadata_options {\n    http_tokens = "required"\n  }\n',
     )
     assert c7n_violations(POLICY, tf) == []

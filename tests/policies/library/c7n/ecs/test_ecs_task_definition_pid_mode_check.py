@@ -7,20 +7,25 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ecs/ecs-task-definition-pid-mode-check.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ecs/ecs-task-definition-pid-mode-check.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_ecs_task_definition", "main",
-        '  container_definitions = jsonencode([])\n',
+        "aws_ecs_task_definition",
+        "main",
+        "  container_definitions = jsonencode([])\n",
     )
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
     tf = tf_resource(
-        "aws_ecs_task_definition", "main",
+        "aws_ecs_task_definition",
+        "main",
         '  pid_mode              = "host"\n  container_definitions = jsonencode([])\n',
     )
     assert c7n_violations(POLICY, tf) != []

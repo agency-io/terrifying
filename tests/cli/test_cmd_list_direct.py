@@ -1,4 +1,5 @@
 """Unit tests for _cmd_list — covers the list command code paths."""
+
 import argparse
 import pytest
 from terrifying.cli import _cmd_list

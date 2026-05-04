@@ -12,6 +12,6 @@ def test_rego_policies_use_deny():
             f"{entry.file}: expected 'deny contains' but found 'violation' pattern — "
             "policy was not rewritten to use the terrifying deny convention"
         )
-        assert "violation contains" not in source, (
-            f"{entry.file}: still uses old 'violation contains' pattern"
-        )
+        assert (
+            "violation contains" not in source
+        ), f"{entry.file}: still uses old 'violation contains' pattern"

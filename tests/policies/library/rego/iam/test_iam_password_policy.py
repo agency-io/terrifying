@@ -3,11 +3,12 @@ from pathlib import Path
 import pytest
 from tests.policies.library.helpers import eval_rego_policy, rego_input, resource
 
-pytestmark = pytest.mark.skipif(
-    not shutil.which("opa"), reason="opa not on PATH"
-)
+pytestmark = pytest.mark.skipif(not shutil.which("opa"), reason="opa not on PATH")
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/iam/iam-password-policy.rego"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/iam/iam-password-policy.rego"
+)
 
 COMPLIANT_ATTRS = {
     "minimum_password_length": 14,
@@ -19,7 +20,9 @@ COMPLIANT_ATTRS = {
 
 
 def test_compliant():
-    inp = rego_input([resource("aws_iam_account_password_policy", "policy", COMPLIANT_ATTRS)])
+    inp = rego_input(
+        [resource("aws_iam_account_password_policy", "policy", COMPLIANT_ATTRS)]
+    )
     assert eval_rego_policy(POLICY, inp) == []
 
 

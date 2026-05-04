@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/elb/elbv2-multiple-az.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/elb/elbv2-multiple-az.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_lb", "my_lb",
+        "aws_lb",
+        "my_lb",
         '  subnets = ["subnet-aaa", "subnet-bbb"]\n',
     )
     assert c7n_violations(POLICY, tf) == []
@@ -20,7 +24,8 @@ def test_compliant():
 
 def test_violation():
     tf = tf_resource(
-        "aws_lb", "my_lb",
+        "aws_lb",
+        "my_lb",
         '  subnets = ["subnet-aaa"]\n',
     )
     assert c7n_violations(POLICY, tf) != []

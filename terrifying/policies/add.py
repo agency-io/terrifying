@@ -1,4 +1,5 @@
 """Logic for adding bundled policies to a project."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -33,6 +34,7 @@ def _load_yml(config_path: Path) -> tuple[dict, str]:
     if config_path.exists():
         text = config_path.read_text(encoding="utf-8")
         import io
+
         data = yaml.load(text) or {}
     else:
         text = ""
@@ -44,6 +46,7 @@ def _dump_yml(data: dict) -> str:
     yaml = YAML()
     yaml.default_flow_style = False
     import io
+
     buf = io.StringIO()
     yaml.dump(data, buf)
     return buf.getvalue()
@@ -60,12 +63,8 @@ def _ensure_nested(data: dict, *keys: str) -> dict:
 
 def _collect_params(entries: list[PolicyEntry], config: dict) -> dict[str, dict]:
     """Prompt for unique undeclared params; return {engine: {name: value}}."""
-    existing_opa = (
-        config.get("policies", {}).get("opa", {}).get("params", {}) or {}
-    )
-    existing_c7n = (
-        config.get("policies", {}).get("c7n", {}).get("params", {}) or {}
-    )
+    existing_opa = config.get("policies", {}).get("opa", {}).get("params", {}) or {}
+    existing_c7n = config.get("policies", {}).get("c7n", {}).get("params", {}) or {}
 
     rego_entries = [e for e in entries if e.engine == "rego"]
     c7n_entries = [e for e in entries if e.engine == "c7n"]
@@ -104,7 +103,9 @@ def _collect_params(entries: list[PolicyEntry], config: dict) -> dict[str, dict]
     # Notify about shared params written to both
     for name in shared:
         if name in prompted:
-            print(f"  (shared param '{name}' will be written to both opa and c7n sections)")
+            print(
+                f"  (shared param '{name}' will be written to both opa and c7n sections)"
+            )
 
     return {"opa": opa_new, "c7n": c7n_new}
 
@@ -143,6 +144,7 @@ def _build_delta(
 
     # Build updated config
     import copy
+
     new_config = copy.deepcopy(config) if config else {}
 
     policies = _ensure_nested(new_config, "policies")
@@ -229,7 +231,9 @@ def run_add(entries: list[PolicyEntry], dry_run: bool = False) -> None:
         for p in e.params:
             target = existing_opa_params if e.engine == "rego" else existing_c7n_params
             if p.name in target:
-                print(f"  '{p.name}' already set in terrifying.yml — keeping existing value")
+                print(
+                    f"  '{p.name}' already set in terrifying.yml — keeping existing value"
+                )
 
     new_params = _collect_params(entries, config)
 

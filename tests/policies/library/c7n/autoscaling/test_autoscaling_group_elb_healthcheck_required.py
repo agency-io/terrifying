@@ -7,7 +7,10 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/autoscaling/autoscaling-group-elb-healthcheck-required.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/autoscaling/autoscaling-group-elb-healthcheck-required.yml"
+)
 
 
 def test_compliant():

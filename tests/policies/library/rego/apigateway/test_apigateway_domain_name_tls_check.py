@@ -3,18 +3,35 @@ from pathlib import Path
 import pytest
 from tests.policies.library.helpers import eval_rego_policy, rego_input, resource
 
-pytestmark = pytest.mark.skipif(
-    not shutil.which("opa"), reason="opa not on PATH"
-)
+pytestmark = pytest.mark.skipif(not shutil.which("opa"), reason="opa not on PATH")
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/apigateway/apigateway-domain-name-tls-check.rego"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/apigateway/apigateway-domain-name-tls-check.rego"
+)
 
 
 def test_compliant():
-    inp = rego_input([resource("aws_api_gateway_domain_name", "my_domain", {"security_policy": "TLS_1_2"})])
+    inp = rego_input(
+        [
+            resource(
+                "aws_api_gateway_domain_name",
+                "my_domain",
+                {"security_policy": "TLS_1_2"},
+            )
+        ]
+    )
     assert eval_rego_policy(POLICY, inp) == []
 
 
 def test_violation():
-    inp = rego_input([resource("aws_api_gateway_domain_name", "my_domain", {"security_policy": "TLS_1_0"})])
+    inp = rego_input(
+        [
+            resource(
+                "aws_api_gateway_domain_name",
+                "my_domain",
+                {"security_policy": "TLS_1_0"},
+            )
+        ]
+    )
     assert eval_rego_policy(POLICY, inp) != []

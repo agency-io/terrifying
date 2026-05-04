@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/cloudfront/cloudfront-viewer-policy-https.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/cloudfront/cloudfront-viewer-policy-https.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_cloudfront_distribution", "dist",
+        "aws_cloudfront_distribution",
+        "dist",
         '  default_cache_behavior {\n    viewer_protocol_policy = "redirect-to-https"\n  }\n',
     )
     assert c7n_violations(POLICY, tf) == []
@@ -20,7 +24,8 @@ def test_compliant():
 
 def test_violation():
     tf = tf_resource(
-        "aws_cloudfront_distribution", "dist",
+        "aws_cloudfront_distribution",
+        "dist",
         '  default_cache_behavior {\n    viewer_protocol_policy = "allow-all"\n  }\n',
     )
     assert c7n_violations(POLICY, tf) != []

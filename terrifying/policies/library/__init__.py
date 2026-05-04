@@ -1,4 +1,5 @@
 """Bundled policy library — manifest loader and policy file access."""
+
 from __future__ import annotations
 
 import dataclasses

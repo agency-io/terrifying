@@ -7,14 +7,21 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/cognito/cognito-user-pool-deletion-protection.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/cognito/cognito-user-pool-deletion-protection.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_cognito_user_pool", "pool", '  deletion_protection = "ACTIVE"\n')
+    tf = tf_resource(
+        "aws_cognito_user_pool", "pool", '  deletion_protection = "ACTIVE"\n'
+    )
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_cognito_user_pool", "pool", '  deletion_protection = "INACTIVE"\n')
+    tf = tf_resource(
+        "aws_cognito_user_pool", "pool", '  deletion_protection = "INACTIVE"\n'
+    )
     assert c7n_violations(POLICY, tf) != []

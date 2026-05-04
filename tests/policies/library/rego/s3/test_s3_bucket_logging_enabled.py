@@ -3,20 +3,25 @@ from pathlib import Path
 import pytest
 from tests.policies.library.helpers import eval_rego_policy, rego_input, resource
 
-pytestmark = pytest.mark.skipif(
-    not shutil.which("opa"), reason="opa not on PATH"
-)
+pytestmark = pytest.mark.skipif(not shutil.which("opa"), reason="opa not on PATH")
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/s3/s3-bucket-logging-enabled.rego"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/s3/s3-bucket-logging-enabled.rego"
+)
 
 
 def test_compliant():
     resources = [
         resource("aws_s3_bucket", "my_bucket", {}),
-        resource("aws_s3_bucket_logging", "log", {
-            "bucket": "my_bucket",
-            "target_bucket": "log-bucket",
-        }),
+        resource(
+            "aws_s3_bucket_logging",
+            "log",
+            {
+                "bucket": "my_bucket",
+                "target_bucket": "log-bucket",
+            },
+        ),
     ]
     inp = rego_input(resources)
     assert eval_rego_policy(POLICY, inp) == []

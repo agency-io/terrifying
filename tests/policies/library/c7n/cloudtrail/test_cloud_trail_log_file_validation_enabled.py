@@ -7,14 +7,19 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/cloudtrail/cloud-trail-log-file-validation-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/cloudtrail/cloud-trail-log-file-validation-enabled.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_cloudtrail", "trail", '  enable_log_file_validation = true\n')
+    tf = tf_resource("aws_cloudtrail", "trail", "  enable_log_file_validation = true\n")
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_cloudtrail", "trail", '  enable_log_file_validation = false\n')
+    tf = tf_resource(
+        "aws_cloudtrail", "trail", "  enable_log_file_validation = false\n"
+    )
     assert c7n_violations(POLICY, tf) != []

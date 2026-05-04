@@ -1,4 +1,5 @@
 """Unit tests for _cmd_check covering JSON format and violation_to_dict."""
+
 import argparse
 import json
 import pytest
@@ -19,7 +20,9 @@ def test_cmd_check_json_format_no_violations(tmp_path, capsys):
 
 def test_cmd_check_json_format_with_violation(tmp_path, capsys):
     cfg = tmp_path / "terrifying.yml"
-    cfg.write_text("terraform:\n  path: .\nrules:\n  required_tags:\n    tags:\n      - Env\n")
+    cfg.write_text(
+        "terraform:\n  path: .\nrules:\n  required_tags:\n    tags:\n      - Env\n"
+    )
     tf = tmp_path / "main.tf"
     tf.write_text('resource "aws_s3_bucket" "b" {}\n')
     args = argparse.Namespace(directory=str(tmp_path), format="json")
@@ -36,7 +39,10 @@ def test_cmd_check_json_format_with_violation(tmp_path, capsys):
 def test_violation_to_dict_direct():
     from terrifying.cli import _violation_to_dict
     from terrifying.core.rule import Violation
-    v = Violation(rule="test_rule", file="main.tf", message="oops", severity="error", line=5)
+
+    v = Violation(
+        rule="test_rule", file="main.tf", message="oops", severity="error", line=5
+    )
     d = _violation_to_dict(v)
     assert d["rule"] == "test_rule"
     assert d["file"] == "main.tf"

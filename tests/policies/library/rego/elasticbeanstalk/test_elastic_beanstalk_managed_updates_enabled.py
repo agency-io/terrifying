@@ -3,20 +3,37 @@ from pathlib import Path
 import pytest
 from tests.policies.library.helpers import eval_rego_policy, rego_input, resource
 
-pytestmark = pytest.mark.skipif(
-    not shutil.which("opa"), reason="opa not on PATH"
-)
+pytestmark = pytest.mark.skipif(not shutil.which("opa"), reason="opa not on PATH")
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/elasticbeanstalk/elastic-beanstalk-managed-updates-enabled.rego"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/elasticbeanstalk/elastic-beanstalk-managed-updates-enabled.rego"
+)
 
 
 def test_compliant():
-    inp = rego_input([resource("aws_elastic_beanstalk_environment", "env", {
-        "setting": [{"namespace": "aws:elasticbeanstalk:managedactions", "name": "ManagedActionsEnabled", "value": "true"}]
-    })])
+    inp = rego_input(
+        [
+            resource(
+                "aws_elastic_beanstalk_environment",
+                "env",
+                {
+                    "setting": [
+                        {
+                            "namespace": "aws:elasticbeanstalk:managedactions",
+                            "name": "ManagedActionsEnabled",
+                            "value": "true",
+                        }
+                    ]
+                },
+            )
+        ]
+    )
     assert eval_rego_policy(POLICY, inp) == []
 
 
 def test_violation():
-    inp = rego_input([resource("aws_elastic_beanstalk_environment", "env", {"setting": []})])
+    inp = rego_input(
+        [resource("aws_elastic_beanstalk_environment", "env", {"setting": []})]
+    )
     assert eval_rego_policy(POLICY, inp) != []

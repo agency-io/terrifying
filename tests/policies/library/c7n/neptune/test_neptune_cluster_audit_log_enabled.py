@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/neptune/neptune-cluster-audit-log-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/neptune/neptune-cluster-audit-log-enabled.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_neptune_cluster", "db",
+        "aws_neptune_cluster",
+        "db",
         '  enable_cloudwatch_logs_exports = ["audit"]\n',
     )
     assert c7n_violations(POLICY, tf) == []
@@ -20,7 +24,8 @@ def test_compliant():
 
 def test_violation():
     tf = tf_resource(
-        "aws_neptune_cluster", "db",
-        '  enable_cloudwatch_logs_exports = []\n',
+        "aws_neptune_cluster",
+        "db",
+        "  enable_cloudwatch_logs_exports = []\n",
     )
     assert c7n_violations(POLICY, tf) != []

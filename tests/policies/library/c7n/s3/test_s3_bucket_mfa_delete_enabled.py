@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/s3/s3-bucket-mfa-delete-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/s3/s3-bucket-mfa-delete-enabled.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_s3_bucket_versioning", "versioning",
+        "aws_s3_bucket_versioning",
+        "versioning",
         '  versioning_configuration {\n    status     = "Enabled"\n    mfa_delete = "Enabled"\n  }\n',
     )
     assert c7n_violations(POLICY, tf) == []
@@ -20,7 +24,8 @@ def test_compliant():
 
 def test_violation():
     tf = tf_resource(
-        "aws_s3_bucket_versioning", "versioning",
+        "aws_s3_bucket_versioning",
+        "versioning",
         '  versioning_configuration {\n    status     = "Enabled"\n    mfa_delete = "Disabled"\n  }\n',
     )
     assert c7n_violations(POLICY, tf) != []

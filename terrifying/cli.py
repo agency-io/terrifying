@@ -71,7 +71,11 @@ def _cmd_check(args: argparse.Namespace) -> None:
 
 def _cmd_list(args: argparse.Namespace) -> None:
     # pylint: disable=import-outside-toplevel
-    from terrifying.policies.library import filter_by_engine, filter_by_tags, load_manifest
+    from terrifying.policies.library import (
+        filter_by_engine,
+        filter_by_tags,
+        load_manifest,
+    )
 
     entries = filter_by_engine(load_manifest(), args.engine)
     if args.tags:
@@ -87,7 +91,9 @@ def _cmd_list(args: argparse.Namespace) -> None:
             print(f"\n{entry.service.upper()}")
             current_service = entry.service
         engine_label = "[rego]" if entry.engine == "rego" else "[c7n] "
-        print(f"  {engine_label}  {entry.id:<50} {entry.severity:<8}  {entry.description[:60]}")
+        print(
+            f"  {engine_label}  {entry.id:<50} {entry.severity:<8}  {entry.description[:60]}"
+        )
 
     print(f"\n{len(entries)} policies")
 

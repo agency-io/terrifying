@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/apigateway/api-gw-execution-logging-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/apigateway/api-gw-execution-logging-enabled.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_api_gateway_stage", "my_stage",
+        "aws_api_gateway_stage",
+        "my_stage",
         '  access_log_settings {\n    destination_arn = "arn:aws:logs:us-east-1:123:log-group:my-logs"\n  }\n',
     )
     assert c7n_violations(POLICY, tf) == []

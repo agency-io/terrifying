@@ -7,14 +7,17 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/rds/rds-proxy-tls-encryption.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/rds/rds-proxy-tls-encryption.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_db_proxy", "proxy", '  require_tls = true\n')
+    tf = tf_resource("aws_db_proxy", "proxy", "  require_tls = true\n")
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_db_proxy", "proxy", '  require_tls = false\n')
+    tf = tf_resource("aws_db_proxy", "proxy", "  require_tls = false\n")
     assert c7n_violations(POLICY, tf) != []

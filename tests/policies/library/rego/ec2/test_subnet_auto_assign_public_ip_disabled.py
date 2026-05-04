@@ -3,15 +3,18 @@ from pathlib import Path
 import pytest
 from tests.policies.library.helpers import eval_rego_policy, rego_input, resource
 
-pytestmark = pytest.mark.skipif(
-    not shutil.which("opa"), reason="opa not on PATH"
-)
+pytestmark = pytest.mark.skipif(not shutil.which("opa"), reason="opa not on PATH")
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ec2/subnet-auto-assign-public-ip-disabled.rego"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ec2/subnet-auto-assign-public-ip-disabled.rego"
+)
 
 
 def test_compliant():
-    inp = rego_input([resource("aws_subnet", "sub", {"map_public_ip_on_launch": False})])
+    inp = rego_input(
+        [resource("aws_subnet", "sub", {"map_public_ip_on_launch": False})]
+    )
     assert eval_rego_policy(POLICY, inp) == []
 
 

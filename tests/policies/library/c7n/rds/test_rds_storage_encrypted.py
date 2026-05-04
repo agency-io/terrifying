@@ -7,14 +7,17 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/rds/rds-storage-encrypted.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/rds/rds-storage-encrypted.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_db_instance", "db", '  storage_encrypted = true\n')
+    tf = tf_resource("aws_db_instance", "db", "  storage_encrypted = true\n")
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_db_instance", "db", '  storage_encrypted = false\n')
+    tf = tf_resource("aws_db_instance", "db", "  storage_encrypted = false\n")
     assert c7n_violations(POLICY, tf) != []

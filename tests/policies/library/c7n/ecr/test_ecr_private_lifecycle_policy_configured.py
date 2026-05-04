@@ -7,11 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ecr/ecr-private-lifecycle-policy-configured.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ecr/ecr-private-lifecycle-policy-configured.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_ecr_repository", "repo", '  lifecycle_policy = jsonencode({})\n')
+    tf = tf_resource(
+        "aws_ecr_repository", "repo", "  lifecycle_policy = jsonencode({})\n"
+    )
     assert c7n_violations(POLICY, tf) == []
 
 

@@ -7,14 +7,17 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/documentdb/documentdb-cluster-backup-retention.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/documentdb/documentdb-cluster-backup-retention.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_docdb_cluster", "cluster", '  backup_retention_period = 7\n')
+    tf = tf_resource("aws_docdb_cluster", "cluster", "  backup_retention_period = 7\n")
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_docdb_cluster", "cluster", '  backup_retention_period = 3\n')
+    tf = tf_resource("aws_docdb_cluster", "cluster", "  backup_retention_period = 3\n")
     assert c7n_violations(POLICY, tf) != []

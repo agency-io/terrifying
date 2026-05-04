@@ -1,4 +1,5 @@
 """Unit tests for _cmd_add — covers add command code paths."""
+
 import argparse
 from unittest.mock import patch
 from terrifying.cli import _cmd_add
@@ -30,6 +31,7 @@ def test_cmd_add_both_engines_dry_run(tmp_path, capsys):
 
 def test_cmd_add_unknown_policy_id_exits(tmp_path, capsys):
     import pytest
+
     args = argparse.Namespace(
         policy_ids=["nonexistent-policy-xyz-abc"],
         engine="rego",

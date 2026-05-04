@@ -7,14 +7,25 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ec2/encrypted-volumes.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ec2/encrypted-volumes.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_ebs_volume", "vol", '  availability_zone = "us-east-1a"\n  encrypted = true\n')
+    tf = tf_resource(
+        "aws_ebs_volume",
+        "vol",
+        '  availability_zone = "us-east-1a"\n  encrypted = true\n',
+    )
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_ebs_volume", "vol", '  availability_zone = "us-east-1a"\n  encrypted = false\n')
+    tf = tf_resource(
+        "aws_ebs_volume",
+        "vol",
+        '  availability_zone = "us-east-1a"\n  encrypted = false\n',
+    )
     assert c7n_violations(POLICY, tf) != []

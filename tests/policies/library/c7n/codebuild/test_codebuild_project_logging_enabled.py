@@ -7,12 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/codebuild/codebuild-project-logging-enabled.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/codebuild/codebuild-project-logging-enabled.yml"
+)
 
 
 def test_compliant():
     tf = tf_resource(
-        "aws_codebuild_project", "proj",
+        "aws_codebuild_project",
+        "proj",
         '  logs_config {\n    cloudwatch_logs {\n      status = "ENABLED"\n    }\n  }\n',
     )
     assert c7n_violations(POLICY, tf) == []

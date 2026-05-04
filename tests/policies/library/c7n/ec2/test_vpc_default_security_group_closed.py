@@ -7,7 +7,10 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/ec2/vpc-default-security-group-closed.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/ec2/vpc-default-security-group-closed.yml"
+)
 
 CLOSED = '  name = "default"\n'
 OPEN = '  name = "default"\n  ingress {\n    from_port = 0\n    to_port = 0\n    protocol = "-1"\n    self = true\n  }\n'

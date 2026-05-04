@@ -7,14 +7,19 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/rds/rds-db-security-group-not-allowed.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/rds/rds-db-security-group-not-allowed.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_db_instance", "db", '  db_security_group_names = []\n')
+    tf = tf_resource("aws_db_instance", "db", "  db_security_group_names = []\n")
     assert c7n_violations(POLICY, tf) == []
 
 
 def test_violation():
-    tf = tf_resource("aws_db_instance", "db", '  db_security_group_names = ["my-legacy-sg"]\n')
+    tf = tf_resource(
+        "aws_db_instance", "db", '  db_security_group_names = ["my-legacy-sg"]\n'
+    )
     assert c7n_violations(POLICY, tf) != []

@@ -7,11 +7,16 @@ pytestmark = pytest.mark.skipif(
     not shutil.which("c7n-left"), reason="c7n-left not on PATH"
 )
 
-POLICY = Path(__file__).parent.parent.parent.parent.parent.parent / "terrifying/policies/library/s3/s3-bucket-acl-prohibited.yml"
+POLICY = (
+    Path(__file__).parent.parent.parent.parent.parent.parent
+    / "terrifying/policies/library/s3/s3-bucket-acl-prohibited.yml"
+)
 
 
 def test_compliant():
-    tf = tf_resource("aws_s3_bucket", "bucket", '  object_ownership = "BucketOwnerEnforced"\n')
+    tf = tf_resource(
+        "aws_s3_bucket", "bucket", '  object_ownership = "BucketOwnerEnforced"\n'
+    )
     assert c7n_violations(POLICY, tf) == []
 
 

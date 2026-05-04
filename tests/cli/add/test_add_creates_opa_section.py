@@ -5,9 +5,16 @@ import yaml
 
 
 def test_creates_opa_section_when_missing(tmp_path):
-    entries = [e for e in filter_by_engine(load_manifest(), "rego") if e.id == "rds-storage-encrypted"]
+    entries = [
+        e
+        for e in filter_by_engine(load_manifest(), "rego")
+        if e.id == "rds-storage-encrypted"
+    ]
     # No terrifying.yml exists
-    with patch("builtins.input", return_value="y"), patch("terrifying.policies.add.Path.cwd", return_value=tmp_path):
+    with (
+        patch("builtins.input", return_value="y"),
+        patch("terrifying.policies.add.Path.cwd", return_value=tmp_path),
+    ):
         run_add(entries, dry_run=False)
     config = yaml.safe_load((tmp_path / "terrifying.yml").read_text())
     assert "policies" in config
