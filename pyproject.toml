@@ -62,6 +62,9 @@ include = ["terrifying*"]
 testpaths = ["tests"]
 addopts = "-p no:terrifying"
 
+[tool.pylint.main]
+ignore = ["tui.py"]
+
 [tool.coverage.run]
 source = ["terrifying"]
 branch = true
