@@ -61,17 +61,17 @@ def main() -> None:
     context = Parser().parse_directory(tf_dir)
     violations = Runner().run(rules, context) + context.parse_violations
 
-    if config.opa_policy_dir and config.opa_policy_dir.is_dir():
+    if config.opa and config.opa.path.is_dir():
         # pylint: disable=import-outside-toplevel
         from terrifying.policies.opa import OpaAdapter
 
-        violations.extend(OpaAdapter(config.opa_policy_dir).run(context))
+        violations.extend(OpaAdapter(config.opa).run(context))
 
-    if config.c7n_policy_dir and config.c7n_policy_dir.is_dir():
+    if config.c7n and config.c7n.path.is_dir():
         # pylint: disable=import-outside-toplevel
         from terrifying.policies.c7n import C7nAdapter
 
-        violations.extend(C7nAdapter(config.c7n_policy_dir).run(tf_dir))
+        violations.extend(C7nAdapter(config.c7n).run(tf_dir))
 
     if args.format == "json":
         print(json.dumps([_violation_to_dict(v) for v in violations]))

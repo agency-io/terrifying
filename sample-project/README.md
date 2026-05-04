@@ -82,9 +82,17 @@ custom:
   path: ./custom_rules
 
 policies:
-  opa: ./policies/opa
-  c7n: ./policies/c7n
+  opa:
+    path: ./policies/opa
+    params:
+      required_tags: [Environment, Team]
+  c7n:
+    path: ./policies/c7n
+    params:
+      required_tags: [Environment, Team]
 ```
+
+Params flow into OPA policies as `input.params` and into c7n policies as Jinja2 template variables. Per-policy overrides can be added under `policies.<name>.params`.
 
 ## Optional dependencies
 

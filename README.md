@@ -74,9 +74,29 @@ custom:
   path: ./rules
 
 # Policy engine integrations (binaries must be on PATH)
+# Plain path — no parameters
 policies:
-  opa: ./policies/opa       # directory of .rego files
-  c7n: ./policies/c7n       # directory of c7n YAML policies
+  opa: ./policies/opa
+  c7n: ./policies/c7n
+
+# Or nested format with global and per-policy parameters
+policies:
+  opa:
+    path: ./policies/opa
+    params:
+      required_tags: [Environment, Team]    # available as input.params in Rego
+    policies:
+      require_encryption:
+        params:
+          algorithm: AES256                 # overrides global for this policy only
+  c7n:
+    path: ./policies/c7n
+    params:
+      required_tags: [Environment, Team]    # injected as Jinja2 variables
+    policies:
+      require-retention:
+        params:
+          min_retention_days: 90
 ```
 
 ## Built-in rules
@@ -118,25 +138,88 @@ class NoCount(Rule):
 
 ## OPA integration
 
-Place `.rego` files in the directory configured under `policies.opa`. Policies must use the `data.terrifying.deny` rule:
+Place `.rego` files in the directory configured under `policies.opa`. Each policy file is evaluated with a full input document containing the Terraform context and any configured params.
+
+### Input document shape
+
+```json
+{
+  "files": [...],
+  "resources": [
+    {
+      "type": "aws_s3_bucket",
+      "name": "data",
+      "file": "infra/main.tf",
+      "attributes": { "bucket": "my-bucket", "tags": { "Environment": "prod" } }
+    }
+  ],
+  "params": {
+    "required_tags": ["Environment", "Team"]
+  }
+}
+```
+
+`input.params` contains the merged result of global params and any per-policy overrides defined in `terrifying.yml`.
+
+### Writing a Rego policy
+
+Policies must use `package terrifying` and populate the `deny` set. Use `input.params` to access configured parameters:
 
 ```rego
+# policies/opa/require_tags.rego
 package terrifying
 
 import rego.v1
 
 deny contains msg if {
     resource := input.resources[_]
-    not resource.attributes.tags.Environment
-    msg := sprintf("Resource %v.%v is missing tag 'Environment'", [resource.type, resource.name])
+    tag := input.params.required_tags[_]
+    not resource.attributes.tags[tag]
+    msg := sprintf("Resource %v.%v is missing required tag '%v'", [resource.type, resource.name, tag])
 }
 ```
+
+### Per-policy parameter overrides
+
+Global params apply to every policy file. Override them for a specific policy by name (matching the filename without `.rego`):
+
+```yaml
+# terrifying.yml
+policies:
+  opa:
+    path: ./policies/opa
+    params:
+      required_tags: [Environment, Team]   # applies to all policies
+    policies:
+      require_encryption:
+        params:
+          algorithm: AES256               # only require_encryption.rego sees this
+```
+
+Inside `require_encryption.rego`, `input.params` will be `{"required_tags": ["Environment", "Team"], "algorithm": "AES256"}`.
 
 Requires `opa` on PATH. If absent, a single `opa_unavailable` test item is reported.
 
 ## c7n integration
 
-Place c7n YAML policy files in the directory configured under `policies.c7n`:
+Place c7n YAML files in the directory configured under `policies.c7n`. All `.yml` files are treated as Jinja2 templates — configured params are passed as template variables before the rendered YAML is handed to `c7n-left`. The original file is never modified.
+
+### Writing a c7n policy template
+
+Use `{{ variable }}` for substitution and `{% for %}` for loops:
+
+```yaml
+# policies/c7n/require_tags.yml
+policies:
+{% for tag in required_tags %}
+  - name: require-{{ tag | lower }}-tag
+    resource: terraform.aws_s3_bucket
+    filters:
+      - "tag:{{ tag }}": absent
+{% endfor %}
+```
+
+With `required_tags: [Environment, Team]` configured in `terrifying.yml`, terrifying renders this to:
 
 ```yaml
 policies:
@@ -144,7 +227,30 @@ policies:
     resource: terraform.aws_s3_bucket
     filters:
       - "tag:Environment": absent
+  - name: require-team-tag
+    resource: terraform.aws_s3_bucket
+    filters:
+      - "tag:Team": absent
 ```
+
+### Per-policy parameter overrides
+
+Override params for a specific c7n policy file by its filename (without `.yml`):
+
+```yaml
+# terrifying.yml
+policies:
+  c7n:
+    path: ./policies/c7n
+    params:
+      required_tags: [Environment, Team]
+    policies:
+      require-retention:
+        params:
+          min_retention_days: 90          # only require-retention.yml sees this
+```
+
+Plain YAML with no Jinja2 syntax passes through to `c7n-left` unchanged.
 
 Requires `c7n-left` on PATH (`pip install c7n-left`). If absent, a `c7n_unavailable` test item is reported.
 

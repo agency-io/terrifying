@@ -10,9 +10,20 @@ from terrifying.core import TerraformContext, Violation
 class OpaAdapter:  # pylint: disable=too-few-public-methods
     """Runs OPA Rego policies against a TerraformContext and returns violations."""
 
-    def __init__(self, policy_dir: Path):
-        """Initialise with the directory containing .rego policy files."""
-        self.policy_dir = policy_dir
+    def __init__(self, policy_config):
+        """Initialise with a PolicyConfig or plain Path (backward compat)."""
+        # pylint: disable-next=import-outside-toplevel
+        from terrifying.core.config import PolicyConfig
+
+        if isinstance(policy_config, Path):
+            self.policy_config = PolicyConfig(path=policy_config)
+        else:
+            self.policy_config = policy_config
+
+    @property
+    def policy_dir(self) -> Path:
+        """Return the policy directory path."""
+        return self.policy_config.path
 
     def run(self, context: TerraformContext) -> list[Violation]:
         """Evaluate all .rego policies and return normalised violations."""
@@ -20,9 +31,12 @@ class OpaAdapter:  # pylint: disable=too-few-public-methods
         if not policies:
             return []
 
+        context_json = context.to_json()
         violations = []
-        input_json = json.dumps(context.to_json())
         for policy in policies:
+            params = self.policy_config.merged_params(policy.stem)
+            input_data = {**context_json, "params": params}
+            input_json = json.dumps(input_data)
             violations.extend(self._run_policy(policy, input_json))
         return violations
 
